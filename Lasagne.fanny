@@ -1,0 +1,60 @@
+Final Recipe Lassagne{
+    Tools{
+        IldFastFad : [Volume = 5m3, ovenproof]
+        Ovn : [convection] 
+        
+     }
+
+    Ingredients{
+        Recipe LasagneSauce
+        Recipe MornaySauce
+        Ingredient LasagnePlader (200, g)
+        Ingredient Mozzarella (125, g)
+    }
+
+    Steps{
+
+    }
+}
+
+Recipe LasagneSauce{
+    Tools{
+
+    }
+
+    Ingredients{
+        Ingredient Løg (100, g, 2)
+        Ingredient Hvidløg (80, g, 4)
+        Ingredient Øksekød (400, g)
+        Ingredient Oregano (2, tsk)
+        Ingredient Timian (1, tsk)
+        Ingredient Gulerod (100, g, 4)
+        Ingredient Bladselleri (125, g, 5)
+        Ingredient Squash (30, g, 1)
+        Ingredient Tomatpure (1, dl)
+        Ingredient HakkedeTomater (200, g, 2)
+        Ingredient Rødvin (1, dl) or Ingredient Grøntsagsboullion (10, g, 1)
+        Ingredient Olivenolie (30, g, 2 spsk)
+        Ingredient Salt (2, g, 1 Pinch)
+        Ingredient Peber (2, g, 1 Pinch)
+    }
+
+    Steps{
+        knife do mince Hvidløg
+       
+    }
+}
+
+Recipe MornaySauce{
+    Tools{
+
+    }
+
+    Ingredients{
+    }
+
+    Steps{
+
+    }
+}
+
