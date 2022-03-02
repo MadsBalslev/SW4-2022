@@ -1,9 +1,8 @@
 Dish Lassagne{
     Tools{
         IldFastFad : [Volume = 5m3, ovenproof]
-        Ovn : [convection] 
-        
-     }
+        Ovn : [convection]    
+    }
 
     Ingredients{
         Recipe LasagneSauce
@@ -19,29 +18,49 @@ Dish Lassagne{
 
 Recipe LasagneSauce{
     Tools{
-
+        Tool Knife[Slice:Vegetable, Slice:Fruit, Mince:Vegetable]
+        CookingContainer Pot[Contain:(4l)]
+        HeatSource Stove[Heat:CookingContainer]
+        Tool Grater[Grate:Vegetable]
     }
 
     Ingredients{
-        Ingredient Løg (100, g, 2)
-        Ingredient Hvidløg (80, g, 4)
-        Ingredient Øksekød (400, g)
-        Ingredient Oregano (2, tsk)
-        Ingredient Timian (1, tsk)
-        Ingredient Gulerod (100, g, 4)
-        Ingredient Bladselleri (125, g, 5)
-        Ingredient Squash (30, g, 1)
-        Ingredient Tomatpure (1, dl)
-        Ingredient HakkedeTomater (200, g, 2)
-        Ingredient Rødvin (1, dl) or Ingredient Grøntsagsboullion (10, g, 1)
-        Ingredient Olivenolie (30, g, 2 spsk)
-        Ingredient Salt (2, g, 1 Pinch)
-        Ingredient Peber (2, g, 1 Pinch)
+        Vegetable Loeg (100g, 2)
+        Ingredient Hvidloeg (80g, 4)
+        Ingredient Oksekoed (400g)
+        Ingredient Oregano (2tsk)
+        Ingredient Timian (1tsk)
+        Vegetable Gulerod (100g, 4)
+        Vegetable Bladselleri (125g, 5)
+        Vegetable Squash (30g, 1)
+        Ingredient Tomatpure (1dl)
+        Ingredient HakkedeTomater (200g, 2)
+        Liquid Roedvin (1dl) or Liquid Groentsagsboullion (1dl)
+        Liquid Olivenolie (30g, 2 spsk)
+        Ingredient Salt (2g, 1Pinch)
+        Ingredient Peber (2g, 1Pinch)
     }
 
     Steps{
-        knife do mince Hvidløg
-       
+        Knife do Mince["fine"] Loeg
+        Knife do Mince Hvidloeg
+
+        Grater do Grate Gulerod
+        Grater do Grate Bladselleri
+        Grater do Grate Squash
+
+        Pot do Contain Loeg, Hvidloeg, Olivenolie
+        Stove do Heat["medium until content is translucent"] content in Pot
+
+        Pot do Contain Oksekoed
+        Stove do Heat["high until brown"] content in Pot
+    
+        Pot do Contain Oregano, Timian, Gulerod, Bladselleri, Squash, Tomatpure, HakkedeTomater, Roedvin
+        Stove do Heat["Simmer 2-6 hours"] content in Pot
+        
+        Pot do Contain Salt, Peber => LasagneSauce
+
+        Serve LasagneSauce
     }
 }
 
