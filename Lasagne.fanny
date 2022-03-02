@@ -1,7 +1,5 @@
-Dish Lassagne{
+Final Recipe Lasagne{
     Tools{
-        IldFastFad : [Volume = 5m3, ovenproof]
-        Ovn : [convection]    
     }
 
     Ingredients{
@@ -28,17 +26,17 @@ Recipe LasagneSauce{
         Vegetable Loeg (100g, 2)
         Ingredient Hvidloeg (80g, 4)
         Ingredient Oksekoed (400g)
-        Ingredient Oregano (2tsk)
-        Ingredient Timian (1tsk)
+        Ingredient Oregano (2tsp)
+        Ingredient Timian (1tsp)
         Vegetable Gulerod (100g, 4)
         Vegetable Bladselleri (125g, 5)
         Vegetable Squash (30g, 1)
         Ingredient Tomatpure (1dl)
         Ingredient HakkedeTomater (200g, 2)
         Liquid Roedvin (1dl) or Liquid Groentsagsboullion (1dl)
-        Liquid Olivenolie (30g, 2 spsk)
-        Ingredient Salt (2g, 1Pinch)
-        Ingredient Peber (2g, 1Pinch)
+        Liquid Olivenolie (30g, 2tbsp)
+        Ingredient Salt (2g, 1pinch)
+        Ingredient Peber (2g, 1pinch)
     }
 
     Steps{
@@ -49,12 +47,18 @@ Recipe LasagneSauce{
         Grater do Grate Bladselleri
         Grater do Grate Squash
 
-        Pot do Contain Loeg, Hvidloeg, Olivenolie
-        Stove do Heat["medium until content is translucent"] content in Pot
+
+        start Stove do Heatcontent in Pot
+            Pot do Contain Loeg
+            Pot do Contain Hvidloeg
+            Pot do Contain Olivenolie
+        stop when ["medium until content is translucent"] 
 
         Pot do Contain Oksekoed
-        Stove do Heat["high until brown"] content in Pot
-    
+        start Stove do Heat content in Pot
+            Pot do Contain Oksekoed
+        stop when ["high until brown"] 
+
         Pot do Contain Oregano, Timian, Gulerod, Bladselleri, Squash, Tomatpure, HakkedeTomater, Roedvin
         Stove do Heat["Simmer 2-6 hours"] content in Pot
         
@@ -66,14 +70,37 @@ Recipe LasagneSauce{
 
 Recipe MornaySauce{
     Tools{
-
+        CookingContainer Pot[Contain:(2l)]
+        HeatSource Stove[Heat:CookingContainer]  
+        Tool Grater[Grate:Nut]
+        Tool Whisk[Whisk:Ingredient]
     }
 
     Ingredients{
+        Ingredient Smoer (30g, 2tbsp)
+        Nut Nutmeg (5g, 1pinch)
+        Flour Hvedemel (30g, 2tbsp)
+        Liquid Maelk (3dl)
+        Ingredient Mozzarella (125g)
+        Spice Salt
+        Spice Peber
+
     }
-
+    
     Steps{
+        Grater do grate Nutmeg
 
+        start Stove do Heat content in Pot
+            Pot do Contain Smoer
+            Pot do Contain Hvedemel
+            Pot do Whisk["whisk until content is bun"] content in Pot
+            start Pot do Whisk content in Pot
+                Pot do Contain["add little at time"] Maelk
+                Pot do Contain Mozzarella
+            stop when["Mozzarella is melted"]
+            Pot do Contain["To taste"] Salt, Peber, Nutmeg => MornaySauce
+        stop
+        
+        Serve MornaySauce
     }
 }
-
