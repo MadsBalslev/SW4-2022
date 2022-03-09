@@ -20,7 +20,7 @@ INGREDIENT_BASIC_TYPE_IDENTIFIER : 'ingredient' // Categorised like a shop? no
 
 COMPLEX_IDENTIFIER : [A-Z][\w]+;
 
-/* TODO this might cause a problem */
+/* TODO this will cause a problem */
 WEIGHT : [0-9]+;
 WEIGHT_UNIT : 'g' | 'kg' | 'ml' | 'dl' | 'l' | 'mg' | 'lb' | 'oz';
 AMOUNT : [0-9]+;
