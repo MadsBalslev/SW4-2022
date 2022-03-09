@@ -14,9 +14,7 @@ main recipe Pasta{
     steps{
         Pot do contain Water
 
-        Stove do Heat "bring to boil" content in Pot
-
-        START Proc1 Stove do Heat content in Pot
+        START Proc1 Stove do Heat "bring to boil" content in Pot
         
         Pot do contain Pasta
         Pot do contain Salt
