@@ -1,6 +1,6 @@
 main recipe Lasagne{
     tools{
-        HeatSource Oven[Heat: CookingContainer]
+        HeatSource Oven[Heat: content in CookingContainer]
         CookingContainer OvenproofDish
     }
 
