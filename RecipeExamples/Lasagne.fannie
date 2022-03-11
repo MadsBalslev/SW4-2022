@@ -1,72 +1,75 @@
 main recipe Lasagne{
-    tools{
-        HeatSource Oven[Heat: content in Cookingcontainer]
-        Cookingcontainer OvenproofDish
-    }
-
     ingredients{
-        recipe Lasagnesauce  
-        recipe Mornaysauce 
-        ingredient LasagneSheets (200g)
-        ingredient Mozzarella (125g) 
-    }
+        recipe Lasagnesauce,  
+        recipe Mornaysauce, 
+        ingredient LasagneSheets (200g),
+        ingredient Mozzarella (125g)
+    },
+
+    tools{
+        HeatSource Oven[Heat: content in Cookingcontainer],
+        Cookingcontainer OvenproofDish
+    },
 
     steps{
         OvenproofDish do contain "in depth description..." {
-            Lasagnesauce, LasagneSheets, Mornaysauce, Mozzarella
-        }
+            Lasagnesauce, 
+            LasagneSheets, 
+            Mornaysauce, 
+            Mozzarella
+        },
 
-        Oven do Heat "250c 20-25 minutes" content in OvenproofDish
+        Oven do Heat "250c 20-25 minutes" content in OvenproofDish,
 
-        serve OvenproofDish content
+        serve content in OvenproofDish
     }
 }
 
 recipe LasagneSauce{
-    tools{
-        tool Knife[Slice:vegetable, Slice:fruit, Mince:vegetable]
-        Cookingcontainer Pot[contain:(4l)]
-        HeatSource Stove[Heat:Cookingcontainer]
-        tool Grater[Grate:Vegetable]
-    }
-
     ingredients{
-        vegetable Onion (100g, 2) 
-        ingredient Garlic (80g, 4)
-        ingredient GroundBeef (400g)
-        ingredient Oregano (2tsp)
-        ingredient Timian (1tsp)
-        vegetable Carrot (100g, 4)
-        vegetable Celery (125g, 5)
-        vegetable Squash (30g, 1)
-        ingredient TomatoPaste (1dl)
-        ingredient ChoppedTomato (200g, 2)
-        liquid RedWine (1dl) or Liquid VegetableStock (1dl)
-        liquid OliveOil (30g, 2tbsp)
-        ingredient Salt (2g, 1pinch)
-        ingredient Pepper (2g, 1pinch)
-    }
+        vegetable Onion (100g, 2 whole), 
+        ingredient Garlic (80g, 4 whole),
+        ingredient GroundBeef (400g),
+        spice Oregano (10g, 2tsp),
+        spice Timian (5g, 1tsp),
+        vegetable Carrot (100g, 4 whole),
+        vegetable Celery (125g, 5 whole),
+        vegetable Squash (30g, 1 whole),
+        ingredient TomatoPaste (1dl),
+        ingredient ChoppedTomato (200g, 2 whole),
+        liquid RedWine (1dl) or liquid VegetableStock (1dl),
+        liquid OliveOil (30g, 2tbsp),
+        spice Salt (2g, 1pinch),
+        spice Pepper (2g, 1pinch)
+    },
+
+    tools{
+        tool Knife[Slice:vegetable, Slice:fruit, Mince:vegetable],
+        Cookingcontainer Pot[contain:(4l)],
+        HeatSource Stove[Heat:Cookingcontainer],
+        tool Grater[Grate:Vegetable]
+    },
 
     steps{
-        Knife do Mince "fine" Onion
-        Knife do Mince Garlic
+        Knife do Mince "fine" Onion,
+        Knife do Mince Garlic,
 
-        Grater do Grate Carrot
-        Grater do Grate Celery
-        Grater do Grate Squash
+        Grater do Grate Carrot,
+        Grater do Grate Celery,
+        Grater do Grate Squash,
 
 
-        START Proc1 Stove do Heat "medium" content in Pot
-        Pot do contain Onion
-        Pot do contain Garlic
-        Pot do contain OliveOil
-        STOP Proc1 when "content is translucent" 
+        START Proc1 Stove do Heat "medium" content in Pot,
+        Pot do contain Onion,
+        Pot do contain Garlic,
+        Pot do contain OliveOil,
+        STOP Proc1 when "content is translucent", 
 
-        START Proc2 Stove do Heat "high" content in Pot
-        Pot do contain GroundBeef
-        STOP Proc2 when "content is brown" 
+        START Proc2 Stove do Heat "high" content in Pot,
+        Pot do contain GroundBeef,
+        STOP Proc2 when "content is brown", 
 
-        START Proc3 Stove do Heat content in Pot
+        START Proc3 Stove do Heat content in Pot,
         Pot do contain { 
             Oregano, 
             Timian,
@@ -76,47 +79,46 @@ recipe LasagneSauce{
             TomatoPaste, 
             ChoppedTomato, 
             RedWine 
-        }
-        STOP Proc3 when "Simmer 2-6 hours" 
+        },
+        STOP Proc3 when "Simmer 2-6 hours", 
 
-        Pot do contain Salt, Pepper => LasagneSauce
+        Pot do contain { Salt, Pepper } => LasagneSauce,
 
         serve LasagneSauce
     }
 }
 
 recipe MornaySauce{
-    tools{
-        cookingcontainer Pot[contain:(2l)]
-        heatSource Stove[Heat:Cookingcontainer]  
-        tool Grater[Grate:Nut]
-        tool Whisk[Whisk:Ingredient]
-    }
-
     ingredients{
-        ingredient Butter (30g, 2tbsp)
-        nut Nutmeg (5g, 1pinch)
-        flour WheatFlour (30g, 2tbsp)
-        liquid Milk (3dl)
-        ingredient Mozzarella (125g)
-        spice Salt
-        spice Pepper
-
-    }
+        ingredient Butter (30g, 2tbsp),
+        nut Nutmeg (5g, 1pinch),
+        dry WheatFlour (30g, 2tbsp),
+        liquid Milk (3dl),
+        ingredient Mozzarella (125g),
+        spice Salt (to-taste),
+        spice Pepper (to-taste)
+    },
+    
+    tools{
+        Cookingcontainer Pot[contain:(2l)],
+        HeatSource Stove[Heat:Cookingcontainer],
+        tool Grater[Grate:Nut],
+        tool Whisk[Whisk:Ingredient]
+    },
 
     steps{
-        Grater do grate Nutmeg
+        Grater do Grate Nutmeg,
 
-        START Proc1 Stove do Heat content in Pot
-        Pot do contain Butter
-        Pot do contain WheatFlour
-        Pot do Whisk "whisk until content is bun" content in Pot
-        START Proc2 Pot do Whisk content in Pot
-        Pot do contain "add little at time" Milk
-        Pot do contain Mozzarella
-        Pot do contain "To taste" Salt, Pepper, Nutmeg => MornaySauce
-        STOP Proc2 when "Mozzarella is melted"
-        STOP Proc1
+        START Proc1 Stove do Heat content in Pot,
+        Pot do contain Butter,
+        Pot do contain WheatFlour,
+        Pot do Whisk "whisk until content is bun" content in Pot,
+        START Proc2 Pot do Whisk content in Pot,
+        Pot do contain "add little at time" Milk,
+        Pot do contain Mozzarella,
+        Pot do contain "To taste" {Salt, Pepper, Nutmeg} => MornaySauce,
+        STOP Proc2 when "Mozzarella is melted",
+        STOP Proc1,
         serve MornaySauce
     }
 }
