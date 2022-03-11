@@ -1,4 +1,4 @@
-grammar fanny;
+grammar fannie;
 
 program : main_recipe (recipe)*;
 
