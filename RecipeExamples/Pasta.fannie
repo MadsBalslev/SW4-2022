@@ -1,30 +1,31 @@
 main recipe Pasta{
-    tools{
-        tool Pot[contain : ingredient]
-        tool Stove[Heat : content in Pot]
-        tool Sifter[contain : ingredient, Sift : content in Sifter]
-    }
 
     ingredients{
-        ingredient Pasta (100g) 
-        liquid Water (1l)
+        ingredient Pasta (100g), 
+        liquid Water (1l),
         spice Salt (10g)
-    }
+    },
 
+    tools{
+        tool Pot[contain : ingredient],
+        tool Stove[Heat : content in Pot],
+        tool Sifter[contain : ingredient, Sift : content in Sifter]
+    },
+    
     steps{
-        Pot do contain Water
+        Pot do contain Water,
 
-        Stove do Heat "bring to boil" content in Pot
+        Stove do Heat "bring to boil" content in Pot,
 
-        START Proc1 Stove do Heat content in Pot
+        START Proc1 Stove do Heat content in Pot,
         
-        Pot do contain Pasta
-        Pot do contain Salt
+        Pot do contain Pasta,
+        Pot do contain Salt,
 
-        STOP Proc1 when "boil pasta for 6-10 minutes" 
+        STOP Proc1 when "boil pasta for 6-10 minutes",
 
-        Sifter do contain content in Pot
-        Sifter do sift content in Sifter
+        Sifter do contain content in Pot,
+        Sifter do Sift content in Sifter,
 
         serve content in Sifter
     }
