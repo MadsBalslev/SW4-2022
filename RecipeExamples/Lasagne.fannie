@@ -1,7 +1,7 @@
 main recipe Lasagne{
     tools{
-        HeatSource Oven[Heat: content in CookingContainer]
-        CookingContainer OvenproofDish
+        HeatSource Oven[Heat: content in Cookingcontainer]
+        Cookingcontainer OvenproofDish
     }
 
     ingredients{
@@ -12,7 +12,7 @@ main recipe Lasagne{
     }
 
     steps{
-        OvenproofDish do Contain "in depth description..." {
+        OvenproofDish do contain "in depth description..." {
             Lasagnesauce, LasagneSheets, Mornaysauce, Mozzarella
         }
 
@@ -25,8 +25,8 @@ main recipe Lasagne{
 recipe LasagneSauce{
     tools{
         tool Knife[Slice:vegetable, Slice:fruit, Mince:vegetable]
-        CookingContainer Pot[Contain:(4l)]
-        HeatSource Stove[Heat:CookingContainer]
+        Cookingcontainer Pot[contain:(4l)]
+        HeatSource Stove[Heat:Cookingcontainer]
         tool Grater[Grate:Vegetable]
     }
 
@@ -87,8 +87,8 @@ recipe LasagneSauce{
 
 recipe MornaySauce{
     tools{
-        cookingContainer Pot[contain:(2l)]
-        heatSource Stove[Heat:CookingContainer]  
+        cookingcontainer Pot[contain:(2l)]
+        heatSource Stove[Heat:Cookingcontainer]  
         tool Grater[Grate:Nut]
         tool Whisk[Whisk:Ingredient]
     }
