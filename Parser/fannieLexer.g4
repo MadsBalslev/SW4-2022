@@ -1,38 +1,59 @@
 lexer grammar fannieLexer;
 
-MAIN : 'main';
-RECIPE : 'recipe';
+WS: (' ' | '\t' | '\n' | '\r')+ -> channel(HIDDEN);
 
-TOOL_LIST : 'tools';
-INGREDIENT_LIST : 'ingredients';
-STEP_LIST : 'steps';
+MAIN: 'main';
+RECIPE: 'recipe';
 
-CONTAIN : 'contain';
+TOOL_LIST: 'tools';
+INGREDIENT_LIST: 'ingredients';
+STEP_LIST: 'steps';
 
+CONTAIN: 'contain';
 
-DO : 'do';
-OR : 'or';
-DESCRIPTION_STRING : '"'[^"]+'"';
-START : 'START';
-STOP : 'STOP';
-WHEN : 'when';
-SERVE : 'serve';
-CONTENT_IN : 'content in';
-TRANSFORM : '=>';
+DO: 'do';
+OR: 'or';
 
-TOOL_BASIC_TYPE_IDENTIFIER : 'tool';
-INGREDIENT_BASIC_TYPE_IDENTIFIER : 'ingredient' // Categorised like a shop? no
-                                 | 'vegetable'
-                                 | 'fruit'
-                                 | 'meat'
-                                 | 'liquid'
-                                 | 'spice'
-                                 | 'dry';
-COMPLEX_IDENTIFIER : [A-Z][\w]+;
+DESCRIPTION_STRING: '"' (~["])* '"';
+START: 'START';
+STOP: 'STOP';
+WHEN: 'when';
+SERVE: 'serve';
+CONTENT_IN: 'content in';
+TRANSFORM: '=>';
 
-AMOUNT : [0-9]+;
-WEIGHT_UNIT : 'g' | 'kg' | 'ml' | 'dl' | 'l' | 'mg' | 'lb' | 'oz';
-ABSTRACT_UNIT : 'tbsp' | 'tsp' | 'pinch' | 'whole' | 'half' | 'third' | 'quarter' | 'eight';
+TOOL_BASIC_TYPE_IDENTIFIER: 'tool';
+INGREDIENT_BASIC_TYPE_IDENTIFIER:
+	'ingredient' // Categorised like a shop? no
+	| 'vegetable'
+	| 'fruit'
+	| 'meat'
+	| 'liquid'
+	| 'spice'
+	| 'nut'
+	| 'dry';
+COMPLEX_IDENTIFIER: [A-Z][a-zA-Z0-9_]+;
 
-COMMENT : '/''/'[^/n]+'\n';
+AMOUNT: [0-9]+;
+WEIGHT_UNIT:
+	'g'
+	| 'kg'
+	| 'ml'
+	| 'dl'
+	| 'l'
+	| 'mg'
+	| 'lb'
+	| 'oz';
+ABSTRACT_UNIT:
+	'tbsp'
+	| 'tsp'
+	| 'pinch'
+	| 'whole'
+	| 'half'
+	| 'third'
+	| 'quarter'
+	| 'eight';
+TO_TASTE: 'to-taste';
+
+COMMENT: '/' '/' [^/n]+ '\n';
 
