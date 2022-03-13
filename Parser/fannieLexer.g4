@@ -1,27 +1,59 @@
-lexer grammar fannyLexer;
+lexer grammar fannieLexer;
 
-MAIN : 'main';
-RECIPE : 'recipe';
+WS: (' ' | '\t' | '\n' | '\r')+ -> channel(HIDDEN);
 
-TOOL_LIST : 'tools';
-INGREDIENT_LIST : 'ingredients';
-STEP_LIST : 'steps';
+MAIN: 'main';
+RECIPE: 'recipe';
 
-SERVE : 'serve';
+TOOL_LIST: 'tools';
+INGREDIENT_LIST: 'ingredients';
+STEP_LIST: 'steps';
 
-TOOL_BASIC_TYPE_IDENTIFIER : 'tool';
-INGREDIENT_BASIC_TYPE_IDENTIFIER : 'ingredient' // Categorised like a shop? no
-                                 | 'vegetable'
-                                 | 'fruit'
-                                 | 'meat'
-                                 | 'liquid'
-                                 | 'spice'
-                                 | 'dry';
+CONTAIN: 'contain';
 
-COMPLEX_IDENTIFIER : [A-Z][\w]+;
+DO: 'do';
+OR: 'or';
 
-/* TODO this will cause a problem */
-WEIGHT : [0-9]+;
-WEIGHT_UNIT : 'g' | 'kg' | 'ml' | 'dl' | 'l' | 'mg' | 'lb' | 'oz';
-AMOUNT : [0-9]+;
-DESCRIPTION_STRING : '\"'[^"]+'\"';
+DESCRIPTION_STRING: '"' (~["])* '"';
+START: 'START';
+STOP: 'STOP';
+WHEN: 'when';
+SERVE: 'serve';
+CONTENT_IN: 'content in';
+TRANSFORM: '=>';
+
+TOOL_BASIC_TYPE_IDENTIFIER: 'tool';
+INGREDIENT_BASIC_TYPE_IDENTIFIER:
+	'ingredient' // Categorised like a shop? no
+	| 'vegetable'
+	| 'fruit'
+	| 'meat'
+	| 'liquid'
+	| 'spice'
+	| 'nut'
+	| 'dry';
+COMPLEX_IDENTIFIER: [A-Z][a-zA-Z0-9_]+;
+
+AMOUNT: [0-9]+;
+WEIGHT_UNIT:
+	'g'
+	| 'kg'
+	| 'ml'
+	| 'dl'
+	| 'l'
+	| 'mg'
+	| 'lb'
+	| 'oz';
+ABSTRACT_UNIT:
+	'tbsp'
+	| 'tsp'
+	| 'pinch'
+	| 'whole'
+	| 'half'
+	| 'third'
+	| 'quarter'
+	| 'eight';
+TO_TASTE: 'to-taste';
+
+COMMENT: '/' '/' [^/n]+ '\n';
+
