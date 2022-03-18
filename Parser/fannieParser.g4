@@ -13,7 +13,8 @@ ingredientsList : INGREDIENT_LIST '{' ingredientDeclaration (',' ingredientDecla
 
 ingredientDeclaration : INGREDIENT_BASIC_TYPE_IDENTIFIER  COMPLEX_IDENTIFIER amountDeclaration
                       | RECIPE COMPLEX_IDENTIFIER
-                      | INGREDIENT_BASIC_TYPE_IDENTIFIER  COMPLEX_IDENTIFIER amountDeclaration OR INGREDIENT_BASIC_TYPE_IDENTIFIER  COMPLEX_IDENTIFIER amountDeclaration;
+                      | (INGREDIENT_BASIC_TYPE_IDENTIFIER | COMPLEX_IDENTIFIER)  COMPLEX_IDENTIFIER amountDeclaration OR (INGREDIENT_BASIC_TYPE_IDENTIFIER | COMPLEX_IDENTIFIER)  COMPLEX_IDENTIFIER amountDeclaration
+                      | COMPLEX_IDENTIFIER COMPLEX_IDENTIFIER amountDeclaration;
 
 amountDeclaration : '(' AMOUNT WEIGHT_UNIT (',' AMOUNT ABSTRACT_UNIT)?  ')'
                   | '(' TO_TASTE ')';
