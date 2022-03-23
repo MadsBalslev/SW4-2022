@@ -15,6 +15,7 @@ In the current recipe, tooldeclaration will create and add a new tool to the rec
 Steps primarily operate on the ingredient environment using the tools in the tool environment. 
 
 ```t do a i``` 
+
 Nothing happens. 
 
 ```t do a i1 => i2```
