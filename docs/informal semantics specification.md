@@ -14,19 +14,19 @@ In the current recipe, tooldeclaration will create and add a new tool to the rec
 ## StepDeclaration 
 Steps primarily operate on the ingredient environment using the tools in the tool environment. 
 
-`t do a i 
+```t do a i``` 
 Nothing happens. 
 
-`t do a i1 => i2 
+```t do a i1 => i2```
 One ingredient become one ingredient. 
 
-`t do a { i1, i2, i3, …, in } => Ik 
+```t do a { i1, i2, i3, …, in } => Ik``` 
 More ingredients become one ingredient.
 
-`t do a { i1, i2, i3, …, in } => { ik1, ik2, ik3, …, ikn } 
+```t do a { i1, i2, i3, …, in } => { ik1, ik2, ik3, …, ikn }``` 
 More ingredients become more ingredients. 
 
-`t do a i1 => { ik1, ik2, ik3, …, ikn } 
+```t do a i1 => { ik1, ik2, ik3, …, ikn }``` 
 One ingredient becomes one ingredient.
 
 All ingredients introduced in the step declaration should be used.
