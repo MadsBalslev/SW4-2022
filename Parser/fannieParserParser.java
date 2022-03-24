@@ -1431,17 +1431,14 @@ public class fannieParserParser extends Parser {
 
 	public static class ToolActionDeclarationContext extends ParserRuleContext {
 		public TerminalNode CONTAIN() { return getToken(fannieParserParser.CONTAIN, 0); }
-		public IngredientIdentifierContext ingredientIdentifier() {
-			return getRuleContext(IngredientIdentifierContext.class,0);
-		}
-		public ToolActionIdentifierContext toolActionIdentifier() {
-			return getRuleContext(ToolActionIdentifierContext.class,0);
-		}
 		public List<IngredientTypeIdentifierContext> ingredientTypeIdentifier() {
 			return getRuleContexts(IngredientTypeIdentifierContext.class);
 		}
 		public IngredientTypeIdentifierContext ingredientTypeIdentifier(int i) {
 			return getRuleContext(IngredientTypeIdentifierContext.class,i);
+		}
+		public ToolActionIdentifierContext toolActionIdentifier() {
+			return getRuleContext(ToolActionIdentifierContext.class,0);
 		}
 		public TerminalNode TRANSFORM() { return getToken(fannieParserParser.TRANSFORM, 0); }
 		public TerminalNode CONTENT_IN() { return getToken(fannieParserParser.CONTENT_IN, 0); }
@@ -1477,7 +1474,7 @@ public class fannieParserParser extends Parser {
 				setState(205);
 				match(T__7);
 				setState(206);
-				ingredientIdentifier();
+				ingredientTypeIdentifier();
 				}
 				break;
 			case 2:
@@ -1993,7 +1990,7 @@ public class fannieParserParser extends Parser {
 		"\2\u00c5\u00c3\3\2\2\2\u00c6\u00c9\3\2\2\2\u00c7\u00c5\3\2\2\2\u00c7\u00c8"+
 		"\3\2\2\2\u00c8\u00ca\3\2\2\2\u00c9\u00c7\3\2\2\2\u00ca\u00cb\7\t\2\2\u00cb"+
 		"\u00cd\3\2\2\2\u00cc\u00c1\3\2\2\2\u00cc\u00cd\3\2\2\2\u00cd\61\3\2\2"+
-		"\2\u00ce\u00cf\7\21\2\2\u00cf\u00d0\7\n\2\2\u00d0\u00df\5\f\7\2\u00d1"+
+		"\2\u00ce\u00cf\7\21\2\2\u00cf\u00d0\7\n\2\2\u00d0\u00df\5\n\6\2\u00d1"+
 		"\u00d2\5\6\4\2\u00d2\u00d3\7\n\2\2\u00d3\u00d4\5\n\6\2\u00d4\u00d5\7\33"+
 		"\2\2\u00d5\u00d6\5\n\6\2\u00d6\u00df\3\2\2\2\u00d7\u00d8\5\6\4\2\u00d8"+
 		"\u00d9\7\n\2\2\u00d9\u00da\7\32\2\2\u00da\u00db\5\4\3\2\u00db\u00dc\7"+
