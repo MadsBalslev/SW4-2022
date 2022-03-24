@@ -1,8 +1,6 @@
 grammar fannieParser;
 import fannieLexer;
 
-program : mainRecipe (subRecipe)* EOF;
-
 toolIdentifier : COMPLEX_IDENTIFIER;
 toolActionIdentifier : ( COMPLEX_IDENTIFIER | CONTAIN | REMOVE);
 toolTypeIdentifier : COMPLEX_IDENTIFIER | TOOL_BASIC_TYPE_IDENTIFIER;
@@ -11,17 +9,18 @@ ingredientIdentifier : COMPLEX_IDENTIFIER;
 recipeIdentifier : COMPLEX_IDENTIFIER;
 procIdentifier : COMPLEX_IDENTIFIER;
 
-mainRecipe : MAIN RECIPE recipeIdentifier '{' recipeBody '}';
+program : mainRecipe (subRecipe)* EOF;
 
+mainRecipe : MAIN RECIPE recipeIdentifier '{' recipeBody '}';
 subRecipe : RECIPE recipeIdentifier '{' recipeBody '}'; 
 
 recipeBody : ingredientsList ',' toolsList ',' stepsList;
 
-stepIn : ingredientIdentifier | collection | contentIn;
-stepOut : ingredientIdentifier | collection;
-contentIn : CONTENT_IN toolIdentifier;
-
 ingredientsList : INGREDIENT_LIST '{' ingredientDeclaration (',' ingredientDeclaration)* '}';
+
+toolsList : TOOL_LIST '{' toolDeclaration (',' toolDeclaration)* '}';
+
+stepsList : STEP_LIST '{' stepDeclaration (',' stepDeclaration)* '}';
 
 ingredientDeclaration : deterministicIngredientDeclaration 
                       | nondeterministicIngredientDeclaration
@@ -38,10 +37,6 @@ ingredientSubtypeDeclaration : ingredientTypeIdentifier ingredientTypeIdentifier
 
 amountDeclaration : '(' AMOUNT WEIGHT_UNIT (',' AMOUNT ABSTRACT_UNIT)?  ')'
                   | '(' TO_TASTE ')';
-
-toolsList : TOOL_LIST '{' toolDeclaration (',' toolDeclaration)* '}';
-
-stepsList : STEP_LIST '{' stepDeclaration (',' stepDeclaration)* '}';
 
 toolDeclaration : toolTypeIdentifier toolIdentifier toolActionDeclarationsList; 
 
@@ -60,8 +55,13 @@ serveStepDeclaration : SERVE stepIn;
 
 doStepDeclaration : toolIdentifier DO toolActionIdentifier (DESCRIPTION_STRING)? stepIn ('=>' stepOut)?;
 
-collection : '{'ingredientIdentifier (',' ingredientIdentifier)* '}';
-
 continousDoStepStartDeclaration : START procIdentifier doStepDeclaration;
 
 continousDoStepStopDeclaration : STOP procIdentifier (WHEN DESCRIPTION_STRING)? ('=>' stepOut)?;
+
+stepIn : ingredientIdentifier | collection | contentIn;
+stepOut : ingredientIdentifier | collection;
+
+contentIn : CONTENT_IN toolIdentifier;
+
+collection : '{'ingredientIdentifier (',' ingredientIdentifier)* '}';
