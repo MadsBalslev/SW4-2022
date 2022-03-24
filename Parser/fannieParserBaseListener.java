@@ -171,6 +171,18 @@ public class fannieParserBaseListener implements fannieParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterContentIn(fannieParserParser.ContentInContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitContentIn(fannieParserParser.ContentInContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterIngredientsList(fannieParserParser.IngredientsListContext ctx) { }
 	/**
 	 * {@inheritDoc}

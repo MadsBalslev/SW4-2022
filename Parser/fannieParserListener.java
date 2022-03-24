@@ -137,6 +137,16 @@ public interface fannieParserListener extends ParseTreeListener {
 	 */
 	void exitStepOut(fannieParserParser.StepOutContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link fannieParserParser#contentIn}.
+	 * @param ctx the parse tree
+	 */
+	void enterContentIn(fannieParserParser.ContentInContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link fannieParserParser#contentIn}.
+	 * @param ctx the parse tree
+	 */
+	void exitContentIn(fannieParserParser.ContentInContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link fannieParserParser#ingredientsList}.
 	 * @param ctx the parse tree
 	 */

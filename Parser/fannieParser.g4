@@ -17,8 +17,9 @@ subRecipe : RECIPE recipeIdentifier '{' recipeBody '}';
 
 recipeBody : ingredientsList ',' toolsList ',' stepsList;
 
-stepIn : ingredientIdentifier | collection | CONTENT_IN toolIdentifier;
+stepIn : ingredientIdentifier | collection | contentIn;
 stepOut : ingredientIdentifier | collection;
+contentIn : CONTENT_IN toolIdentifier;
 
 ingredientsList : INGREDIENT_LIST '{' ingredientDeclaration (',' ingredientDeclaration)* '}';
 
@@ -48,15 +49,14 @@ toolActionDeclarationsList : ('[' toolActionDeclaration (',' toolActionDeclarati
 
 toolActionDeclaration : CONTAIN ':' ingredientTypeIdentifier
                       | toolActionIdentifier ':' ingredientTypeIdentifier '=>' ingredientTypeIdentifier
-                      | toolActionIdentifier ':' CONTENT_IN toolIdentifier '=>' ingredientTypeIdentifier;
+                      | toolActionIdentifier ':' contentIn '=>' ingredientTypeIdentifier;
 
 stepDeclaration : doStepDeclaration
                 | continousDoStepStartDeclaration
                 | continousDoStepStopDeclaration
                 | serveStepDeclaration;
 
-serveStepDeclaration : SERVE recipeIdentifier
-                     | SERVE CONTENT_IN toolIdentifier;
+serveStepDeclaration : SERVE stepIn;
 
 doStepDeclaration : toolIdentifier DO toolActionIdentifier (DESCRIPTION_STRING)? stepIn ('=>' stepOut)?;
 

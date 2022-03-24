@@ -27,19 +27,19 @@ public class fannieParserParser extends Parser {
 		RULE_toolTypeIdentifier = 3, RULE_ingredientTypeIdentifier = 4, RULE_ingredientIdentifier = 5, 
 		RULE_recipeIdentifier = 6, RULE_procIdentifier = 7, RULE_mainRecipe = 8, 
 		RULE_subRecipe = 9, RULE_recipeBody = 10, RULE_stepIn = 11, RULE_stepOut = 12, 
-		RULE_ingredientsList = 13, RULE_ingredientDeclaration = 14, RULE_deterministicIngredientDeclaration = 15, 
-		RULE_nondeterministicIngredientDeclaration = 16, RULE_recipeIngredientDeclaration = 17, 
-		RULE_ingredientSubtypeDeclaration = 18, RULE_amountDeclaration = 19, RULE_toolsList = 20, 
-		RULE_stepsList = 21, RULE_toolDeclaration = 22, RULE_toolActionDeclarationsList = 23, 
-		RULE_toolActionDeclaration = 24, RULE_stepDeclaration = 25, RULE_serveStepDeclaration = 26, 
-		RULE_doStepDeclaration = 27, RULE_collection = 28, RULE_continousDoStepStartDeclaration = 29, 
-		RULE_continousDoStepStopDeclaration = 30;
+		RULE_contentIn = 13, RULE_ingredientsList = 14, RULE_ingredientDeclaration = 15, 
+		RULE_deterministicIngredientDeclaration = 16, RULE_nondeterministicIngredientDeclaration = 17, 
+		RULE_recipeIngredientDeclaration = 18, RULE_ingredientSubtypeDeclaration = 19, 
+		RULE_amountDeclaration = 20, RULE_toolsList = 21, RULE_stepsList = 22, 
+		RULE_toolDeclaration = 23, RULE_toolActionDeclarationsList = 24, RULE_toolActionDeclaration = 25, 
+		RULE_stepDeclaration = 26, RULE_serveStepDeclaration = 27, RULE_doStepDeclaration = 28, 
+		RULE_collection = 29, RULE_continousDoStepStartDeclaration = 30, RULE_continousDoStepStopDeclaration = 31;
 	private static String[] makeRuleNames() {
 		return new String[] {
 			"program", "toolIdentifier", "toolActionIdentifier", "toolTypeIdentifier", 
 			"ingredientTypeIdentifier", "ingredientIdentifier", "recipeIdentifier", 
 			"procIdentifier", "mainRecipe", "subRecipe", "recipeBody", "stepIn", 
-			"stepOut", "ingredientsList", "ingredientDeclaration", "deterministicIngredientDeclaration", 
+			"stepOut", "contentIn", "ingredientsList", "ingredientDeclaration", "deterministicIngredientDeclaration", 
 			"nondeterministicIngredientDeclaration", "recipeIngredientDeclaration", 
 			"ingredientSubtypeDeclaration", "amountDeclaration", "toolsList", "stepsList", 
 			"toolDeclaration", "toolActionDeclarationsList", "toolActionDeclaration", 
@@ -151,23 +151,23 @@ public class fannieParserParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(62);
+			setState(64);
 			mainRecipe();
-			setState(66);
+			setState(68);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==RECIPE) {
 				{
 				{
-				setState(63);
+				setState(65);
 				subRecipe();
 				}
 				}
-				setState(68);
+				setState(70);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(69);
+			setState(71);
 			match(EOF);
 			}
 		}
@@ -204,7 +204,7 @@ public class fannieParserParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(71);
+			setState(73);
 			match(COMPLEX_IDENTIFIER);
 			}
 		}
@@ -244,7 +244,7 @@ public class fannieParserParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(73);
+			setState(75);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << CONTAIN) | (1L << REMOVE) | (1L << COMPLEX_IDENTIFIER))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -291,7 +291,7 @@ public class fannieParserParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(75);
+			setState(77);
 			_la = _input.LA(1);
 			if ( !(_la==TOOL_BASIC_TYPE_IDENTIFIER || _la==COMPLEX_IDENTIFIER) ) {
 			_errHandler.recoverInline(this);
@@ -338,7 +338,7 @@ public class fannieParserParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(77);
+			setState(79);
 			_la = _input.LA(1);
 			if ( !(_la==INGREDIENT_BASIC_TYPE_IDENTIFIER || _la==COMPLEX_IDENTIFIER) ) {
 			_errHandler.recoverInline(this);
@@ -383,7 +383,7 @@ public class fannieParserParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(79);
+			setState(81);
 			match(COMPLEX_IDENTIFIER);
 			}
 		}
@@ -420,7 +420,7 @@ public class fannieParserParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(81);
+			setState(83);
 			match(COMPLEX_IDENTIFIER);
 			}
 		}
@@ -457,7 +457,7 @@ public class fannieParserParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(83);
+			setState(85);
 			match(COMPLEX_IDENTIFIER);
 			}
 		}
@@ -501,17 +501,17 @@ public class fannieParserParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(85);
-			match(MAIN);
-			setState(86);
-			match(RECIPE);
 			setState(87);
-			recipeIdentifier();
+			match(MAIN);
 			setState(88);
-			match(T__0);
+			match(RECIPE);
 			setState(89);
-			recipeBody();
+			recipeIdentifier();
 			setState(90);
+			match(T__0);
+			setState(91);
+			recipeBody();
+			setState(92);
 			match(T__1);
 			}
 		}
@@ -554,15 +554,15 @@ public class fannieParserParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(92);
-			match(RECIPE);
-			setState(93);
-			recipeIdentifier();
 			setState(94);
-			match(T__0);
+			match(RECIPE);
 			setState(95);
-			recipeBody();
+			recipeIdentifier();
 			setState(96);
+			match(T__0);
+			setState(97);
+			recipeBody();
+			setState(98);
 			match(T__1);
 			}
 		}
@@ -607,15 +607,15 @@ public class fannieParserParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(98);
-			ingredientsList();
-			setState(99);
-			match(T__2);
 			setState(100);
-			toolsList();
+			ingredientsList();
 			setState(101);
 			match(T__2);
 			setState(102);
+			toolsList();
+			setState(103);
+			match(T__2);
+			setState(104);
 			stepsList();
 			}
 		}
@@ -637,9 +637,8 @@ public class fannieParserParser extends Parser {
 		public CollectionContext collection() {
 			return getRuleContext(CollectionContext.class,0);
 		}
-		public TerminalNode CONTENT_IN() { return getToken(fannieParserParser.CONTENT_IN, 0); }
-		public ToolIdentifierContext toolIdentifier() {
-			return getRuleContext(ToolIdentifierContext.class,0);
+		public ContentInContext contentIn() {
+			return getRuleContext(ContentInContext.class,0);
 		}
 		public StepInContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -659,30 +658,28 @@ public class fannieParserParser extends Parser {
 		StepInContext _localctx = new StepInContext(_ctx, getState());
 		enterRule(_localctx, 22, RULE_stepIn);
 		try {
-			setState(108);
+			setState(109);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case COMPLEX_IDENTIFIER:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(104);
+				setState(106);
 				ingredientIdentifier();
 				}
 				break;
 			case T__0:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(105);
+				setState(107);
 				collection();
 				}
 				break;
 			case CONTENT_IN:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(106);
-				match(CONTENT_IN);
-				setState(107);
-				toolIdentifier();
+				setState(108);
+				contentIn();
 				}
 				break;
 			default:
@@ -725,25 +722,67 @@ public class fannieParserParser extends Parser {
 		StepOutContext _localctx = new StepOutContext(_ctx, getState());
 		enterRule(_localctx, 24, RULE_stepOut);
 		try {
-			setState(112);
+			setState(113);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case COMPLEX_IDENTIFIER:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(110);
+				setState(111);
 				ingredientIdentifier();
 				}
 				break;
 			case T__0:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(111);
+				setState(112);
 				collection();
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class ContentInContext extends ParserRuleContext {
+		public TerminalNode CONTENT_IN() { return getToken(fannieParserParser.CONTENT_IN, 0); }
+		public ToolIdentifierContext toolIdentifier() {
+			return getRuleContext(ToolIdentifierContext.class,0);
+		}
+		public ContentInContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_contentIn; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof fannieParserListener ) ((fannieParserListener)listener).enterContentIn(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof fannieParserListener ) ((fannieParserListener)listener).exitContentIn(this);
+		}
+	}
+
+	public final ContentInContext contentIn() throws RecognitionException {
+		ContentInContext _localctx = new ContentInContext(_ctx, getState());
+		enterRule(_localctx, 26, RULE_contentIn);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(115);
+			match(CONTENT_IN);
+			setState(116);
+			toolIdentifier();
 			}
 		}
 		catch (RecognitionException re) {
@@ -781,34 +820,34 @@ public class fannieParserParser extends Parser {
 
 	public final IngredientsListContext ingredientsList() throws RecognitionException {
 		IngredientsListContext _localctx = new IngredientsListContext(_ctx, getState());
-		enterRule(_localctx, 26, RULE_ingredientsList);
+		enterRule(_localctx, 28, RULE_ingredientsList);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(114);
+			setState(118);
 			match(INGREDIENT_LIST);
-			setState(115);
+			setState(119);
 			match(T__0);
-			setState(116);
+			setState(120);
 			ingredientDeclaration();
-			setState(121);
+			setState(125);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==T__2) {
 				{
 				{
-				setState(117);
+				setState(121);
 				match(T__2);
-				setState(118);
+				setState(122);
 				ingredientDeclaration();
 				}
 				}
-				setState(123);
+				setState(127);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(124);
+			setState(128);
 			match(T__1);
 			}
 		}
@@ -852,36 +891,36 @@ public class fannieParserParser extends Parser {
 
 	public final IngredientDeclarationContext ingredientDeclaration() throws RecognitionException {
 		IngredientDeclarationContext _localctx = new IngredientDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 28, RULE_ingredientDeclaration);
+		enterRule(_localctx, 30, RULE_ingredientDeclaration);
 		try {
-			setState(130);
+			setState(134);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(126);
+				setState(130);
 				deterministicIngredientDeclaration();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(127);
+				setState(131);
 				nondeterministicIngredientDeclaration();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(128);
+				setState(132);
 				recipeIngredientDeclaration();
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(129);
+				setState(133);
 				ingredientSubtypeDeclaration();
 				}
 				break;
@@ -924,15 +963,15 @@ public class fannieParserParser extends Parser {
 
 	public final DeterministicIngredientDeclarationContext deterministicIngredientDeclaration() throws RecognitionException {
 		DeterministicIngredientDeclarationContext _localctx = new DeterministicIngredientDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 30, RULE_deterministicIngredientDeclaration);
+		enterRule(_localctx, 32, RULE_deterministicIngredientDeclaration);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(132);
+			setState(136);
 			ingredientTypeIdentifier();
-			setState(133);
+			setState(137);
 			ingredientIdentifier();
-			setState(134);
+			setState(138);
 			amountDeclaration();
 			}
 		}
@@ -974,26 +1013,26 @@ public class fannieParserParser extends Parser {
 
 	public final NondeterministicIngredientDeclarationContext nondeterministicIngredientDeclaration() throws RecognitionException {
 		NondeterministicIngredientDeclarationContext _localctx = new NondeterministicIngredientDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 32, RULE_nondeterministicIngredientDeclaration);
+		enterRule(_localctx, 34, RULE_nondeterministicIngredientDeclaration);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(136);
+			setState(140);
 			deterministicIngredientDeclaration();
-			setState(139); 
+			setState(143); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(137);
+				setState(141);
 				match(OR);
-				setState(138);
+				setState(142);
 				deterministicIngredientDeclaration();
 				}
 				}
-				setState(141); 
+				setState(145); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==OR );
@@ -1031,13 +1070,13 @@ public class fannieParserParser extends Parser {
 
 	public final RecipeIngredientDeclarationContext recipeIngredientDeclaration() throws RecognitionException {
 		RecipeIngredientDeclarationContext _localctx = new RecipeIngredientDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 34, RULE_recipeIngredientDeclaration);
+		enterRule(_localctx, 36, RULE_recipeIngredientDeclaration);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(143);
+			setState(147);
 			match(RECIPE);
-			setState(144);
+			setState(148);
 			recipeIdentifier();
 			}
 		}
@@ -1075,13 +1114,13 @@ public class fannieParserParser extends Parser {
 
 	public final IngredientSubtypeDeclarationContext ingredientSubtypeDeclaration() throws RecognitionException {
 		IngredientSubtypeDeclarationContext _localctx = new IngredientSubtypeDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 36, RULE_ingredientSubtypeDeclaration);
+		enterRule(_localctx, 38, RULE_ingredientSubtypeDeclaration);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(146);
+			setState(150);
 			ingredientTypeIdentifier();
-			setState(147);
+			setState(151);
 			ingredientTypeIdentifier();
 			}
 		}
@@ -1120,47 +1159,47 @@ public class fannieParserParser extends Parser {
 
 	public final AmountDeclarationContext amountDeclaration() throws RecognitionException {
 		AmountDeclarationContext _localctx = new AmountDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 38, RULE_amountDeclaration);
+		enterRule(_localctx, 40, RULE_amountDeclaration);
 		int _la;
 		try {
-			setState(161);
+			setState(165);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,7,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(149);
+				setState(153);
 				match(T__3);
-				setState(150);
+				setState(154);
 				match(AMOUNT);
-				setState(151);
-				match(WEIGHT_UNIT);
 				setState(155);
+				match(WEIGHT_UNIT);
+				setState(159);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==T__2) {
 					{
-					setState(152);
+					setState(156);
 					match(T__2);
-					setState(153);
+					setState(157);
 					match(AMOUNT);
-					setState(154);
+					setState(158);
 					match(ABSTRACT_UNIT);
 					}
 				}
 
-				setState(157);
+				setState(161);
 				match(T__4);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(158);
+				setState(162);
 				match(T__3);
-				setState(159);
+				setState(163);
 				match(TO_TASTE);
-				setState(160);
+				setState(164);
 				match(T__4);
 				}
 				break;
@@ -1201,34 +1240,34 @@ public class fannieParserParser extends Parser {
 
 	public final ToolsListContext toolsList() throws RecognitionException {
 		ToolsListContext _localctx = new ToolsListContext(_ctx, getState());
-		enterRule(_localctx, 40, RULE_toolsList);
+		enterRule(_localctx, 42, RULE_toolsList);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(163);
+			setState(167);
 			match(TOOL_LIST);
-			setState(164);
+			setState(168);
 			match(T__0);
-			setState(165);
+			setState(169);
 			toolDeclaration();
-			setState(170);
+			setState(174);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==T__2) {
 				{
 				{
-				setState(166);
+				setState(170);
 				match(T__2);
-				setState(167);
+				setState(171);
 				toolDeclaration();
 				}
 				}
-				setState(172);
+				setState(176);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(173);
+			setState(177);
 			match(T__1);
 			}
 		}
@@ -1267,34 +1306,34 @@ public class fannieParserParser extends Parser {
 
 	public final StepsListContext stepsList() throws RecognitionException {
 		StepsListContext _localctx = new StepsListContext(_ctx, getState());
-		enterRule(_localctx, 42, RULE_stepsList);
+		enterRule(_localctx, 44, RULE_stepsList);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(175);
+			setState(179);
 			match(STEP_LIST);
-			setState(176);
+			setState(180);
 			match(T__0);
-			setState(177);
+			setState(181);
 			stepDeclaration();
-			setState(182);
+			setState(186);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==T__2) {
 				{
 				{
-				setState(178);
+				setState(182);
 				match(T__2);
-				setState(179);
+				setState(183);
 				stepDeclaration();
 				}
 				}
-				setState(184);
+				setState(188);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(185);
+			setState(189);
 			match(T__1);
 			}
 		}
@@ -1335,15 +1374,15 @@ public class fannieParserParser extends Parser {
 
 	public final ToolDeclarationContext toolDeclaration() throws RecognitionException {
 		ToolDeclarationContext _localctx = new ToolDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 44, RULE_toolDeclaration);
+		enterRule(_localctx, 46, RULE_toolDeclaration);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(187);
+			setState(191);
 			toolTypeIdentifier();
-			setState(188);
+			setState(192);
 			toolIdentifier();
-			setState(189);
+			setState(193);
 			toolActionDeclarationsList();
 			}
 		}
@@ -1381,37 +1420,37 @@ public class fannieParserParser extends Parser {
 
 	public final ToolActionDeclarationsListContext toolActionDeclarationsList() throws RecognitionException {
 		ToolActionDeclarationsListContext _localctx = new ToolActionDeclarationsListContext(_ctx, getState());
-		enterRule(_localctx, 46, RULE_toolActionDeclarationsList);
+		enterRule(_localctx, 48, RULE_toolActionDeclarationsList);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(202);
+			setState(206);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==T__5) {
 				{
-				setState(191);
+				setState(195);
 				match(T__5);
-				setState(192);
+				setState(196);
 				toolActionDeclaration();
-				setState(197);
+				setState(201);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==T__2) {
 					{
 					{
-					setState(193);
+					setState(197);
 					match(T__2);
-					setState(194);
+					setState(198);
 					toolActionDeclaration();
 					}
 					}
-					setState(199);
+					setState(203);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(200);
+				setState(204);
 				match(T__6);
 				}
 			}
@@ -1441,9 +1480,8 @@ public class fannieParserParser extends Parser {
 			return getRuleContext(ToolActionIdentifierContext.class,0);
 		}
 		public TerminalNode TRANSFORM() { return getToken(fannieParserParser.TRANSFORM, 0); }
-		public TerminalNode CONTENT_IN() { return getToken(fannieParserParser.CONTENT_IN, 0); }
-		public ToolIdentifierContext toolIdentifier() {
-			return getRuleContext(ToolIdentifierContext.class,0);
+		public ContentInContext contentIn() {
+			return getRuleContext(ContentInContext.class,0);
 		}
 		public ToolActionDeclarationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1461,51 +1499,49 @@ public class fannieParserParser extends Parser {
 
 	public final ToolActionDeclarationContext toolActionDeclaration() throws RecognitionException {
 		ToolActionDeclarationContext _localctx = new ToolActionDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 48, RULE_toolActionDeclaration);
+		enterRule(_localctx, 50, RULE_toolActionDeclaration);
 		try {
-			setState(220);
+			setState(223);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,12,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(204);
+				setState(208);
 				match(CONTAIN);
-				setState(205);
+				setState(209);
 				match(T__7);
-				setState(206);
+				setState(210);
 				ingredientTypeIdentifier();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(207);
-				toolActionIdentifier();
-				setState(208);
-				match(T__7);
-				setState(209);
-				ingredientTypeIdentifier();
-				setState(210);
-				match(TRANSFORM);
 				setState(211);
+				toolActionIdentifier();
+				setState(212);
+				match(T__7);
+				setState(213);
+				ingredientTypeIdentifier();
+				setState(214);
+				match(TRANSFORM);
+				setState(215);
 				ingredientTypeIdentifier();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(213);
-				toolActionIdentifier();
-				setState(214);
-				match(T__7);
-				setState(215);
-				match(CONTENT_IN);
-				setState(216);
-				toolIdentifier();
 				setState(217);
-				match(TRANSFORM);
+				toolActionIdentifier();
 				setState(218);
+				match(T__7);
+				setState(219);
+				contentIn();
+				setState(220);
+				match(TRANSFORM);
+				setState(221);
 				ingredientTypeIdentifier();
 				}
 				break;
@@ -1551,36 +1587,36 @@ public class fannieParserParser extends Parser {
 
 	public final StepDeclarationContext stepDeclaration() throws RecognitionException {
 		StepDeclarationContext _localctx = new StepDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 50, RULE_stepDeclaration);
+		enterRule(_localctx, 52, RULE_stepDeclaration);
 		try {
-			setState(226);
+			setState(229);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case COMPLEX_IDENTIFIER:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(222);
+				setState(225);
 				doStepDeclaration();
 				}
 				break;
 			case START:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(223);
+				setState(226);
 				continousDoStepStartDeclaration();
 				}
 				break;
 			case STOP:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(224);
+				setState(227);
 				continousDoStepStopDeclaration();
 				}
 				break;
 			case SERVE:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(225);
+				setState(228);
 				serveStepDeclaration();
 				}
 				break;
@@ -1601,12 +1637,8 @@ public class fannieParserParser extends Parser {
 
 	public static class ServeStepDeclarationContext extends ParserRuleContext {
 		public TerminalNode SERVE() { return getToken(fannieParserParser.SERVE, 0); }
-		public RecipeIdentifierContext recipeIdentifier() {
-			return getRuleContext(RecipeIdentifierContext.class,0);
-		}
-		public TerminalNode CONTENT_IN() { return getToken(fannieParserParser.CONTENT_IN, 0); }
-		public ToolIdentifierContext toolIdentifier() {
-			return getRuleContext(ToolIdentifierContext.class,0);
+		public StepInContext stepIn() {
+			return getRuleContext(StepInContext.class,0);
 		}
 		public ServeStepDeclarationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1624,31 +1656,14 @@ public class fannieParserParser extends Parser {
 
 	public final ServeStepDeclarationContext serveStepDeclaration() throws RecognitionException {
 		ServeStepDeclarationContext _localctx = new ServeStepDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 52, RULE_serveStepDeclaration);
+		enterRule(_localctx, 54, RULE_serveStepDeclaration);
 		try {
-			setState(233);
-			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,14,_ctx) ) {
-			case 1:
-				enterOuterAlt(_localctx, 1);
-				{
-				setState(228);
-				match(SERVE);
-				setState(229);
-				recipeIdentifier();
-				}
-				break;
-			case 2:
-				enterOuterAlt(_localctx, 2);
-				{
-				setState(230);
-				match(SERVE);
-				setState(231);
-				match(CONTENT_IN);
-				setState(232);
-				toolIdentifier();
-				}
-				break;
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(231);
+			match(SERVE);
+			setState(232);
+			stepIn();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1694,37 +1709,37 @@ public class fannieParserParser extends Parser {
 
 	public final DoStepDeclarationContext doStepDeclaration() throws RecognitionException {
 		DoStepDeclarationContext _localctx = new DoStepDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 54, RULE_doStepDeclaration);
+		enterRule(_localctx, 56, RULE_doStepDeclaration);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(235);
+			setState(234);
 			toolIdentifier();
-			setState(236);
+			setState(235);
 			match(DO);
-			setState(237);
+			setState(236);
 			toolActionIdentifier();
-			setState(239);
+			setState(238);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==DESCRIPTION_STRING) {
 				{
-				setState(238);
+				setState(237);
 				match(DESCRIPTION_STRING);
 				}
 			}
 
-			setState(241);
+			setState(240);
 			stepIn();
-			setState(244);
+			setState(243);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==TRANSFORM) {
 				{
-				setState(242);
+				setState(241);
 				match(TRANSFORM);
-				setState(243);
+				setState(242);
 				stepOut();
 				}
 			}
@@ -1765,32 +1780,32 @@ public class fannieParserParser extends Parser {
 
 	public final CollectionContext collection() throws RecognitionException {
 		CollectionContext _localctx = new CollectionContext(_ctx, getState());
-		enterRule(_localctx, 56, RULE_collection);
+		enterRule(_localctx, 58, RULE_collection);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(246);
+			setState(245);
 			match(T__0);
-			setState(247);
+			setState(246);
 			ingredientIdentifier();
-			setState(252);
+			setState(251);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==T__2) {
 				{
 				{
-				setState(248);
+				setState(247);
 				match(T__2);
-				setState(249);
+				setState(248);
 				ingredientIdentifier();
 				}
 				}
-				setState(254);
+				setState(253);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(255);
+			setState(254);
 			match(T__1);
 			}
 		}
@@ -1829,15 +1844,15 @@ public class fannieParserParser extends Parser {
 
 	public final ContinousDoStepStartDeclarationContext continousDoStepStartDeclaration() throws RecognitionException {
 		ContinousDoStepStartDeclarationContext _localctx = new ContinousDoStepStartDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 58, RULE_continousDoStepStartDeclaration);
+		enterRule(_localctx, 60, RULE_continousDoStepStartDeclaration);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(257);
+			setState(256);
 			match(START);
-			setState(258);
+			setState(257);
 			procIdentifier();
-			setState(259);
+			setState(258);
 			doStepDeclaration();
 			}
 		}
@@ -1879,35 +1894,35 @@ public class fannieParserParser extends Parser {
 
 	public final ContinousDoStepStopDeclarationContext continousDoStepStopDeclaration() throws RecognitionException {
 		ContinousDoStepStopDeclarationContext _localctx = new ContinousDoStepStopDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 60, RULE_continousDoStepStopDeclaration);
+		enterRule(_localctx, 62, RULE_continousDoStepStopDeclaration);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(261);
+			setState(260);
 			match(STOP);
-			setState(262);
+			setState(261);
 			procIdentifier();
-			setState(265);
+			setState(264);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==WHEN) {
 				{
-				setState(263);
+				setState(262);
 				match(WHEN);
-				setState(264);
+				setState(263);
 				match(DESCRIPTION_STRING);
 				}
 			}
 
-			setState(269);
+			setState(268);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==TRANSFORM) {
 				{
-				setState(267);
+				setState(266);
 				match(TRANSFORM);
-				setState(268);
+				setState(267);
 				stepOut();
 				}
 			}
@@ -1926,94 +1941,93 @@ public class fannieParserParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3#\u0112\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3#\u0111\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
-		"\4\32\t\32\4\33\t\33\4\34\t\34\4\35\t\35\4\36\t\36\4\37\t\37\4 \t \3\2"+
-		"\3\2\7\2C\n\2\f\2\16\2F\13\2\3\2\3\2\3\3\3\3\3\4\3\4\3\5\3\5\3\6\3\6\3"+
-		"\7\3\7\3\b\3\b\3\t\3\t\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\13\3\13\3\13\3\13"+
-		"\3\13\3\13\3\f\3\f\3\f\3\f\3\f\3\f\3\r\3\r\3\r\3\r\5\ro\n\r\3\16\3\16"+
-		"\5\16s\n\16\3\17\3\17\3\17\3\17\3\17\7\17z\n\17\f\17\16\17}\13\17\3\17"+
-		"\3\17\3\20\3\20\3\20\3\20\5\20\u0085\n\20\3\21\3\21\3\21\3\21\3\22\3\22"+
-		"\3\22\6\22\u008e\n\22\r\22\16\22\u008f\3\23\3\23\3\23\3\24\3\24\3\24\3"+
-		"\25\3\25\3\25\3\25\3\25\3\25\5\25\u009e\n\25\3\25\3\25\3\25\3\25\5\25"+
-		"\u00a4\n\25\3\26\3\26\3\26\3\26\3\26\7\26\u00ab\n\26\f\26\16\26\u00ae"+
-		"\13\26\3\26\3\26\3\27\3\27\3\27\3\27\3\27\7\27\u00b7\n\27\f\27\16\27\u00ba"+
-		"\13\27\3\27\3\27\3\30\3\30\3\30\3\30\3\31\3\31\3\31\3\31\7\31\u00c6\n"+
-		"\31\f\31\16\31\u00c9\13\31\3\31\3\31\5\31\u00cd\n\31\3\32\3\32\3\32\3"+
-		"\32\3\32\3\32\3\32\3\32\3\32\3\32\3\32\3\32\3\32\3\32\3\32\3\32\5\32\u00df"+
-		"\n\32\3\33\3\33\3\33\3\33\5\33\u00e5\n\33\3\34\3\34\3\34\3\34\3\34\5\34"+
-		"\u00ec\n\34\3\35\3\35\3\35\3\35\5\35\u00f2\n\35\3\35\3\35\3\35\5\35\u00f7"+
-		"\n\35\3\36\3\36\3\36\3\36\7\36\u00fd\n\36\f\36\16\36\u0100\13\36\3\36"+
-		"\3\36\3\37\3\37\3\37\3\37\3 \3 \3 \3 \5 \u010c\n \3 \3 \5 \u0110\n \3"+
-		" \2\2!\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62\64\668:<"+
-		">\2\5\4\2\21\22\36\36\4\2\34\34\36\36\3\2\35\36\2\u010c\2@\3\2\2\2\4I"+
-		"\3\2\2\2\6K\3\2\2\2\bM\3\2\2\2\nO\3\2\2\2\fQ\3\2\2\2\16S\3\2\2\2\20U\3"+
-		"\2\2\2\22W\3\2\2\2\24^\3\2\2\2\26d\3\2\2\2\30n\3\2\2\2\32r\3\2\2\2\34"+
-		"t\3\2\2\2\36\u0084\3\2\2\2 \u0086\3\2\2\2\"\u008a\3\2\2\2$\u0091\3\2\2"+
-		"\2&\u0094\3\2\2\2(\u00a3\3\2\2\2*\u00a5\3\2\2\2,\u00b1\3\2\2\2.\u00bd"+
-		"\3\2\2\2\60\u00cc\3\2\2\2\62\u00de\3\2\2\2\64\u00e4\3\2\2\2\66\u00eb\3"+
-		"\2\2\28\u00ed\3\2\2\2:\u00f8\3\2\2\2<\u0103\3\2\2\2>\u0107\3\2\2\2@D\5"+
-		"\22\n\2AC\5\24\13\2BA\3\2\2\2CF\3\2\2\2DB\3\2\2\2DE\3\2\2\2EG\3\2\2\2"+
-		"FD\3\2\2\2GH\7\2\2\3H\3\3\2\2\2IJ\7\36\2\2J\5\3\2\2\2KL\t\2\2\2L\7\3\2"+
-		"\2\2MN\t\3\2\2N\t\3\2\2\2OP\t\4\2\2P\13\3\2\2\2QR\7\36\2\2R\r\3\2\2\2"+
-		"ST\7\36\2\2T\17\3\2\2\2UV\7\36\2\2V\21\3\2\2\2WX\7\f\2\2XY\7\r\2\2YZ\5"+
-		"\16\b\2Z[\7\3\2\2[\\\5\26\f\2\\]\7\4\2\2]\23\3\2\2\2^_\7\r\2\2_`\5\16"+
-		"\b\2`a\7\3\2\2ab\5\26\f\2bc\7\4\2\2c\25\3\2\2\2de\5\34\17\2ef\7\5\2\2"+
-		"fg\5*\26\2gh\7\5\2\2hi\5,\27\2i\27\3\2\2\2jo\5\f\7\2ko\5:\36\2lm\7\32"+
-		"\2\2mo\5\4\3\2nj\3\2\2\2nk\3\2\2\2nl\3\2\2\2o\31\3\2\2\2ps\5\f\7\2qs\5"+
-		":\36\2rp\3\2\2\2rq\3\2\2\2s\33\3\2\2\2tu\7\17\2\2uv\7\3\2\2v{\5\36\20"+
-		"\2wx\7\5\2\2xz\5\36\20\2yw\3\2\2\2z}\3\2\2\2{y\3\2\2\2{|\3\2\2\2|~\3\2"+
-		"\2\2}{\3\2\2\2~\177\7\4\2\2\177\35\3\2\2\2\u0080\u0085\5 \21\2\u0081\u0085"+
-		"\5\"\22\2\u0082\u0085\5$\23\2\u0083\u0085\5&\24\2\u0084\u0080\3\2\2\2"+
-		"\u0084\u0081\3\2\2\2\u0084\u0082\3\2\2\2\u0084\u0083\3\2\2\2\u0085\37"+
-		"\3\2\2\2\u0086\u0087\5\n\6\2\u0087\u0088\5\f\7\2\u0088\u0089\5(\25\2\u0089"+
-		"!\3\2\2\2\u008a\u008d\5 \21\2\u008b\u008c\7\24\2\2\u008c\u008e\5 \21\2"+
-		"\u008d\u008b\3\2\2\2\u008e\u008f\3\2\2\2\u008f\u008d\3\2\2\2\u008f\u0090"+
-		"\3\2\2\2\u0090#\3\2\2\2\u0091\u0092\7\r\2\2\u0092\u0093\5\16\b\2\u0093"+
-		"%\3\2\2\2\u0094\u0095\5\n\6\2\u0095\u0096\5\n\6\2\u0096\'\3\2\2\2\u0097"+
-		"\u0098\7\6\2\2\u0098\u0099\7\37\2\2\u0099\u009d\7 \2\2\u009a\u009b\7\5"+
-		"\2\2\u009b\u009c\7\37\2\2\u009c\u009e\7!\2\2\u009d\u009a\3\2\2\2\u009d"+
-		"\u009e\3\2\2\2\u009e\u009f\3\2\2\2\u009f\u00a4\7\7\2\2\u00a0\u00a1\7\6"+
-		"\2\2\u00a1\u00a2\7\"\2\2\u00a2\u00a4\7\7\2\2\u00a3\u0097\3\2\2\2\u00a3"+
-		"\u00a0\3\2\2\2\u00a4)\3\2\2\2\u00a5\u00a6\7\16\2\2\u00a6\u00a7\7\3\2\2"+
-		"\u00a7\u00ac\5.\30\2\u00a8\u00a9\7\5\2\2\u00a9\u00ab\5.\30\2\u00aa\u00a8"+
-		"\3\2\2\2\u00ab\u00ae\3\2\2\2\u00ac\u00aa\3\2\2\2\u00ac\u00ad\3\2\2\2\u00ad"+
-		"\u00af\3\2\2\2\u00ae\u00ac\3\2\2\2\u00af\u00b0\7\4\2\2\u00b0+\3\2\2\2"+
-		"\u00b1\u00b2\7\20\2\2\u00b2\u00b3\7\3\2\2\u00b3\u00b8\5\64\33\2\u00b4"+
-		"\u00b5\7\5\2\2\u00b5\u00b7\5\64\33\2\u00b6\u00b4\3\2\2\2\u00b7\u00ba\3"+
-		"\2\2\2\u00b8\u00b6\3\2\2\2\u00b8\u00b9\3\2\2\2\u00b9\u00bb\3\2\2\2\u00ba"+
-		"\u00b8\3\2\2\2\u00bb\u00bc\7\4\2\2\u00bc-\3\2\2\2\u00bd\u00be\5\b\5\2"+
-		"\u00be\u00bf\5\4\3\2\u00bf\u00c0\5\60\31\2\u00c0/\3\2\2\2\u00c1\u00c2"+
-		"\7\b\2\2\u00c2\u00c7\5\62\32\2\u00c3\u00c4\7\5\2\2\u00c4\u00c6\5\62\32"+
-		"\2\u00c5\u00c3\3\2\2\2\u00c6\u00c9\3\2\2\2\u00c7\u00c5\3\2\2\2\u00c7\u00c8"+
-		"\3\2\2\2\u00c8\u00ca\3\2\2\2\u00c9\u00c7\3\2\2\2\u00ca\u00cb\7\t\2\2\u00cb"+
-		"\u00cd\3\2\2\2\u00cc\u00c1\3\2\2\2\u00cc\u00cd\3\2\2\2\u00cd\61\3\2\2"+
-		"\2\u00ce\u00cf\7\21\2\2\u00cf\u00d0\7\n\2\2\u00d0\u00df\5\n\6\2\u00d1"+
-		"\u00d2\5\6\4\2\u00d2\u00d3\7\n\2\2\u00d3\u00d4\5\n\6\2\u00d4\u00d5\7\33"+
-		"\2\2\u00d5\u00d6\5\n\6\2\u00d6\u00df\3\2\2\2\u00d7\u00d8\5\6\4\2\u00d8"+
-		"\u00d9\7\n\2\2\u00d9\u00da\7\32\2\2\u00da\u00db\5\4\3\2\u00db\u00dc\7"+
-		"\33\2\2\u00dc\u00dd\5\n\6\2\u00dd\u00df\3\2\2\2\u00de\u00ce\3\2\2\2\u00de"+
-		"\u00d1\3\2\2\2\u00de\u00d7\3\2\2\2\u00df\63\3\2\2\2\u00e0\u00e5\58\35"+
-		"\2\u00e1\u00e5\5<\37\2\u00e2\u00e5\5> \2\u00e3\u00e5\5\66\34\2\u00e4\u00e0"+
-		"\3\2\2\2\u00e4\u00e1\3\2\2\2\u00e4\u00e2\3\2\2\2\u00e4\u00e3\3\2\2\2\u00e5"+
-		"\65\3\2\2\2\u00e6\u00e7\7\31\2\2\u00e7\u00ec\5\16\b\2\u00e8\u00e9\7\31"+
-		"\2\2\u00e9\u00ea\7\32\2\2\u00ea\u00ec\5\4\3\2\u00eb\u00e6\3\2\2\2\u00eb"+
-		"\u00e8\3\2\2\2\u00ec\67\3\2\2\2\u00ed\u00ee\5\4\3\2\u00ee\u00ef\7\23\2"+
-		"\2\u00ef\u00f1\5\6\4\2\u00f0\u00f2\7\25\2\2\u00f1\u00f0\3\2\2\2\u00f1"+
-		"\u00f2\3\2\2\2\u00f2\u00f3\3\2\2\2\u00f3\u00f6\5\30\r\2\u00f4\u00f5\7"+
-		"\33\2\2\u00f5\u00f7\5\32\16\2\u00f6\u00f4\3\2\2\2\u00f6\u00f7\3\2\2\2"+
-		"\u00f79\3\2\2\2\u00f8\u00f9\7\3\2\2\u00f9\u00fe\5\f\7\2\u00fa\u00fb\7"+
-		"\5\2\2\u00fb\u00fd\5\f\7\2\u00fc\u00fa\3\2\2\2\u00fd\u0100\3\2\2\2\u00fe"+
-		"\u00fc\3\2\2\2\u00fe\u00ff\3\2\2\2\u00ff\u0101\3\2\2\2\u0100\u00fe\3\2"+
-		"\2\2\u0101\u0102\7\4\2\2\u0102;\3\2\2\2\u0103\u0104\7\26\2\2\u0104\u0105"+
-		"\5\20\t\2\u0105\u0106\58\35\2\u0106=\3\2\2\2\u0107\u0108\7\27\2\2\u0108"+
-		"\u010b\5\20\t\2\u0109\u010a\7\30\2\2\u010a\u010c\7\25\2\2\u010b\u0109"+
-		"\3\2\2\2\u010b\u010c\3\2\2\2\u010c\u010f\3\2\2\2\u010d\u010e\7\33\2\2"+
-		"\u010e\u0110\5\32\16\2\u010f\u010d\3\2\2\2\u010f\u0110\3\2\2\2\u0110?"+
-		"\3\2\2\2\26Dnr{\u0084\u008f\u009d\u00a3\u00ac\u00b8\u00c7\u00cc\u00de"+
-		"\u00e4\u00eb\u00f1\u00f6\u00fe\u010b\u010f";
+		"\4\32\t\32\4\33\t\33\4\34\t\34\4\35\t\35\4\36\t\36\4\37\t\37\4 \t \4!"+
+		"\t!\3\2\3\2\7\2E\n\2\f\2\16\2H\13\2\3\2\3\2\3\3\3\3\3\4\3\4\3\5\3\5\3"+
+		"\6\3\6\3\7\3\7\3\b\3\b\3\t\3\t\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\13\3\13\3"+
+		"\13\3\13\3\13\3\13\3\f\3\f\3\f\3\f\3\f\3\f\3\r\3\r\3\r\5\rp\n\r\3\16\3"+
+		"\16\5\16t\n\16\3\17\3\17\3\17\3\20\3\20\3\20\3\20\3\20\7\20~\n\20\f\20"+
+		"\16\20\u0081\13\20\3\20\3\20\3\21\3\21\3\21\3\21\5\21\u0089\n\21\3\22"+
+		"\3\22\3\22\3\22\3\23\3\23\3\23\6\23\u0092\n\23\r\23\16\23\u0093\3\24\3"+
+		"\24\3\24\3\25\3\25\3\25\3\26\3\26\3\26\3\26\3\26\3\26\5\26\u00a2\n\26"+
+		"\3\26\3\26\3\26\3\26\5\26\u00a8\n\26\3\27\3\27\3\27\3\27\3\27\7\27\u00af"+
+		"\n\27\f\27\16\27\u00b2\13\27\3\27\3\27\3\30\3\30\3\30\3\30\3\30\7\30\u00bb"+
+		"\n\30\f\30\16\30\u00be\13\30\3\30\3\30\3\31\3\31\3\31\3\31\3\32\3\32\3"+
+		"\32\3\32\7\32\u00ca\n\32\f\32\16\32\u00cd\13\32\3\32\3\32\5\32\u00d1\n"+
+		"\32\3\33\3\33\3\33\3\33\3\33\3\33\3\33\3\33\3\33\3\33\3\33\3\33\3\33\3"+
+		"\33\3\33\5\33\u00e2\n\33\3\34\3\34\3\34\3\34\5\34\u00e8\n\34\3\35\3\35"+
+		"\3\35\3\36\3\36\3\36\3\36\5\36\u00f1\n\36\3\36\3\36\3\36\5\36\u00f6\n"+
+		"\36\3\37\3\37\3\37\3\37\7\37\u00fc\n\37\f\37\16\37\u00ff\13\37\3\37\3"+
+		"\37\3 \3 \3 \3 \3!\3!\3!\3!\5!\u010b\n!\3!\3!\5!\u010f\n!\3!\2\2\"\2\4"+
+		"\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62\64\668:<>@\2\5\4\2"+
+		"\21\22\36\36\4\2\34\34\36\36\3\2\35\36\2\u0109\2B\3\2\2\2\4K\3\2\2\2\6"+
+		"M\3\2\2\2\bO\3\2\2\2\nQ\3\2\2\2\fS\3\2\2\2\16U\3\2\2\2\20W\3\2\2\2\22"+
+		"Y\3\2\2\2\24`\3\2\2\2\26f\3\2\2\2\30o\3\2\2\2\32s\3\2\2\2\34u\3\2\2\2"+
+		"\36x\3\2\2\2 \u0088\3\2\2\2\"\u008a\3\2\2\2$\u008e\3\2\2\2&\u0095\3\2"+
+		"\2\2(\u0098\3\2\2\2*\u00a7\3\2\2\2,\u00a9\3\2\2\2.\u00b5\3\2\2\2\60\u00c1"+
+		"\3\2\2\2\62\u00d0\3\2\2\2\64\u00e1\3\2\2\2\66\u00e7\3\2\2\28\u00e9\3\2"+
+		"\2\2:\u00ec\3\2\2\2<\u00f7\3\2\2\2>\u0102\3\2\2\2@\u0106\3\2\2\2BF\5\22"+
+		"\n\2CE\5\24\13\2DC\3\2\2\2EH\3\2\2\2FD\3\2\2\2FG\3\2\2\2GI\3\2\2\2HF\3"+
+		"\2\2\2IJ\7\2\2\3J\3\3\2\2\2KL\7\36\2\2L\5\3\2\2\2MN\t\2\2\2N\7\3\2\2\2"+
+		"OP\t\3\2\2P\t\3\2\2\2QR\t\4\2\2R\13\3\2\2\2ST\7\36\2\2T\r\3\2\2\2UV\7"+
+		"\36\2\2V\17\3\2\2\2WX\7\36\2\2X\21\3\2\2\2YZ\7\f\2\2Z[\7\r\2\2[\\\5\16"+
+		"\b\2\\]\7\3\2\2]^\5\26\f\2^_\7\4\2\2_\23\3\2\2\2`a\7\r\2\2ab\5\16\b\2"+
+		"bc\7\3\2\2cd\5\26\f\2de\7\4\2\2e\25\3\2\2\2fg\5\36\20\2gh\7\5\2\2hi\5"+
+		",\27\2ij\7\5\2\2jk\5.\30\2k\27\3\2\2\2lp\5\f\7\2mp\5<\37\2np\5\34\17\2"+
+		"ol\3\2\2\2om\3\2\2\2on\3\2\2\2p\31\3\2\2\2qt\5\f\7\2rt\5<\37\2sq\3\2\2"+
+		"\2sr\3\2\2\2t\33\3\2\2\2uv\7\32\2\2vw\5\4\3\2w\35\3\2\2\2xy\7\17\2\2y"+
+		"z\7\3\2\2z\177\5 \21\2{|\7\5\2\2|~\5 \21\2}{\3\2\2\2~\u0081\3\2\2\2\177"+
+		"}\3\2\2\2\177\u0080\3\2\2\2\u0080\u0082\3\2\2\2\u0081\177\3\2\2\2\u0082"+
+		"\u0083\7\4\2\2\u0083\37\3\2\2\2\u0084\u0089\5\"\22\2\u0085\u0089\5$\23"+
+		"\2\u0086\u0089\5&\24\2\u0087\u0089\5(\25\2\u0088\u0084\3\2\2\2\u0088\u0085"+
+		"\3\2\2\2\u0088\u0086\3\2\2\2\u0088\u0087\3\2\2\2\u0089!\3\2\2\2\u008a"+
+		"\u008b\5\n\6\2\u008b\u008c\5\f\7\2\u008c\u008d\5*\26\2\u008d#\3\2\2\2"+
+		"\u008e\u0091\5\"\22\2\u008f\u0090\7\24\2\2\u0090\u0092\5\"\22\2\u0091"+
+		"\u008f\3\2\2\2\u0092\u0093\3\2\2\2\u0093\u0091\3\2\2\2\u0093\u0094\3\2"+
+		"\2\2\u0094%\3\2\2\2\u0095\u0096\7\r\2\2\u0096\u0097\5\16\b\2\u0097\'\3"+
+		"\2\2\2\u0098\u0099\5\n\6\2\u0099\u009a\5\n\6\2\u009a)\3\2\2\2\u009b\u009c"+
+		"\7\6\2\2\u009c\u009d\7\37\2\2\u009d\u00a1\7 \2\2\u009e\u009f\7\5\2\2\u009f"+
+		"\u00a0\7\37\2\2\u00a0\u00a2\7!\2\2\u00a1\u009e\3\2\2\2\u00a1\u00a2\3\2"+
+		"\2\2\u00a2\u00a3\3\2\2\2\u00a3\u00a8\7\7\2\2\u00a4\u00a5\7\6\2\2\u00a5"+
+		"\u00a6\7\"\2\2\u00a6\u00a8\7\7\2\2\u00a7\u009b\3\2\2\2\u00a7\u00a4\3\2"+
+		"\2\2\u00a8+\3\2\2\2\u00a9\u00aa\7\16\2\2\u00aa\u00ab\7\3\2\2\u00ab\u00b0"+
+		"\5\60\31\2\u00ac\u00ad\7\5\2\2\u00ad\u00af\5\60\31\2\u00ae\u00ac\3\2\2"+
+		"\2\u00af\u00b2\3\2\2\2\u00b0\u00ae\3\2\2\2\u00b0\u00b1\3\2\2\2\u00b1\u00b3"+
+		"\3\2\2\2\u00b2\u00b0\3\2\2\2\u00b3\u00b4\7\4\2\2\u00b4-\3\2\2\2\u00b5"+
+		"\u00b6\7\20\2\2\u00b6\u00b7\7\3\2\2\u00b7\u00bc\5\66\34\2\u00b8\u00b9"+
+		"\7\5\2\2\u00b9\u00bb\5\66\34\2\u00ba\u00b8\3\2\2\2\u00bb\u00be\3\2\2\2"+
+		"\u00bc\u00ba\3\2\2\2\u00bc\u00bd\3\2\2\2\u00bd\u00bf\3\2\2\2\u00be\u00bc"+
+		"\3\2\2\2\u00bf\u00c0\7\4\2\2\u00c0/\3\2\2\2\u00c1\u00c2\5\b\5\2\u00c2"+
+		"\u00c3\5\4\3\2\u00c3\u00c4\5\62\32\2\u00c4\61\3\2\2\2\u00c5\u00c6\7\b"+
+		"\2\2\u00c6\u00cb\5\64\33\2\u00c7\u00c8\7\5\2\2\u00c8\u00ca\5\64\33\2\u00c9"+
+		"\u00c7\3\2\2\2\u00ca\u00cd\3\2\2\2\u00cb\u00c9\3\2\2\2\u00cb\u00cc\3\2"+
+		"\2\2\u00cc\u00ce\3\2\2\2\u00cd\u00cb\3\2\2\2\u00ce\u00cf\7\t\2\2\u00cf"+
+		"\u00d1\3\2\2\2\u00d0\u00c5\3\2\2\2\u00d0\u00d1\3\2\2\2\u00d1\63\3\2\2"+
+		"\2\u00d2\u00d3\7\21\2\2\u00d3\u00d4\7\n\2\2\u00d4\u00e2\5\n\6\2\u00d5"+
+		"\u00d6\5\6\4\2\u00d6\u00d7\7\n\2\2\u00d7\u00d8\5\n\6\2\u00d8\u00d9\7\33"+
+		"\2\2\u00d9\u00da\5\n\6\2\u00da\u00e2\3\2\2\2\u00db\u00dc\5\6\4\2\u00dc"+
+		"\u00dd\7\n\2\2\u00dd\u00de\5\34\17\2\u00de\u00df\7\33\2\2\u00df\u00e0"+
+		"\5\n\6\2\u00e0\u00e2\3\2\2\2\u00e1\u00d2\3\2\2\2\u00e1\u00d5\3\2\2\2\u00e1"+
+		"\u00db\3\2\2\2\u00e2\65\3\2\2\2\u00e3\u00e8\5:\36\2\u00e4\u00e8\5> \2"+
+		"\u00e5\u00e8\5@!\2\u00e6\u00e8\58\35\2\u00e7\u00e3\3\2\2\2\u00e7\u00e4"+
+		"\3\2\2\2\u00e7\u00e5\3\2\2\2\u00e7\u00e6\3\2\2\2\u00e8\67\3\2\2\2\u00e9"+
+		"\u00ea\7\31\2\2\u00ea\u00eb\5\30\r\2\u00eb9\3\2\2\2\u00ec\u00ed\5\4\3"+
+		"\2\u00ed\u00ee\7\23\2\2\u00ee\u00f0\5\6\4\2\u00ef\u00f1\7\25\2\2\u00f0"+
+		"\u00ef\3\2\2\2\u00f0\u00f1\3\2\2\2\u00f1\u00f2\3\2\2\2\u00f2\u00f5\5\30"+
+		"\r\2\u00f3\u00f4\7\33\2\2\u00f4\u00f6\5\32\16\2\u00f5\u00f3\3\2\2\2\u00f5"+
+		"\u00f6\3\2\2\2\u00f6;\3\2\2\2\u00f7\u00f8\7\3\2\2\u00f8\u00fd\5\f\7\2"+
+		"\u00f9\u00fa\7\5\2\2\u00fa\u00fc\5\f\7\2\u00fb\u00f9\3\2\2\2\u00fc\u00ff"+
+		"\3\2\2\2\u00fd\u00fb\3\2\2\2\u00fd\u00fe\3\2\2\2\u00fe\u0100\3\2\2\2\u00ff"+
+		"\u00fd\3\2\2\2\u0100\u0101\7\4\2\2\u0101=\3\2\2\2\u0102\u0103\7\26\2\2"+
+		"\u0103\u0104\5\20\t\2\u0104\u0105\5:\36\2\u0105?\3\2\2\2\u0106\u0107\7"+
+		"\27\2\2\u0107\u010a\5\20\t\2\u0108\u0109\7\30\2\2\u0109\u010b\7\25\2\2"+
+		"\u010a\u0108\3\2\2\2\u010a\u010b\3\2\2\2\u010b\u010e\3\2\2\2\u010c\u010d"+
+		"\7\33\2\2\u010d\u010f\5\32\16\2\u010e\u010c\3\2\2\2\u010e\u010f\3\2\2"+
+		"\2\u010fA\3\2\2\2\25Fos\177\u0088\u0093\u00a1\u00a7\u00b0\u00bc\u00cb"+
+		"\u00d0\u00e1\u00e7\u00f0\u00f5\u00fd\u010a\u010e";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
