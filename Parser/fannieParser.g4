@@ -4,7 +4,7 @@ import fannieLexer;
 program : mainRecipe (subRecipe)* EOF;
 
 toolIdentifier : COMPLEX_IDENTIFIER;
-toolActionIdentifier : COMPLEX_IDENTIFIER | CONTAIN;
+toolActionIdentifier : COMPLEX_IDENTIFIER | CONTAIN | REMOVE;
 toolTypeIdentifier : COMPLEX_IDENTIFIER | TOOL_BASIC_TYPE_IDENTIFIER;
 ingredientTypeIdentifier : COMPLEX_IDENTIFIER | INGREDIENT_BASIC_TYPE_IDENTIFIER;
 ingredientIdentifier : COMPLEX_IDENTIFIER;
@@ -46,7 +46,8 @@ toolDeclaration : toolTypeIdentifier toolIdentifier toolActionDeclarationsList;
 
 toolActionDeclarationsList : ('[' toolActionDeclaration (',' toolActionDeclaration)* ']')?;
 
-toolActionDeclaration : toolActionIdentifier ':' ingredientTypeIdentifier '=>' ingredientTypeIdentifier
+toolActionDeclaration : CONTAIN ':' ingredientIdentifier
+                      | toolActionIdentifier ':' ingredientTypeIdentifier '=>' ingredientTypeIdentifier
                       | toolActionIdentifier ':' CONTENT_IN toolIdentifier '=>' ingredientTypeIdentifier;
 
 stepDeclaration : doStepDeclaration

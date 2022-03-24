@@ -10,6 +10,7 @@ INGREDIENT_LIST: 'ingredients';
 STEP_LIST: 'steps';
 
 CONTAIN: 'contain';
+REMOVE: 'remove';
 
 DO: 'do';
 OR: 'or';

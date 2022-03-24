@@ -17,6 +17,76 @@ public interface fannieParserListener extends ParseTreeListener {
 	 */
 	void exitProgram(fannieParserParser.ProgramContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link fannieParserParser#toolIdentifier}.
+	 * @param ctx the parse tree
+	 */
+	void enterToolIdentifier(fannieParserParser.ToolIdentifierContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link fannieParserParser#toolIdentifier}.
+	 * @param ctx the parse tree
+	 */
+	void exitToolIdentifier(fannieParserParser.ToolIdentifierContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link fannieParserParser#toolActionIdentifier}.
+	 * @param ctx the parse tree
+	 */
+	void enterToolActionIdentifier(fannieParserParser.ToolActionIdentifierContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link fannieParserParser#toolActionIdentifier}.
+	 * @param ctx the parse tree
+	 */
+	void exitToolActionIdentifier(fannieParserParser.ToolActionIdentifierContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link fannieParserParser#toolTypeIdentifier}.
+	 * @param ctx the parse tree
+	 */
+	void enterToolTypeIdentifier(fannieParserParser.ToolTypeIdentifierContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link fannieParserParser#toolTypeIdentifier}.
+	 * @param ctx the parse tree
+	 */
+	void exitToolTypeIdentifier(fannieParserParser.ToolTypeIdentifierContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link fannieParserParser#ingredientTypeIdentifier}.
+	 * @param ctx the parse tree
+	 */
+	void enterIngredientTypeIdentifier(fannieParserParser.IngredientTypeIdentifierContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link fannieParserParser#ingredientTypeIdentifier}.
+	 * @param ctx the parse tree
+	 */
+	void exitIngredientTypeIdentifier(fannieParserParser.IngredientTypeIdentifierContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link fannieParserParser#ingredientIdentifier}.
+	 * @param ctx the parse tree
+	 */
+	void enterIngredientIdentifier(fannieParserParser.IngredientIdentifierContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link fannieParserParser#ingredientIdentifier}.
+	 * @param ctx the parse tree
+	 */
+	void exitIngredientIdentifier(fannieParserParser.IngredientIdentifierContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link fannieParserParser#recipeIdentifier}.
+	 * @param ctx the parse tree
+	 */
+	void enterRecipeIdentifier(fannieParserParser.RecipeIdentifierContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link fannieParserParser#recipeIdentifier}.
+	 * @param ctx the parse tree
+	 */
+	void exitRecipeIdentifier(fannieParserParser.RecipeIdentifierContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link fannieParserParser#procIdentifier}.
+	 * @param ctx the parse tree
+	 */
+	void enterProcIdentifier(fannieParserParser.ProcIdentifierContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link fannieParserParser#procIdentifier}.
+	 * @param ctx the parse tree
+	 */
+	void exitProcIdentifier(fannieParserParser.ProcIdentifierContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link fannieParserParser#mainRecipe}.
 	 * @param ctx the parse tree
 	 */
@@ -47,6 +117,26 @@ public interface fannieParserListener extends ParseTreeListener {
 	 */
 	void exitRecipeBody(fannieParserParser.RecipeBodyContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link fannieParserParser#stepIn}.
+	 * @param ctx the parse tree
+	 */
+	void enterStepIn(fannieParserParser.StepInContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link fannieParserParser#stepIn}.
+	 * @param ctx the parse tree
+	 */
+	void exitStepIn(fannieParserParser.StepInContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link fannieParserParser#stepOut}.
+	 * @param ctx the parse tree
+	 */
+	void enterStepOut(fannieParserParser.StepOutContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link fannieParserParser#stepOut}.
+	 * @param ctx the parse tree
+	 */
+	void exitStepOut(fannieParserParser.StepOutContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link fannieParserParser#ingredientsList}.
 	 * @param ctx the parse tree
 	 */
@@ -66,6 +156,46 @@ public interface fannieParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIngredientDeclaration(fannieParserParser.IngredientDeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link fannieParserParser#deterministicIngredientDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterDeterministicIngredientDeclaration(fannieParserParser.DeterministicIngredientDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link fannieParserParser#deterministicIngredientDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitDeterministicIngredientDeclaration(fannieParserParser.DeterministicIngredientDeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link fannieParserParser#nondeterministicIngredientDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterNondeterministicIngredientDeclaration(fannieParserParser.NondeterministicIngredientDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link fannieParserParser#nondeterministicIngredientDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitNondeterministicIngredientDeclaration(fannieParserParser.NondeterministicIngredientDeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link fannieParserParser#recipeIngredientDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterRecipeIngredientDeclaration(fannieParserParser.RecipeIngredientDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link fannieParserParser#recipeIngredientDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitRecipeIngredientDeclaration(fannieParserParser.RecipeIngredientDeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link fannieParserParser#ingredientSubtypeDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterIngredientSubtypeDeclaration(fannieParserParser.IngredientSubtypeDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link fannieParserParser#ingredientSubtypeDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitIngredientSubtypeDeclaration(fannieParserParser.IngredientSubtypeDeclarationContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link fannieParserParser#amountDeclaration}.
 	 * @param ctx the parse tree
@@ -106,6 +236,16 @@ public interface fannieParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitToolDeclaration(fannieParserParser.ToolDeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link fannieParserParser#toolActionDeclarationsList}.
+	 * @param ctx the parse tree
+	 */
+	void enterToolActionDeclarationsList(fannieParserParser.ToolActionDeclarationsListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link fannieParserParser#toolActionDeclarationsList}.
+	 * @param ctx the parse tree
+	 */
+	void exitToolActionDeclarationsList(fannieParserParser.ToolActionDeclarationsListContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link fannieParserParser#toolActionDeclaration}.
 	 * @param ctx the parse tree
