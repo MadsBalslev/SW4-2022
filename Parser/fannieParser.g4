@@ -25,7 +25,7 @@ stepsList : STEP_LIST '{' stepDeclaration (',' stepDeclaration)* '}';
 ingredientDeclaration : deterministicIngredientDeclaration 
                       | nondeterministicIngredientDeclaration
                       | recipeIngredientDeclaration
-                      | ingredientSubtypeDeclaration;
+                      | ingredientTypeDeclaration;
 
 deterministicIngredientDeclaration : ingredientTypeIdentifier ingredientIdentifier amountDeclaration;
 
@@ -33,7 +33,7 @@ nondeterministicIngredientDeclaration : deterministicIngredientDeclaration (OR d
  
 recipeIngredientDeclaration : RECIPE recipeIdentifier;
 
-ingredientSubtypeDeclaration : ingredientTypeIdentifier ingredientTypeIdentifier;
+ingredientTypeDeclaration : ingredientTypeIdentifier ingredientTypeIdentifier;
 
 amountDeclaration : '(' AMOUNT WEIGHT_UNIT (',' AMOUNT ABSTRACT_UNIT)?  ')'
                   | '(' TO_TASTE ')';
@@ -59,9 +59,9 @@ continousDoStepStartDeclaration : START procIdentifier toolIdentifier DO toolAct
 
 continousDoStepStopDeclaration : STOP procIdentifier (WHEN DESCRIPTION_STRING)? ('=>' stepOut)?;
 
-stepIn : ingredientIdentifier | collection | contentIn;
-stepOut : ingredientIdentifier | collection;
+stepIn : ingredientIdentifier | ingredientCollection | contentIn;
+stepOut : ingredientIdentifier | ingredientCollection;
 
 contentIn : CONTENT_IN toolIdentifier;
 
-collection : '{'ingredientIdentifier (',' ingredientIdentifier)* '}';
+ingredientCollection : '{'ingredientIdentifier (',' ingredientIdentifier)* '}';
