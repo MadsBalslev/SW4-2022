@@ -7,16 +7,6 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface fannieParserListener extends ParseTreeListener {
 	/**
-	 * Enter a parse tree produced by {@link fannieParserParser#program}.
-	 * @param ctx the parse tree
-	 */
-	void enterProgram(fannieParserParser.ProgramContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link fannieParserParser#program}.
-	 * @param ctx the parse tree
-	 */
-	void exitProgram(fannieParserParser.ProgramContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link fannieParserParser#toolIdentifier}.
 	 * @param ctx the parse tree
 	 */
@@ -87,6 +77,16 @@ public interface fannieParserListener extends ParseTreeListener {
 	 */
 	void exitProcIdentifier(fannieParserParser.ProcIdentifierContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link fannieParserParser#program}.
+	 * @param ctx the parse tree
+	 */
+	void enterProgram(fannieParserParser.ProgramContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link fannieParserParser#program}.
+	 * @param ctx the parse tree
+	 */
+	void exitProgram(fannieParserParser.ProgramContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link fannieParserParser#mainRecipe}.
 	 * @param ctx the parse tree
 	 */
@@ -117,36 +117,6 @@ public interface fannieParserListener extends ParseTreeListener {
 	 */
 	void exitRecipeBody(fannieParserParser.RecipeBodyContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link fannieParserParser#stepIn}.
-	 * @param ctx the parse tree
-	 */
-	void enterStepIn(fannieParserParser.StepInContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link fannieParserParser#stepIn}.
-	 * @param ctx the parse tree
-	 */
-	void exitStepIn(fannieParserParser.StepInContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link fannieParserParser#stepOut}.
-	 * @param ctx the parse tree
-	 */
-	void enterStepOut(fannieParserParser.StepOutContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link fannieParserParser#stepOut}.
-	 * @param ctx the parse tree
-	 */
-	void exitStepOut(fannieParserParser.StepOutContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link fannieParserParser#contentIn}.
-	 * @param ctx the parse tree
-	 */
-	void enterContentIn(fannieParserParser.ContentInContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link fannieParserParser#contentIn}.
-	 * @param ctx the parse tree
-	 */
-	void exitContentIn(fannieParserParser.ContentInContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link fannieParserParser#ingredientsList}.
 	 * @param ctx the parse tree
 	 */
@@ -156,6 +126,26 @@ public interface fannieParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIngredientsList(fannieParserParser.IngredientsListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link fannieParserParser#toolsList}.
+	 * @param ctx the parse tree
+	 */
+	void enterToolsList(fannieParserParser.ToolsListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link fannieParserParser#toolsList}.
+	 * @param ctx the parse tree
+	 */
+	void exitToolsList(fannieParserParser.ToolsListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link fannieParserParser#stepsList}.
+	 * @param ctx the parse tree
+	 */
+	void enterStepsList(fannieParserParser.StepsListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link fannieParserParser#stepsList}.
+	 * @param ctx the parse tree
+	 */
+	void exitStepsList(fannieParserParser.StepsListContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link fannieParserParser#ingredientDeclaration}.
 	 * @param ctx the parse tree
@@ -217,26 +207,6 @@ public interface fannieParserListener extends ParseTreeListener {
 	 */
 	void exitAmountDeclaration(fannieParserParser.AmountDeclarationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link fannieParserParser#toolsList}.
-	 * @param ctx the parse tree
-	 */
-	void enterToolsList(fannieParserParser.ToolsListContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link fannieParserParser#toolsList}.
-	 * @param ctx the parse tree
-	 */
-	void exitToolsList(fannieParserParser.ToolsListContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link fannieParserParser#stepsList}.
-	 * @param ctx the parse tree
-	 */
-	void enterStepsList(fannieParserParser.StepsListContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link fannieParserParser#stepsList}.
-	 * @param ctx the parse tree
-	 */
-	void exitStepsList(fannieParserParser.StepsListContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link fannieParserParser#toolDeclaration}.
 	 * @param ctx the parse tree
 	 */
@@ -297,16 +267,6 @@ public interface fannieParserListener extends ParseTreeListener {
 	 */
 	void exitDoStepDeclaration(fannieParserParser.DoStepDeclarationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link fannieParserParser#collection}.
-	 * @param ctx the parse tree
-	 */
-	void enterCollection(fannieParserParser.CollectionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link fannieParserParser#collection}.
-	 * @param ctx the parse tree
-	 */
-	void exitCollection(fannieParserParser.CollectionContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link fannieParserParser#continousDoStepStartDeclaration}.
 	 * @param ctx the parse tree
 	 */
@@ -326,4 +286,44 @@ public interface fannieParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitContinousDoStepStopDeclaration(fannieParserParser.ContinousDoStepStopDeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link fannieParserParser#stepIn}.
+	 * @param ctx the parse tree
+	 */
+	void enterStepIn(fannieParserParser.StepInContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link fannieParserParser#stepIn}.
+	 * @param ctx the parse tree
+	 */
+	void exitStepIn(fannieParserParser.StepInContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link fannieParserParser#stepOut}.
+	 * @param ctx the parse tree
+	 */
+	void enterStepOut(fannieParserParser.StepOutContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link fannieParserParser#stepOut}.
+	 * @param ctx the parse tree
+	 */
+	void exitStepOut(fannieParserParser.StepOutContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link fannieParserParser#contentIn}.
+	 * @param ctx the parse tree
+	 */
+	void enterContentIn(fannieParserParser.ContentInContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link fannieParserParser#contentIn}.
+	 * @param ctx the parse tree
+	 */
+	void exitContentIn(fannieParserParser.ContentInContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link fannieParserParser#collection}.
+	 * @param ctx the parse tree
+	 */
+	void enterCollection(fannieParserParser.CollectionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link fannieParserParser#collection}.
+	 * @param ctx the parse tree
+	 */
+	void exitCollection(fannieParserParser.CollectionContext ctx);
 }
