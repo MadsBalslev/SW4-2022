@@ -2,7 +2,7 @@ grammar fannieParser;
 import fannieLexer;
 
 toolIdentifier : COMPLEX_IDENTIFIER;
-toolActionIdentifier : ( COMPLEX_IDENTIFIER | CONTAIN | REMOVE);
+toolActionIdentifier : COMPLEX_IDENTIFIER | CONTAIN | REMOVE;
 toolTypeIdentifier : COMPLEX_IDENTIFIER | TOOL_BASIC_TYPE_IDENTIFIER;
 ingredientTypeIdentifier : COMPLEX_IDENTIFIER | INGREDIENT_BASIC_TYPE_IDENTIFIER;
 ingredientIdentifier : COMPLEX_IDENTIFIER;
@@ -55,7 +55,7 @@ serveStepDeclaration : SERVE stepIn;
 
 doStepDeclaration : toolIdentifier DO toolActionIdentifier (DESCRIPTION_STRING)? stepIn ('=>' stepOut)?;
 
-continousDoStepStartDeclaration : START procIdentifier doStepDeclaration;
+continousDoStepStartDeclaration : START procIdentifier toolIdentifier DO toolActionIdentifier (DESCRIPTION_STRING)? stepIn;
 
 continousDoStepStopDeclaration : STOP procIdentifier (WHEN DESCRIPTION_STRING)? ('=>' stepOut)?;
 
