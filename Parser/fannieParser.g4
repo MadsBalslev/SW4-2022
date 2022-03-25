@@ -9,7 +9,7 @@ ingredientIdentifier : COMPLEX_IDENTIFIER;
 recipeIdentifier : COMPLEX_IDENTIFIER;
 procIdentifier : COMPLEX_IDENTIFIER;
 
-program : mainRecipe (subRecipe)* EOF;
+fannie : mainRecipe (subRecipe)* EOF;
 
 mainRecipe : MAIN RECIPE recipeIdentifier '{' recipeBody '}';
 subRecipe : RECIPE recipeIdentifier '{' recipeBody '}'; 
