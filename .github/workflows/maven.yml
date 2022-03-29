@@ -5,10 +5,10 @@
 name: Java CI with Maven
 
 on:
-  # push:
-  #   branches: [main]
   pull_request:
-    branches: [main]
+    # Sequence of patterns matched against refs/heads
+    branches:
+      - main
 
 jobs:
   build:
