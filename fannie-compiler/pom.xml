@@ -29,6 +29,11 @@
       <artifactId>antlr4-runtime</artifactId>
       <version>4.9.3</version>
     </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.11.0</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -81,11 +86,19 @@
         <groupId>org.antlr</groupId>
         <artifactId>antlr4-maven-plugin</artifactId>
         <version>4.9.3</version>
+        <configuration>
+          <visitor>true</visitor>
+          <listener>false</listener>
+        </configuration>
         <executions>
           <execution>
             <goals>
               <goal>antlr4</goal>
             </goals>
+            <configuration>
+              <visitor>true</visitor>
+              <listener>false</listener>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -94,7 +107,10 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.0.0</version>
         <configuration>
-          <mainClass>cs22sw405.App</mainClass>
+          <mainClass>App</mainClass>
+          <arguments>
+            <argument>../RecipeExamples/Pasta.fannie</argument>
+        </arguments>
         </configuration>
       </plugin>
     </plugins>
