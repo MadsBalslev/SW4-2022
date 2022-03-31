@@ -15,10 +15,13 @@ id ::= & \; iti \; ii \; ad \\
 \mid & \; \text{recipe} \; ri \; \\
 \mid & \; iti_1 \; iti_2 \\
 \mid & \; id_1 \text{ , } id_2 \\
+\mid & \; \epsilon \\
 
 td ::= & \; tti \; ti \; tad \\
 \mid & \; td_1 \text{ , } td_2 \\
+\mid & \; \epsilon \\
 
+sd ::= & \;
 
 \end{align}
 $$
