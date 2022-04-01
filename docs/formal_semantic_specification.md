@@ -14,9 +14,13 @@ $$
     rd &\in RD - \text{Recipe declaration} \\
     id &\in ID - \text{Ingredient declaration} \\
     td &\in TD - \text{Tool declaration} \\
-    \\
     tad &\in TAD - \text{Tool action declaration} \\
-
+    sd &\in SD - \text{step declaration} \\
+    \\
+    ds &\in DS - \text{Description string} \\
+    in &\in IN - \text{Step input} \\
+    out &\in OUT - \text{Step output} \\
+    ic &\in IC - \text{Ingredient collection} \\
 \end{align}
 $$
 
