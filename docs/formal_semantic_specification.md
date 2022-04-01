@@ -21,7 +21,9 @@ td ::= & \; tti \; ti \; tad \\
 \mid & \; td_1 \text{ , } td_2 \\
 \mid & \; \epsilon \\
 
-sd ::= & \;
+sd ::= & \; ti \; \text{ do } tai \; ds \; in \\
+\mid & \; ti \; \text{ do } tai \; ds \; in \text{ => } out \\
+
 
 \end{align}
 $$
