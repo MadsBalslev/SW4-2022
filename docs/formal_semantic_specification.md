@@ -13,6 +13,7 @@ $$
     \\
     rd &\in RD - \text{Recipe declaration} \\
     id &\in ID - \text{Ingredient declaration} \\
+    ad &\in AD - \text{Amount declaration} \\
     td &\in TD - \text{Tool declaration} \\
     tad &\in TAD - \text{Tool action declaration} \\
     sd &\in SD - \text{step declaration} \\
@@ -56,9 +57,12 @@ sd ::= & \; ti \; \text{ do } tai \; ds \; in \\
 
 in ::= & \; ii \mid \text{\{ } ic \text{ \}} \mid \text{content in} \; ti \\
 
-in ::= & \; ii \mid \text{\{ } ic \text{ \}} \\
+out ::= & \; ii \mid \text{\{ } ic \text{ \}} \\
 ic ::= & \; ic_1 \text{ , } ic_2 \mid ii \mid \epsilon
 
 
 \end{align}
 $$
+
+## Additional sets and auxiliary functions
+
