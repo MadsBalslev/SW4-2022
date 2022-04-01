@@ -4,10 +4,10 @@ package cs22sw405;
  * Hello world!
  *
  */
-public class App extends CodeGeneratorVisitor<Void>
+public class App
 {
     public static void main( String[] args )
     {
-        CodeGeneratorVisitor cgv = new CodeGeneratorVisitor();
+        // CodeGeneratorVisitor cgv = new CodeGeneratorVisitor();
     }
 }

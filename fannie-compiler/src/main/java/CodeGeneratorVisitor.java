@@ -1,3 +1,5 @@
+package cs22sw405;
+
 public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
 
     @Override public Void visitRecipeIdentifier(fannieParserParser.RecipeIdentifierContext ctx) 
