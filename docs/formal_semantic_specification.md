@@ -66,3 +66,10 @@ $$
 
 ## Additional sets and auxiliary functions
 
+## Transition system
+### Ingredient declaration transition system
+
+$$
+\frac{}{\langle iti \; ii \; ad, env_I, env_{IT} \rangle \rightarrow \langle env_I, env_{IT}\rangle} 
+$$
+
