@@ -23,6 +23,12 @@ td ::= & \; tti \; ti \; tad \\
 
 sd ::= & \; ti \; \text{ do } tai \; ds \; in \\
 \mid & \; ti \; \text{ do } tai \; ds \; in \text{ => } out \\
+\mid & \; \epsilon \\
+
+in ::= & \; ii \mid \text{\{ } ic \text{ \}} \mid \text{content in} \; ti \\
+
+in ::= & \; ii \mid \text{\{ } ic \text{ \}} \\
+ic ::= & \; ic \text{ , } ic \mid ii \mid \epsilon
 
 
 \end{align}
