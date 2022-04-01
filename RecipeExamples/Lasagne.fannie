@@ -1,6 +1,6 @@
 main recipe Lasagne{
     ingredients{
-        recipe of type liquid Lasagnesauce,  
+        recipe Lasagnesauce,  
         recipe Mornaysauce, 
         ingredient LasagneSheets (200g),
         ingredient Mozzarella (125g)
