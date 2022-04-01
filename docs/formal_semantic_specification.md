@@ -112,9 +112,32 @@ $$
 
 $$
 \begin{gather}
-\frac{}{
-    env_{IT} \vdash \langle tad_1 \text{ , } tad_2, env_A \rangle \rightarrow 
+\frac{
+    env_{IT} \vdash \langle tad_1, env_A \rangle \rightarrow 
     env_A''
+    \;
+    env_{IT} \vdash \langle tad_2, env_A'' \rangle \rightarrow 
+    env_A'
+
+}{
+    env_{IT} \vdash \langle tad_1 \text{ , } tad_2, env_A \rangle \rightarrow 
+    env_A'
+} \\
+\end{gather}
+$$
+
+$$
+\begin{gather}
+\frac{
+    env_{IT} \vdash \langle tad_1, env_A \rangle \rightarrow 
+    env_A''
+    \;
+    env_{IT} \vdash \langle tad_2, env_A'' \rangle \rightarrow 
+    env_A'
+
+}{
+    env_{IT} \vdash \langle tad_1 \text{ , } tad_2, env_A \rangle \rightarrow 
+    env_A'
 } \\
 \end{gather}
 $$
