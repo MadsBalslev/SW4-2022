@@ -101,8 +101,8 @@ $$
 $$
 \begin{gather}
 \frac{}{
-    env_{IT} \vdash \langle tai \text{ : } iti_i \text{ => } iti_o, env_A \rangle \rightarrow 
-    env_A[tai \mapsto (iti_i, iti_o)]
+    env_{IT}, env_{T} \vdash \langle tai \text{ : } iti_i \text{ => } iti_o, env_A \rangle \rightarrow 
+    env_A[tai \mapsto (iti_i, iti_o, \epsilon)]
 } \\
 \text{if} \; env_A(tai) \uparrow \\
 \text{and} \; env_{IT}(iti_i) \downarrow \\
@@ -113,14 +113,14 @@ $$
 $$
 \begin{gather}
 \frac{
-    env_{IT} \vdash \langle tad_1, env_A \rangle \rightarrow 
+    env_{IT}, env_{T} \vdash \langle tad_1, env_A \rangle \rightarrow 
     env_A''
     \;
-    env_{IT} \vdash \langle tad_2, env_A'' \rangle \rightarrow 
+    env_{IT}, env_{T} \vdash \langle tad_2, env_A'' \rangle \rightarrow 
     env_A'
 
 }{
-    env_{IT} \vdash \langle tad_1 \text{ , } tad_2, env_A \rangle \rightarrow 
+    env_{IT}, env_{T} \vdash \langle tad_1 \text{ , } tad_2, env_A \rangle \rightarrow 
     env_A'
 } \\
 \end{gather}
@@ -128,17 +128,26 @@ $$
 
 $$
 \begin{gather}
-\frac{
-    env_{IT} \vdash \langle tad_1, env_A \rangle \rightarrow 
-    env_A''
-    \;
-    env_{IT} \vdash \langle tad_2, env_A'' \rangle \rightarrow 
-    env_A'
-
-}{
-    env_{IT} \vdash \langle tad_1 \text{ , } tad_2, env_A \rangle \rightarrow 
-    env_A'
+\frac{}{
+    env_{IT}, env_{T} \vdash \langle \text{contain :} \; iti, env_A \rangle \rightarrow 
+    env_A[contain \mapsto (iti, iti,\epsilon)]
 } \\
+\text{if} \; env_A(contain) \uparrow \\
+\text{and} \; env_{IT}(iti) \downarrow \\
+\end{gather}
+$$
+
+$$
+\begin{gather}
+\frac{}{
+    env_{IT}, env_{T} \vdash \langle tai \; \text{:} \; \text{content in} \; ti \text{=>} \; iti_o, env_A \rangle \rightarrow 
+    env_A[tai \mapsto (iti_i, iti_o,ti)]
+} \\
+\text{if} \; env_A(tai) \uparrow \\
+\text{and} \; env_{IT}(iti_o) \downarrow \\
+\text{and} \; env_{T}(ti) \downarrow \\
+\text{where} \; env_T(ti) = env_{A}' \\
+\text{and} \; env_{A}'(contain) = (iti_i, iti_i,\epsilon) \\
 \end{gather}
 $$
 
