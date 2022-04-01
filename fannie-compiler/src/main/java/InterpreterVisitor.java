@@ -1,20 +1,20 @@
 public class InterpreterVisitor extends fannieParserBaseVisitor<Void> {
-    public Void visitFannie(fannieParserParser.FannieContext context) 
+    @Override public Void visitFannie(fannieParserParser.FannieContext context) 
     { 
         visitChildren(context); 
         return null;
     }   
-    public Void visitMainRecipe(fannieParserParser.MainRecipeContext context) 
+    @Override public Void visitMainRecipe(fannieParserParser.MainRecipeContext context) 
     { 
         visitChildren(context); 
         return null;
     }
-    public Void visitSubRecipe(fannieParserParser.SubRecipeContext context) 
+    @Override public Void visitSubRecipe(fannieParserParser.SubRecipeContext context) 
     { 
         visitChildren(context);
         return null;
     }
-    public Void visitRecipeIdentifier(fannieParserParser.RecipeIdentifierContext context) 
+    @ Override public Void visitRecipeIdentifier(fannieParserParser.RecipeIdentifierContext context) 
     { 
         visitChildren(context);
         return null;

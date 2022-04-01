@@ -2,8 +2,5 @@
     "java.configuration.updateBuildConfiguration": "automatic",
     "antlr4.generation": {
         "mode": "none",
-    },
-    "java.project.sourcePaths": [
-        "fannie-compiler/src/main"
-    ]
+    }
 }
