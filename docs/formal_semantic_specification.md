@@ -34,7 +34,7 @@ rd ::= & \; \text{main recipe } ri \text{ \{ ingredients \{ }  \; id \text{ \} }
 \mid & \; rd_1 \text{ , } rd_2 \\
 
 id ::= & \; iti \; ii \; ad \\
-\mid & \; iti \; ii \; ad \text{ or } id_1 \\
+\mid & \; id_1 \text{ or } id_2 \\
 \mid & \; \text{recipe} \; ii \; \\
 \mid & \; iti_p \; iti_c \\
 \mid & \; id_1 \text{ , } id_2 \\
@@ -96,6 +96,26 @@ $$
 \end{gather}
 $$
 
+$$
+\begin{gather}
+\frac{
+    \langle id_1, env_I, env_{IT} \rangle \rightarrow_{id} \langle env_I',env_{IT}' \rangle \;
+}{
+    \langle id_1\text{ or } id_2, env_I, env_{IT} \rangle \rightarrow_{id} \langle env_I', env_{IT}'\rangle
+} \\
+\end{gather}
+$$
+
+$$
+\begin{gather}
+\frac{
+    \langle id_2, env_I, env_{IT} \rangle \rightarrow_{id} \langle env_I',env_{IT}' \rangle \;
+}{
+    \langle id_1\text{ or } id_2, env_I, env_{IT} \rangle \rightarrow_{id} \langle env_I', env_{IT}'\rangle
+} \\
+\end{gather}
+$$
+
 ### Tool action declaration transition system
 
 $$
@@ -152,7 +172,7 @@ $$
 $$
 
 
-<!-- $$
+<!-- 
 \begin{gather}
 \frac{
 }{
