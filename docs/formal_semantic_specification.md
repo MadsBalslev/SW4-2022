@@ -68,7 +68,7 @@ $$
 $$
 \begin{gather}
 \frac{}{
-    \langle iti \; ii \; ad, env_I, env_{IT}\rangle \rightarrow \langle env_I[ii \mapsto iti_c], env_{IT}\rangle
+    \langle iti \; ii \; ad, env_I, env_{IT}\rangle \rightarrow_{id} \langle env_I[ii \mapsto iti_c], env_{IT}\rangle
 } \\
 \text{if} \; env_{IT}(iti)\downarrow \\
 \text{and} \; env_I(ii)\uparrow
@@ -78,7 +78,7 @@ $$
 $$
 \begin{gather}
 \frac{}{
-    \langle iti_p \; iti_c, env_I, env_{IT}, env_R \rangle \rightarrow \langle env_I, env_{IT}[iti_c \mapsto iti_p], env_R \rangle
+    \langle iti_p \; iti_c, env_I, env_{IT}, env_R \rangle \rightarrow_{id} \langle env_I, env_{IT}[iti_c \mapsto iti_p], env_R \rangle
 } \\
 \text{if} \; env_{IT}(iti_p)\downarrow \\
 \text{and} \; env_{IT}(iti_c)\uparrow \\
@@ -88,20 +88,20 @@ $$
 $$
 \begin{gather}
 \frac{
-    \langle id_1, env_I, env_{IT} \rangle \rightarrow \langle env_I'',env_{IT}'' \rangle \;
-    \langle id_2, env_I'', env_{IT}'' \rangle \rightarrow \langle env_I',env_{IT}' \rangle \;
+    \langle id_1, env_I, env_{IT} \rangle \rightarrow_{id} \langle env_I'',env_{IT}'' \rangle \;
+    \langle id_2, env_I'', env_{IT}'' \rangle \rightarrow_{id} \langle env_I',env_{IT}' \rangle \;
 }{
-    \langle id_1\text{ , } id_2, env_I, env_{IT} \rangle \rightarrow \langle env_I', env_{IT}'\rangle
+    \langle id_1\text{ , } id_2, env_I, env_{IT} \rangle \rightarrow_{id} \langle env_I', env_{IT}'\rangle
 } \\
 \end{gather}
 $$
 
-### Tool declaration transition system
+### Tool action declaration transition system
 
 $$
 \begin{gather}
 \frac{}{
-    env_{IT}, env_{T} \vdash \langle tai \text{ : } iti_i \text{ => } iti_o, env_A \rangle \rightarrow 
+    env_{IT}, env_{T} \vdash \langle tai \text{ : } iti_i \text{ => } iti_o, env_A \rangle \rightarrow_{tad} 
     env_A[tai \mapsto (iti_i, iti_o, \epsilon)]
 } \\
 \text{if} \; env_A(tai) \uparrow \\
@@ -113,14 +113,14 @@ $$
 $$
 \begin{gather}
 \frac{
-    env_{IT}, env_{T} \vdash \langle tad_1, env_A \rangle \rightarrow 
+    env_{IT}, env_{T} \vdash \langle tad_1, env_A \rangle \rightarrow_{tad} 
     env_A''
     \;
-    env_{IT}, env_{T} \vdash \langle tad_2, env_A'' \rangle \rightarrow 
+    env_{IT}, env_{T} \vdash \langle tad_2, env_A'' \rangle \rightarrow_{tad} 
     env_A'
 
 }{
-    env_{IT}, env_{T} \vdash \langle tad_1 \text{ , } tad_2, env_A \rangle \rightarrow 
+    env_{IT}, env_{T} \vdash \langle tad_1 \text{ , } tad_2, env_A \rangle \rightarrow_{tad} 
     env_A'
 } \\
 \end{gather}
@@ -129,7 +129,7 @@ $$
 $$
 \begin{gather}
 \frac{}{
-    env_{IT}, env_{T} \vdash \langle \text{contain :} \; iti, env_A \rangle \rightarrow 
+    env_{IT}, env_{T} \vdash \langle \text{contain :} \; iti, env_A \rangle \rightarrow_{tad} 
     env_A[contain \mapsto (iti, iti,\epsilon)]
 } \\
 \text{if} \; env_A(contain) \uparrow \\
@@ -140,7 +140,7 @@ $$
 $$
 \begin{gather}
 \frac{}{
-    env_{IT}, env_{T} \vdash \langle tai \; \text{:} \; \text{content in} \; ti \text{=>} \; iti_o, env_A \rangle \rightarrow 
+    env_{IT}, env_{T} \vdash \langle tai \; \text{:} \; \text{content in} \; ti \text{=>} \; iti_o, env_A \rangle \rightarrow_{tad} 
     env_A[tai \mapsto (iti_i, iti_o,ti)]
 } \\
 \text{if} \; env_A(tai) \uparrow \\
