@@ -103,6 +103,9 @@
         <version>3.0.0</version>
         <configuration>
           <mainClass>App</mainClass>
+          <arguments>
+            <argument>C:\Github\SW4-2022\RecipeExamples\Pasta.fannie</argument>
+        </arguments>
         </configuration>
       </plugin>
     </plugins>

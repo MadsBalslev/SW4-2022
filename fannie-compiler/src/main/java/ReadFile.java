@@ -1,20 +1,17 @@
-import java.util.Scanner;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 public class ReadFile {
-    public static String read(File fannieFile) {
-        String data = "";
+    public static InputStream read(String path) {
         try {
-            Scanner scan = new Scanner(fannieFile);
-            while (scan.hasNextLine()) {
-                data += scan.nextLine();
-            }
-            scan.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("Couldnt find file!");
-            e.printStackTrace();
+            File file = new File(path);
+            System.out.println("Jeg har læst en fil: " + file.getName());
+            InputStream content = new FileInputStream(file);
+            return content;
+        } catch (Exception e) {
+            System.out.println("File could not be read");
+            return null;
         }
-        return data;
     }
 }
