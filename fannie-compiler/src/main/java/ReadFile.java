@@ -5,8 +5,8 @@ import java.io.FileNotFoundException;
 public class ReadFile {
     public static String read(File fannieFile) {
         String data = "";
-        Scanner scan = new Scanner(fannieFile);
         try {
+            Scanner scan = new Scanner(fannieFile);
             while (scan.hasNextLine()) {
                 data += scan.nextLine();
             }
