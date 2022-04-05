@@ -1,53 +1,76 @@
+import java.util.ArrayList;
 import java.util.List;
-public class InterpreterVisitor extends fannieParserBaseVisitor<Void> {
-    List<String> toolsList;
-    List<String> recipesList;
+public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
+    List<String> toolsList = new ArrayList<String>();
+    List<String> recipesList = new ArrayList<String>();
     @Override public Void visitFannie(fannieParserParser.FannieContext context) 
-    { 
+    {
+        System.out.println("Visiting fannie");
         visitChildren(context); 
         return null;
-    }   
+    }
     @Override public Void visitMainRecipe(fannieParserParser.MainRecipeContext context) 
-    { 
-        recipesList.add(context.recipeIdentifier().getText());
-        visitChildren(context); 
+    {        
+        System.out.println("Visiting mainrecipe");
+        visitChildren(context);
+        for (String string : recipesList) {
+            System.out.println(string);
+            
+        }
         return null;
     }
     @Override public Void visitSubRecipe(fannieParserParser.SubRecipeContext context) 
     { 
-        recipesList.add(context.recipeIdentifier().getText());
+        System.out.println("Visiting subrecipe");
+        // recipesList.add(context.recipeIdentifier().getText());
         visitChildren(context);
         return null;
     }
     @Override public Void visitRecipeIdentifier(fannieParserParser.RecipeIdentifierContext context) 
-    { 
+    {   
+        recipesList.add(context.getText());
+        System.out.println("Visiting recipeIdentifier");
         visitChildren(context);
         return null;
     }
     @Override public Void visitRecipeBody(fannieParserParser.RecipeBodyContext context) 
-    { 
+    {
+        System.out.println("Visiting recipebody");
+        List<Ingredient> ingredientsList = new ArrayList<Ingredient>();
+        ingredientsList = visitIngredientsList(context.ingredientsList());
+        for (Ingredient ingredient : ingredientsList) {
+            System.out.println(ingredient.identifier + " " + ingredient.type);
+        }
         visitChildren(context); 
         return null;
     }
-    @Override public Void visitIngredientsList(fannieParserParser.IngredientsListContext context) 
-    { 
+    @Override public ArrayList<Ingredient> visitIngredientsList(fannieParserParser.IngredientsListContext context) 
+    {   
+        System.out.println("Visiting ingredientslist");
+        List<Ingredient> ingredientsList = new ArrayList<Ingredient>();
+        for(int i = 0; i < context.ingredientDeclaration().size(); i++) {
+            ingredientsList.add(visitIngredientDeclaration(context.ingredientDeclaration(i)));
+        }
         visitChildren(context); 
-        return null;
+        return (ArrayList<Ingredient>) ingredientsList;
     }
     @Override public Void visitToolsList(fannieParserParser.ToolsListContext context) 
     {
+        System.out.println("Visiting toolslist");
         visitChildren(context);
         return null;
     }
     @Override public Void visitStepsList(fannieParserParser.StepsListContext context) 
     { 
+        System.out.println("Visiting stepslist");
         visitChildren(context);
         return null;
     }
-    @Override public Void visitIngredientDeclaration(fannieParserParser.IngredientDeclarationContext context) 
+    @Override public Ingredient visitIngredientDeclaration(fannieParserParser.IngredientDeclarationContext context) 
     { 
+        
         visitChildren(context);
-        return null;
+        return visitDeterministicIngredientDeclaration(context.deterministicIngredientDeclaration());
     }
     @Override public Void visitToolDeclaration(fannieParserParser.ToolDeclarationContext context) 
     { 
@@ -61,7 +84,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Void> {
     }
     @Override public Void visitIngredientIdentifier(fannieParserParser.IngredientIdentifierContext context) 
     { 
-        visitChildren(context);
+        
         return null;
     }
     @Override public Void visitToolIdentifier(fannieParserParser.ToolIdentifierContext context) 
@@ -69,10 +92,13 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Void> {
         visitChildren(context);
         return null;
     }
-    @Override public Void visitDeterministicIngredientDeclaration(fannieParserParser.DeterministicIngredientDeclarationContext context) 
+    @Override public Ingredient visitDeterministicIngredientDeclaration(fannieParserParser.DeterministicIngredientDeclarationContext context) 
     { 
+        Ingredient ingredient = new Ingredient();
+        ingredient.identifier = context.ingredientIdentifier().getText();
+        ingredient.type = context.ingredientTypeIdentifier().getText();
         visitChildren(context);
-        return null;
+        return ingredient;
     }
     @Override public Void visitNondeterministicIngredientDeclaration(fannieParserParser.NondeterministicIngredientDeclarationContext context) 
     { 

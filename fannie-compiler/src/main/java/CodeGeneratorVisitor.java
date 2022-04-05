@@ -1,3 +1,5 @@
+
+
 public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
 
 
@@ -5,9 +7,4 @@ public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
     {
       return null;
     }
-
-
-
-
-    
 }

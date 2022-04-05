@@ -5,9 +5,11 @@ import org.antlr.v4.runtime.tree.*;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-public class Interpreter {
-    public static void InterpreterTest(String[] args) throws Exception
+public class App 
+{
+    public static void main( String[] args ) throws Exception
     {
+        InterpreterVisitor interpreterVisitor = new InterpreterVisitor();
         String inputFile = null;
         if(args.length>0) inputFile = args[0];
         InputStream is = System.in;
@@ -17,6 +19,7 @@ public class Interpreter {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         fannieParserParser parser = new fannieParserParser(tokens);
         ParseTree tree = parser.fannie();
-        System.out.println(tree.toStringTree(parser));
+        interpreterVisitor.visit(tree);
+        //System.out.println(tree.toStringTree(parser));
     }
 }
