@@ -1,6 +1,6 @@
 # Pasta
 
-### Ingredient
+### Ingredients
 
 - 100g Pasta
 - 1l Water
