@@ -282,10 +282,13 @@ $$
 $$
 \begin{gather}
 \frac{}{
-    env_{ITI} \vdash \langle ti \text{ do } tai \text{ content in } ti, env_I, env_T, env_P \rangle \rightarrow
-    \langle env_I, env_T, env_P \rangle
+    env_{ITI} \vdash \langle ti_1 \text{ do } tai \text{ content in } ti_2, env_I, env_T, env_P \rangle \rightarrow
+    \langle env_I[\text{content in } ti_2 \mapsto iti_o], env_T, env_P \rangle
 } \\
-\text{and } env_I(ii_{i_n}) = iti_n \\
+\text{if } env_I(\text{content in } ti_2) \downarrow \\ 
+\text{and } ti_i \in env_T^*(ti_2) \\   
+\text{where } env_T(ti_1) = (ti_p,env_A) \\
+\text{and } env_A(tai) = (ti_i, iti_o) \\
 \end{gather}
 $$
 
