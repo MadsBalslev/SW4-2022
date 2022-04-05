@@ -296,9 +296,24 @@ $$
 \begin{gather}
 \frac{}{
     env_{ITI}, env_T \vdash \langle ti \text{ do contain } ii, env_I, env_P \rangle \rightarrow
+    \langle env_I[\text{content in } ti \mapsto iti, ii \mapsto \epsilon], env_P \rangle
+} \\
+\text{if } iti_o \in env_{ITI}^*(iti) \\
+\text{and } env_I(\text{content in } ti)\uparrow \\
+\text{where } env_I(ii) = iti \\
+\text{and } env_T(ti) = (ti_p, env_A) \\
+\text{and } env_A(contain) = iti_o \\
+\end{gather}
+$$
+
+$$
+\begin{gather}
+\frac{}{
+    env_{ITI}, env_T \vdash \langle ti \text{ do contain } ii, env_I, env_P \rangle \rightarrow
     \langle env_I[\text{content in } ti \mapsto iti_o, ii \mapsto \epsilon], env_P \rangle
 } \\
 \text{if } iti_o \in env_{ITI}^*(iti) \\
+\text{and } env_I(\text{content in } ti)\downarrow \\
 \text{where } env_I(ii) = iti \\
 \text{and } env_T(ti) = (ti_p, env_A) \\
 \text{and } env_A(contain) = iti_o \\
@@ -311,11 +326,34 @@ $$
     env_{ITI}, env_T \vdash \langle ti \text{ do remove } ii, env_I, env_P \rangle \rightarrow
     \langle env_I[\text{content in } ti \mapsto \epsilon, ii \mapsto iti], env_P \rangle
 } \\
-\text{if } env_I(ii) \uparrow \\
+\text{if } env_I(ii) \downarrow \\
 \text{where } env_T(ti) = (ti_p, env_A) \\
 \text{and } env_I(\text{content in } ti) = iti \\
 \end{gather}
 $$
+
+$$
+\begin{gather}
+\frac{
+    env_{ITI}, env_T \vdash \langle sd, env_I, env_P \rangle \rightarrow 
+    \langle env_I', env_P \rangle
+}{
+    env_{ITI}, env_T \vdash \langle \text{START } pi \; ti \text{ do } tai, env_I, env_P \rangle \rightarrow
+    \langle env_I, env_P[pi \mapsto (ti, tai, ii)] \rangle
+} \\
+\text{If } env_T
+\end{gather}
+$$
+
+$$
+\begin{gather}
+\frac{}{
+    env_{ITI}, env_T \vdash \langle \text{STOP } pi, env_I, env_P \rangle \rightarrow
+    \langle env_I, env_P \rangle
+} \\
+\end{gather}
+$$
+
 
 
 
