@@ -7,7 +7,7 @@ main recipe Lasagne{
     },
 
     tools{
-        HeatSource Oven[Heat: content in Cookingcontainer],
+        HeatSource Oven[Heat: content in Cookingcontainer => ingredient],
         Cookingcontainer OvenproofDish
     },
 

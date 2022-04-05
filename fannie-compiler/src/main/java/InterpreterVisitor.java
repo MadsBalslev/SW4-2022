@@ -1,3 +1,4 @@
+import java.security.cert.CertPathBuilderException;
 import java.util.ArrayList;
 import java.util.List;
 public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
@@ -13,10 +14,10 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     {        
         System.out.println("Visiting mainrecipe");
         visitChildren(context);
-        for (String string : recipesList) {
-            System.out.println(string);
+        // for (String string : recipesList) {
+        //     System.out.println("recipe" + string);
             
-        }
+        // }
         return null;
     }
     @Override public Void visitSubRecipe(fannieParserParser.SubRecipeContext context) 
@@ -48,7 +49,9 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     {   
         System.out.println("Visiting ingredientslist");
         List<Ingredient> ingredientsList = new ArrayList<Ingredient>();
+        System.out.println("før loop");
         for(int i = 0; i < context.ingredientDeclaration().size(); i++) {
+            System.out.println("i loop");
             ingredientsList.add(visitIngredientDeclaration(context.ingredientDeclaration(i)));
         }
         visitChildren(context); 
@@ -68,7 +71,18 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     }
     @Override public Ingredient visitIngredientDeclaration(fannieParserParser.IngredientDeclarationContext context) 
     { 
+        for (int i = 0; i < context.getChildCount(); i++) {
         
+            if (context.getChild(i) instanceof fannieParserParser.DeterministicIngredientDeclarationContext) {
+                return visitDeterministicIngredientDeclaration((fannieParserParser.DeterministicIngredientDeclarationContext) context.getChild(i));
+            }
+            else if (context.getChild(i) instanceof fannieParserParser.RecipeIngredientDeclarationContext) {
+                return visitRecipeIngredientDeclaration((fannieParserParser.RecipeIngredientDeclarationContext) context.getChild(i));
+            }
+            else if (context.getChild(i) instanceof fannieParserParser.NondeterministicIngredientDeclarationContext) {
+                return visitNondeterministicIngredientDeclaration((fannieParserParser.NondeterministicIngredientDeclarationContext) context.getChild(i));
+            }
+        }
         visitChildren(context);
         return visitDeterministicIngredientDeclaration(context.deterministicIngredientDeclaration());
     }
@@ -97,18 +111,29 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         Ingredient ingredient = new Ingredient();
         ingredient.identifier = context.ingredientIdentifier().getText();
         ingredient.type = context.ingredientTypeIdentifier().getText();
+        //if parent = nondeterministicIngredientDeclaration 
+        //{
+        //  for(i = 0; i < context.getChildCount(); i++) {
+        //      
+        //  return visitDeterministicIngredientDeclaration((fannieParserParser.DeterministicIngredientDeclarationContext) context.getChild(i));
+        //  }    
+        //}
         visitChildren(context);
         return ingredient;
     }
-    @Override public Void visitNondeterministicIngredientDeclaration(fannieParserParser.NondeterministicIngredientDeclarationContext context) 
+    // pt fungerer nondeterministic som en deterministic der tager første ingrediens ind
+    @Override public Ingredient visitNondeterministicIngredientDeclaration(fannieParserParser.NondeterministicIngredientDeclarationContext context) 
     { 
         visitChildren(context);
-        return null;
+        return visitDeterministicIngredientDeclaration((fannieParserParser.DeterministicIngredientDeclarationContext) context.getChild(0));
     }
-    @Override public Void visitRecipeIngredientDeclaration(fannieParserParser.RecipeIngredientDeclarationContext context) 
+    @Override public Ingredient visitRecipeIngredientDeclaration(fannieParserParser.RecipeIngredientDeclarationContext context) 
     { 
+        Ingredient ingredient = new Ingredient();
+        ingredient.identifier = context.recipeIdentifier().getText();
+        ingredient.type = context.RECIPE().getText();
         visitChildren(context);
-        return null;
+        return ingredient;
     }
     @Override public Void visitIngredientTypeDeclaration(fannieParserParser.IngredientTypeDeclarationContext context) 
     { 
