@@ -293,17 +293,17 @@ $$
 $$
 
 $$
-\begin{gather}
-\frac{}{
-    env_{ITI}, env_T \vdash \langle ti \text{ do contain } ii, env_I, env_P \rangle \rightarrow
-    \langle env_I[\text{content in } ti \mapsto iti, ii \mapsto \epsilon], env_P \rangle
-} \\
-\text{if } iti_o \in env_{ITI}^*(iti) \\
-\text{and } env_I(\text{content in } ti)\uparrow \\
-\text{where } env_I(ii) = iti \\
-\text{and } env_T(ti) = (ti_p, env_A) \\
-\text{and } env_A(contain) = iti_o \\
-\end{gather}
+% \begin{gather}
+% \frac{}{
+%     env_{ITI}, env_T \vdash \langle ti \text{ do contain } ii, env_I, env_P \rangle \rightarrow
+%     \langle env_I[\text{content in } ti \mapsto iti, ii \mapsto \epsilon], env_P \rangle
+% } \\
+% \text{if } iti_o \in env_{ITI}^*(iti) \\
+% \text{and } env_I(\text{content in } ti)\uparrow \\
+% \text{where } env_I(ii) = iti \\
+% \text{and } env_T(ti) = (ti_p, env_A) \\
+% \text{and } env_A(contain) = iti_o \\
+% \end{gather}
 $$
 
 $$
@@ -313,7 +313,6 @@ $$
     \langle env_I[\text{content in } ti \mapsto iti_o, ii \mapsto \epsilon], env_P \rangle
 } \\
 \text{if } iti_o \in env_{ITI}^*(iti) \\
-\text{and } env_I(\text{content in } ti)\downarrow \\
 \text{where } env_I(ii) = iti \\
 \text{and } env_T(ti) = (ti_p, env_A) \\
 \text{and } env_A(contain) = iti_o \\
@@ -353,6 +352,7 @@ $$
 } \\
 \end{gather}
 $$
+
 
 
 
