@@ -414,5 +414,16 @@ $$
 \end{gather}
 $$
 
+$$
+\begin{gather}
+\frac{
+    env_{IT}, env_T \vdash \langle sd_1, env_I, env_P \rangle \rightarrow \langle env_I'', env_P'' \rangle \;
+    env_{IT}, env_T \vdash \langle sd_2, env_I'', env_P'' \rangle \rightarrow \langle env_I', env_P' \rangle
+}{
+    env_{IT}, env_T \vdash \langle sd_1, sd_2, env_I, env_P \rangle \rightarrow \langle env_I', env_P' \rangle \;
+} \\
+\end{gather}
+$$
+
 
 
