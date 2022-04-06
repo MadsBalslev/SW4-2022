@@ -175,84 +175,20 @@ $$
 $$
 \begin{gather}
 \frac{}{
-    env_{IT}, env_T \vdash \langle ti \text{ do } tai \; ii, env_I, env_P \rangle \rightarrow 
-    \langle env_I[ii \mapsto iti_o], env_P \rangle
-} \\
-\text{if } iti_i \in env_{ITI}^*(iti) \\
-\text{where } env_T(ti) = (ti_p,env_A) \\
-\text{and } env_A(tai) = (iti_i, iti_o) \\
-\text{and } env_I(ii) = iti \\
-\end{gather}
-$$
-
-$$
-\begin{gather}
-\frac{}{
-    env_{IT}, env_T \vdash \langle ti \text{ do } tai \; ii_i \text{ => } ii_o, env_I, env_P \rangle \rightarrow 
-    \langle env_I[ii_i \mapsto \epsilon, ii_o \mapsto iti_o], env_P \rangle
-} \\
-\text{if } iti_i \in env_{ITI}^*(iti) \\
-\text{and } env_{I}(ii_o) \uparrow \\
-\text{where } env_T(ti) = (ti_p,env_A) \\
-\text{and } env_A(tai) = (iti_i, iti_o) \\
-\text{and } env_I(ii) = iti \\
-\end{gather}
-$$
-
-$$
-\begin{gather}
-\frac{}{
     env_{IT}, env_T \vdash \langle ti \text{ do } tai \; \text{ \{ } ii_1, ii_2, \dots, ii_n \text{ \} }, env_I, env_P \rangle \rightarrow
     \langle env_I[ii_1 \mapsto iti_o, ii_2 \mapsto iti_o, \dots, ii_n \mapsto iti_o], env_P \rangle
 } \\
-\text{if } iti_i \in env_{ITI}^*(iti_1) \\
-\text{and } iti_i \in env_{ITI}^*(iti_2) \\
+\text{if } iti_i \in env_{IT}^*(iti_1) \\
+\text{and } iti_i \in env_{IT}^*(iti_2) \\
 \vdots \\
-\text{and } iti_i \in env_{ITI}^*(iti_n) \\
+\text{and } iti_i \in env_{IT}^*(iti_n) \\
+\text{and } tai \not= (\text{remove} \cup \text{contain})\\
 \text{where } env_T(ti) = (ti_p,env_A) \\
 \text{and } env_A(tai) = (iti_i, iti_o) \\
 \text{and } env_I(ii_1) = iti_1 \\
 \text{and } env_I(ii_2) = iti_2 \\
 \vdots \\
 \text{and } env_I(ii_n) = iti_n \\
-
-\end{gather}
-$$
-
-$$
-\begin{gather}
-\frac{}{
-    env_{IT}, env_{T} \vdash \langle ti \text{ do } tai \; \text{ \{ } ii_1, ii_2, \dots, ii_n \text{ \} => } ii, env_I, env_P \rangle \rightarrow
-    \langle env_I[ii_1 \mapsto \epsilon, ii_2 \mapsto \epsilon, \dots, ii_n \mapsto \epsilon, ii \mapsto iti_o], env_P \rangle
-} \\
-\text{if } iti_i \in env_{ITI}^*(iti_1) \\
-\text{and } iti_i \in env_{ITI}^*(iti_2) \\
-\vdots \\
-\text{and } iti_i \in env_{ITI}^*(iti_n) \\
-\text{and } env_I(ii)\uparrow \\
-\text{where } env_T(ti) = (ti_p,env_A) \\
-\text{and } env_A(tai) = (iti_i, iti_o) \\
-\text{and } env_I(ii_1) = iti_1 \\
-\text{and } env_I(ii_2) = iti_2 \\
-\vdots \\
-\text{and } env_I(ii_n) = iti_n \\
-\end{gather}
-$$
-
-$$
-\begin{gather}
-\frac{}{
-    env_{IT}, env_T \vdash \langle ti \text{ do } tai \; ii \text{ => } \text{ \{ } ii_1, ii_2, \dots, ii_n \text{ \} }, env_I, env_P \rangle \rightarrow
-    \langle env_I[ii_1 \mapsto iti_o, ii_2 \mapsto iti_o, \dots, ii_n \mapsto iti_o, ii \mapsto \epsilon], env_P \rangle
-} \\
-\text{if } iti_i \in env_{ITI}^*(iti) \\
-\text{and } env_I(ii_1)\uparrow \\
-\text{and } env_I(ii_2)\uparrow \\
-\vdots \\
-\text{and } env_I(ii_n)\uparrow \\
-\text{where } env_T(ti) = (ti_p,env_A) \\
-\text{and } env_A(tai) = (iti_i, iti_o) \\
-\text{and } env_I(ii) = iti \\
 \end{gather}
 $$
 
@@ -262,14 +198,15 @@ $$
     env_{IT}, env_T \vdash \langle ti \text{ do } tai \; \text{ \{ } ii_{i_1}, ii_{i_2}, \dots, ii_{i_n} \text{ \} } \text{ => } \text{ \{ } ii_{o_1}, ii_{o_2}, \dots, ii_{o_n} \text{ \} }, env_I, env_P \rangle \rightarrow
     \langle env_I[ii_{o_1} \mapsto iti_o, ii_{o_1} \mapsto iti_o, \dots, ii_{o_n} \mapsto iti_o, ii_{i_1} \mapsto \epsilon, ii_{i_1} \mapsto \epsilon, \dots, ii_{i_n} \mapsto \epsilon ], env_P \rangle
 } \\
-\text{if } iti_i \in env_{ITI}^*(iti_1) \\
-\text{and } iti_i \in env_{ITI}^*(iti_2) \\
+\text{if } iti_i \in env_{IT}^*(iti_1) \\
+\text{and } iti_i \in env_{IT}^*(iti_2) \\
 \vdots \\
-\text{and } iti_i \in env_{ITI}^*(iti_n) \\
+\text{and } iti_i \in env_{IT}^*(iti_n) \\
 \text{and } env_I(ii_{o_1})\uparrow \\
 \text{and } env_I(ii_{o_2})\uparrow \\
 \vdots \\
 \text{and } env_I(ii_{o_n})\uparrow \\
+\text{and } tai \not= (\text{remove} \cup \text{contain})\\
 \text{where } env_T(ti) = (ti_p,env_A) \\
 \text{and } env_A(tai) = (iti_i, iti_o) \\
 \text{and } env_I(ii_{i_1}) = iti_1 \\
@@ -281,12 +218,61 @@ $$
 
 $$
 \begin{gather}
+\frac{
+    env_{IT}, env_T \vdash \langle ti \text{ do } tai \text{ \{ } ii \text{ \} }, env_I, env_P \rangle \rightarrow_{id}
+    \langle env_I', env_P \rangle
+}{
+    env_{IT}, env_T \vdash \langle ti \text{ do } tai \; ii, env_I, env_P \rangle \rightarrow_{id} 
+    \langle env_I', env_P \rangle
+} \\
+\end{gather}
+$$
+
+$$
+\begin{gather}
+\frac{    
+    env_{IT}, env_T \vdash \langle ti \text{ do } tai \text{ \{ } ii_i \text{ \} => \{ } ii_o \text{ \}}, env_I, env_P \rangle \rightarrow 
+    \langle env_I', env_P \rangle
+}{
+    env_{IT}, env_T \vdash \langle ti \text{ do } tai \; ii_i \text{ => } ii_o, env_I, env_P \rangle \rightarrow 
+    \langle env_I', env_P \rangle
+} \\
+\end{gather}
+$$
+
+$$
+\begin{gather}
+\frac{
+    env_{IT}, env_{T} \vdash \langle ti \text{ do } tai \; \text{ \{ } ii_1, ii_2, \dots, ii_n \text{ \} => \{ } ii \text{ \}}, env_I, env_P \rangle \rightarrow
+    \langle env_I', env_P \rangle
+}{
+    env_{IT}, env_{T} \vdash \langle ti \text{ do } tai \; \text{ \{ } ii_1, ii_2, \dots, ii_n \text{ \} => } ii, env_I, env_P \rangle \rightarrow
+    \langle env_I', env_P \rangle
+} \\
+\end{gather}
+$$
+
+$$
+\begin{gather}
+\frac{
+    env_{IT}, env_T \vdash \langle ti \text{ do } tai \text{ \{ }ii \text{ \} => } \text{ \{ } ii_1, ii_2, \dots, ii_n \text{ \} }, env_I, env_P \rangle \rightarrow
+    \langle env_I', env_P \rangle
+}{
+    env_{IT}, env_T \vdash \langle ti \text{ do } tai \; ii \text{ => } \text{ \{ } ii_1, ii_2, \dots, ii_n \text{ \} }, env_I, env_P \rangle \rightarrow
+    \langle env_I', env_P \rangle
+} \\
+\end{gather}
+$$
+
+$$
+\begin{gather}
 \frac{}{
     env_{IT}, env_T \vdash \langle ti_1 \text{ do } tai \text{ content in } ti_2, env_I, env_P \rangle \rightarrow
     \langle env_I[\text{content in } ti_2 \mapsto iti_o], env_P \rangle
 } \\
 \text{if } env_I(\text{content in } ti_2) \downarrow \\ 
 \text{and } ti_i \in env_T^*(ti_2) \\   
+\text{and } tai \not= (\text{remove} \cup \text{contain})\\
 \text{where } env_T(ti_1) = (ti_p,env_A) \\
 \text{and } env_A(tai) = (ti_i, iti_o) \\
 \end{gather}
@@ -308,12 +294,82 @@ $$
 
 $$
 \begin{gather}
-\frac{}{
-    env_{IT}, env_T \vdash \langle ti \text{ do contain } ii, env_I, env_P \rangle \rightarrow
-    \langle env_I[\text{content in } ti \mapsto iti_o, ii \mapsto \epsilon], env_P \rangle
+\frac{
+    env_{IT}, env_T \vdash \langle \text{START } pi \; ti \text{ do } tai \text{ \{ } ii \text{ \}}, env_I, env_P \rangle \rightarrow
+    \langle env_I, env_P' \rangle
+}{
+    env_{IT}, env_T \vdash \langle \text{START } pi \; ti \text{ do } tai \; ii, env_I, env_P \rangle \rightarrow
+    \langle env_I, env_P' \rangle
 } \\
-\text{if } iti_o \in env_{ITI}^*(iti) \\
-\text{where } env_I(ii) = iti \\
+\end{gather}
+$$
+
+$$
+\begin{gather}
+\frac{
+    env_{IT}, env_T \vdash \langle ti \text{ do } tai \; \text{ \{ } ii_1, ii_2, \dots, ii_n \text{ \} }, env_I, env_P \rangle \rightarrow
+    \langle env_I', env_P \rangle
+}{
+    env_{IT}, env_T \vdash \langle \text{STOP } pi, env_I, env_P \rangle \rightarrow
+    \langle env_I', env_P[pi \mapsto \epsilon] \rangle
+} \\
+\text{if } env_p(pi) = (ti, tai, (ii_1, ii_2, \dots ii_n)) \\
+\end{gather}
+$$
+
+$$
+\begin{gather}
+\frac{
+    env_{IT}, env_T \vdash \langle ti \text{ do } tai \; \text{ \{ } ii_1, ii_2, \dots, ii_n \text{ \} }, env_I, env_P \rangle \rightarrow
+    \langle env_I', env_P \rangle
+}{
+    env_{IT}, env_T \vdash \langle \text{STOP } pi, env_I, env_P \rangle \rightarrow
+    \langle env_I', env_P[pi \mapsto \epsilon] \rangle
+} \\
+\text{if } env_p(pi) = (ti, tai, (ii_1, ii_2, \dots ii_n)) \\
+\end{gather}
+$$
+
+$$
+\begin{gather}
+\frac{
+    env_{IT}, env_T \vdash \langle ti \text{ do } tai \; \text{ \{ } ii_{i_1}, ii_{i_2}, \dots, ii_{i_n} \text{ \} } \text{ => } \text{ \{ } ii_{o_1}, ii_{o_2}, \dots, ii_{o_n} \text{ \} }, env_I, env_P \rangle \rightarrow
+    \langle env_I', env_P \rangle
+}{
+    env_{IT}, env_T \vdash \langle \text{STOP } pi \text{ => } \text{ \{ } ii_{o_1}, ii_{o_2}, \dots, ii_{o_n} \text{ \} }, env_I, env_P \rangle \rightarrow
+    \langle env_I', env_P[pi \mapsto \epsilon] \rangle
+} \\
+\text{if } env_p(pi) = (ti, tai, (ii_{i_1}, ii_{i_2}, \dots ii_{i_n})) \\
+\end{gather}
+$$
+
+$$
+\begin{gather}
+\frac{
+    env_{IT}, env_T \vdash \langle ti \text{ do } tai \; \text{ \{ } ii_{i_1}, ii_{i_2}, \dots, ii_{i_n} \text{ \} } \text{ => } ii, env_I, env_P \rangle \rightarrow
+    \langle env_I', env_P \rangle
+}{
+    env_{IT}, env_T \vdash \langle \text{STOP } pi \text{ => } ii, env_I, env_P \rangle \rightarrow
+    \langle env_I', env_P[pi \mapsto \epsilon] \rangle
+} \\
+\text{if } env_p(pi) = (ti, tai, (ii_{i_1}, ii_{i_2}, \dots ii_{i_n})) \\
+\end{gather}
+$$
+
+$$
+\begin{gather}
+\frac{}{
+    env_{IT}, env_T \vdash \langle ti \text{ do contain \{ } ii_1, ii_2, \dots, ii_n \text{ \}}, env_I, env_P \rangle \rightarrow
+    \langle env_I[\text{content in } ti \mapsto iti_o, ii_1 \mapsto \epsilon, ii_2 \mapsto \epsilon, \dots, ii_n \mapsto \epsilon], env_P \rangle
+} \\
+\text{if } iti_o \in env_{IT}^*(iti_1) \\
+\text{and } iti_o \in env_{IT}^*(iti_2) \\
+\vdots \\
+\text{and } iti_o \in env_{IT}^*(iti_n) \\
+\text{where } env_I(ii_1) = iti_1 \\
+\text{and } env_I(ii_2) = iti_2 \\
+\vdots \\
+\text{and } env_I(ii_n) = iti_n \\
 \text{and } env_T(ti) = (ti_p, env_A) \\
 \text{and } env_A(contain) = iti_o \\
 \end{gather}
@@ -321,41 +377,42 @@ $$
 
 $$
 \begin{gather}
-\frac{}{
-    env_{IT}, env_T \vdash \langle ti \text{ do remove } ii, env_I, env_P \rangle \rightarrow
-    \langle env_I[\text{content in } ti \mapsto \epsilon, ii \mapsto iti], env_P \rangle
+\frac{
+    env_{IT}, env_T \vdash \langle ti \text{ do contain \{ } ii \text{ \}}, env_I, env_P \rangle \rightarrow
+    \langle env_I', env_P \rangle
+}{
+    env_{IT}, env_T \vdash \langle ti \text{ do contain } ii , env_I, env_P \rangle \rightarrow
+    \langle env_I', env_P \rangle
 } \\
-\text{if } env_I(ii) \downarrow \\
-\text{where } env_T(ti) = (ti_p, env_A) \\
-\text{and } env_I(\text{content in } ti) = iti \\
+\end{gather}
+$$
+
+$$
+\begin{gather}
+\frac{}{
+    env_{IT}, env_T \vdash \langle ti \text{ do remove \{ } ii_1, ii_2, \dots, ii_n \text{ \}}, env_I, env_P \rangle \rightarrow
+    \langle env_I[\text{content in } ti \mapsto \epsilon, ii_1 \mapsto iti_o, ii_2 \mapsto iti_o, \dots, ii_n \mapsto iti_o], env_P \rangle
+} \\
+\text{if } env_{IT}(iti_1)\uparrow \\
+\text{and } env_{IT}(iti_2)\uparrow \\
+\vdots \\
+\text{and } env_{IT}(iti_n)\uparrow \\
+\text{and } env_T(ti) = (ti_p, env_A) \\
+\text{and } env_A(contain) = iti_o \\
 \end{gather}
 $$
 
 $$
 \begin{gather}
 \frac{
+    env_{IT}, env_T \vdash \langle ti \text{ do remove \{ } ii \text{ \}}, env_I, env_P \rangle \rightarrow
+    \langle env_I', env_P \rangle
 }{
-    env_{IT}, env_T \vdash \langle \text{START } pi \; ti \text{ do } tai, env_I, env_P \rangle \rightarrow
-    \langle env_I, env_P[pi \mapsto (ti, tai, ii)] \rangle
-} \\
-\text{If } env_T
-\end{gather}
-$$
-
-$$
-\begin{gather}
-\frac{}{
-    env_{IT}, env_T \vdash \langle \text{STOP } pi, env_I, env_P \rangle \rightarrow
-    \langle env_I, env_P \rangle
+    env_{IT}, env_T \vdash \langle ti \text{ do remove } ii , env_I, env_P \rangle \rightarrow
+    \langle env_I', env_P \rangle
 } \\
 \end{gather}
 $$
-
-
-
-
-
-
 
 
 
