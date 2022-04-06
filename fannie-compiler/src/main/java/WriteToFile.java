@@ -2,7 +2,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class WriteToFile {
-
     public static void write(String filename, String markdownFormat) {
         try {
             FileWriter markdownfile = new FileWriter(filename += ".md");

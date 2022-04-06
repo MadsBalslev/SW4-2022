@@ -4,7 +4,7 @@ import org.antlr.v4.runtime.tree.*;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        System.out.println("### Antal argumenter:" + args[0]);
+        // System.out.println("### Antal argumenter:" + args[0]);
         InputStream fileContent = ReadFile.read(args[0]);
 
         // create a CharStream that reads from standard input
