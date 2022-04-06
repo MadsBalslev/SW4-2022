@@ -9,7 +9,7 @@ main recipe Pasta{
     tools{
         tool Pot[contain : ingredient],
         tool Stove[Heat : content in Pot => ingredient],
-        tool Sifter[contain : ingredient, Sift : content in Sifter => ingredient]
+        tool Sifter[contain : ingredient, Sift : contentIn Sifter => ingredient]
     },
     
     steps{
