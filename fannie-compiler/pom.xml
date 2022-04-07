@@ -104,7 +104,7 @@
         <configuration>
           <mainClass>App</mainClass>
           <arguments>
-            <argument>C:\Github\SW4-2022\RecipeExamples\Pasta.fannie</argument>
+            <argument>../RecipeExamples/Pasta.fannie</argument>
         </arguments>
         </configuration>
       </plugin>
