@@ -1,6 +1,9 @@
 import java.security.cert.CertPathBuilderException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.tree.TerminalNode;
 public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     List<Tool> toolsList = new ArrayList<Tool>();
     List<String> recipesList = new ArrayList<String>();
@@ -12,7 +15,13 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
        /* if (recipesList != null) {
             throw new RuntimeException("Not all recipes are served");
         } */
-        
+        for (Tool tool : toolsList) {
+            System.out.println(tool.toolIdentifier + " " + tool.toolTypeIdentifier);
+            for (ToolAction toolAction : tool.toolActionDeclarationsList) {
+                System.out.println("er i toolaction print");
+                System.out.println("Action " + toolAction.toolActionIdentifier + " Ingredient Type " + toolAction.ingredientTypeIdentifier + " Becomes " + toolAction.transformedIngredientTypeIdentifier);
+            }
+        }
         return null;
     }
     @Override public Void visitMainRecipe(fannieParserParser.MainRecipeContext context) 
@@ -28,7 +37,13 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     @Override public Void visitSubRecipe(fannieParserParser.SubRecipeContext context) 
     { 
         System.out.println("Visiting subrecipe");
-        // recipesList.add(context.recipeIdentifier().getText());
+        //if (recipesList.contains(context.recipeIdentifier.getText())) {
+        //  System.out.println("subrecipe is already added")
+        //}
+        //else {
+        //  System.out.println("subrecipe has not been added already")
+        //}
+        //recipesList.add(context.recipeIdentifier().getText());
         visitChildren(context);
         return null;
     }
@@ -48,13 +63,13 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         for (Ingredient ingredient : ingredientsList) {
             System.out.println(ingredient.identifier + " " + ingredient.type);
         }
-        for (Tool tool : toolsList) {
+        /*for (Tool tool : toolsList) {
             System.out.println(tool.toolIdentifier + " " + tool.toolTypeIdentifier);
-            for (ToolAction toolAction : tool.toolActionDeclarationsList) {
+            /*for (ToolAction toolAction : tool.toolActionDeclarationsList) {
                 System.out.println("er i toolaction print");
                 System.out.println("Action " + toolAction.toolActionIdentifier + " Ingredient Type " + toolAction.ingredientTypeIdentifier + " Becomes " + toolAction.transformedIngredientTypeIdentifier);
-            }
-        }
+             }
+        } */
         visitChildren(context); 
         return null;
     }
@@ -181,7 +196,11 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         List<ToolAction> toolActionList = new ArrayList<ToolAction>();
         for (int i = 0; i < context.getChildCount(); i++) {
             if (context.getChild(i) instanceof fannieParserParser.ToolActionDeclarationContext) {
-                toolActionList.add(visitToolActionDeclaration(context.toolActionDeclaration(i)));
+                for (int j = 0; j < context.getChildCount(); j++) {
+                    if (context.getChild(j) instanceof fannieParserParser.ToolActionDeclarationContext) {
+                        toolActionList.add(visitToolActionDeclaration((fannieParserParser.ToolActionDeclarationContext) context.getChild(j)));
+                    }
+                }
             }
         }
         return (ArrayList<ToolAction>) toolActionList;
@@ -190,7 +209,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     { 
         ToolAction toolAction = createToolAction(context);
         
-        visitChildren(context);
+       // visitChildren(context);
         return toolAction;
     }
     @Override public Void visitServeStepDeclaration(fannieParserParser.ServeStepDeclarationContext context) 
@@ -223,10 +242,10 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         visitChildren(context);
         return null;
     }
-    @Override public Void visitContentIn(fannieParserParser.ContentInContext context) 
+    @Override public String visitContentIn(fannieParserParser.ContentInContext context) 
     { 
         visitChildren(context);
-        return null;
+        return context.getText();
     }
     @Override public Void visitIngredientCollection(fannieParserParser.IngredientCollectionContext context) 
     { 
@@ -234,27 +253,31 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         return null;
     }
     public ToolAction createToolAction(fannieParserParser.ToolActionDeclarationContext context) {
+        System.out.println("in toolaction");
         ToolAction toolAction = new ToolAction();
-        if (context.toolActionIdentifier().getText() == "contain")
+        System.out.println("toolaction nulte barn: " + context.getChild(0).getText());
+        if (context.getChild(0) instanceof TerminalNode)
         {
             toolAction.ingredientTypeIdentifier = context.ingredientTypeIdentifier(0).getText();
             toolAction.transformedIngredientTypeIdentifier = "content in";
-            toolAction.toolActionIdentifier = "test";
+            toolAction.toolActionIdentifier = "Contain";
             System.out.println("creating contain toolaction");
-            return toolAction;
+            //return toolAction;
         }
         /* we have to check if the first ingredienttype identifier is  contentin,
         since it changes whether ingredienttypeidentifier(0) is the original or transformed ingredient */
-        if (context.contentIn().getText() != null) {
+        else if (context.getChild(2) instanceof fannieParserParser.ContentInContext) {
             toolAction.ingredientTypeIdentifier = context.contentIn().CONTENT_IN().getText();
             toolAction.transformedIngredientTypeIdentifier= context.ingredientTypeIdentifier(0).getText();
             toolAction.toolActionIdentifier = context.toolActionIdentifier().getText();
             System.out.println("creating content in toolaction");
-        } else {
+        } 
+        else if (context.getChild(2) instanceof fannieParserParser.IngredientTypeIdentifierContext)
+        {
             toolAction.ingredientTypeIdentifier = context.ingredientTypeIdentifier(0).getText();
             toolAction.transformedIngredientTypeIdentifier = context.ingredientTypeIdentifier(1).getText();
             toolAction.toolActionIdentifier = context.toolActionIdentifier().getText();
-            System.out.println("creating toolaction");
+            System.out.println("creating normal toolaction");
         }
         return toolAction;
     }
