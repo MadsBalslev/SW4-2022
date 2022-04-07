@@ -29,9 +29,12 @@ $$
 $$
 \begin{align}
 
-rd ::= & \; \text{main recipe } ri \text{ \{ ingredients \{ }  \; id \text{ \} } \text{ , tools \{ } td \text{ \} , steps \{ } sd \text{ \} \} }   \\ 
-\mid & \; \text{recipe } ri \text{ \{ ingredients \{ }  \; id \text{ \} } \text{ , tools \{ } td \text{ \} , steps \{ } sd \text{ \} \} }   \\ 
-\mid & \; rd_1 \text{ , } rd_2 \\
+mrd ::= & \; \text{main recipe } ri \text{ \{ ingredients \{ }  \; id \text{ \} } \text{ , tools \{ } td \text{ \} , steps \{ } sd \text{ \} \} } ,srd  \\ 
+\mid & \; \text{main recipe } ri \text{ \{ ingredients \{ }  \; id \text{ \} } \text{ , tools \{ } td \text{ \} , steps \{ } sd \text{ \} \} } \\ 
+
+srd ::= & \; \text{recipe } ri \text{ \{ ingredients \{ }  \; id \text{ \} } \text{ , tools \{ } td \text{ \} , steps \{ } sd \text{ \} \} }   \\ 
+\mid & \; srd_1 \text{ , } srd_2 \\
+
 
 id ::= & \; iti \; ii \; ad \\
 \mid & \; id_1 \text{ or } id_2 \\
@@ -51,18 +54,16 @@ tad ::= & \; tai \text{ : } iti_i \text{ => } iti_o \\
 sd ::= & \; ti \; \text{ do } tai \; ds \; in \\
 \mid & \; ti \; \text{ do } tai \; ds \; in \text{ => } out \\
 \mid & \; sd_1 \text{ , } sd_2 \\
-
-in ::= & \; ii \mid \text{\{ } ic_1, ic_2, \dots, ic_n \text{ \}} \mid \text{content in} \; ti \\
-
-out ::= & \; ii \mid \text{\{ } ic_1, ic_2, \dots, ic_n \text{ \}} \\
-
-
 \end{align}
 $$
 
 ## Additional sets and auxiliary functions
 
 ## Transition system
+
+### Recipe declaration transition system 
+
+
 ### Ingredient declaration transition system
 
 $$
