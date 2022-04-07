@@ -39,8 +39,9 @@ id ::= & \; iti \; ii \; ad \\
 \mid & \; iti_p \; iti_c \\
 \mid & \; id_1 \text{ , } id_2 \\
 
-td ::= & \; tti \; ti \text{ [ } tad \text{ ] } \\
-\mid & \; td_1 \text{ , } td_2 \\
+td ::= & \; ti_p \; ti_r \text{ [ } tad \text{ ] } \\
+\mid & \; ti_p \; ti_c \\
+\mid & \; td_p \text{ , } td_c \\
 
 tad ::= & \; tai \text{ : } iti_i \text{ => } iti_o \\
 \mid & \text{ contain : } iti \\
@@ -171,6 +172,40 @@ $$
 } \\
 \end{gather}
 $$
+
+## Tool declaration transition system
+
+$$
+\begin{gather}
+\frac{}{
+    env_{IT} \vdash \langle ti_p \; ti_c, env_T \rangle \rightarrow_{td} env_T[ti_c \mapsto (ti_p, env_A)]
+} \\
+\text{Where } env_T(ti_p) = (ti_{gp}, env_A)
+\end{gather}
+$$
+
+$$
+\begin{gather}
+\frac{
+    env_{IT} \vdash \langle td_1, env_T \rangle \rightarrow_{td} env_T'' \;\;\;\;
+    env_{IT} \vdash \langle td_1, td_2, env_T'' \rangle \rightarrow_{td} env_T'
+}{
+    env_{IT} \vdash \langle td_1, td_2, env_T \rangle \rightarrow_{td} env_T''
+} \\
+\end{gather}
+$$
+
+$$
+\begin{gather}
+\frac{
+    env_{IT} \vdash \langle ti_p \; ti_c, env_T \rangle \rightarrow_{td} env_T'' \;\;\;\; 
+    env_{IT} \vdash \langle ti_p \; ti_c, env_T \rangle \rightarrow_{td} env_T''
+}{
+    env_{IT} \vdash \langle td_1, td_2, env_T \rangle \rightarrow_{td} env_T
+} \\
+\end{gather}
+$$
+
 
 ## Step declaration transition system
 
