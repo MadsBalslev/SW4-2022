@@ -119,58 +119,60 @@ $$
 
 $$
 \begin{gather}
-\frac{}{
-    env_{IT}, env_{T} \vdash \langle tai \text{ : } iti_i \text{ => } iti_o, env_A \rangle \rightarrow_{tad} 
-    env_A[tai \mapsto (iti_i, iti_o, \epsilon)]
+\frac{
+}{
+    env_{IT}, ti \vdash \langle tai \text{ : } iti_i  \text{ => } iti_o, env_T \rangle \rightarrow_{tad} 
+    env_T[ti \mapsto (ti_p, env_A[tai \mapsto (iti_i, iti_o)])] 
 } \\
-\text{if} \; env_A(tai) \uparrow \\
-\text{and} \; env_{IT}(iti_i) \downarrow \\
-\text{and} \; env_{IT}(iti_o) \downarrow \\
+\text{where } env_T(ti) = (ti_p, env_A) \\
+\text{and } env_A(tai) \uparrow \\
+\text{and } env_{IT}(iti_i) \downarrow \\
+\text{and } env_{IT}(iti_o) \downarrow \\
 \end{gather}
 $$
 
 $$
 \begin{gather}
 \frac{
-    env_{IT}, env_{T} \vdash \langle tad_1, env_A \rangle \rightarrow_{tad} 
-    env_A''
-    \;
-    env_{IT}, env_{T} \vdash \langle tad_2, env_A'' \rangle \rightarrow_{tad} 
-    env_A'
-
 }{
-    env_{IT}, env_{T} \vdash \langle tad_1 \text{ , } tad_2, env_A \rangle \rightarrow_{tad} 
-    env_A'
+    env_{IT}, ti \vdash \langle \text{contain : } iti, env_T \rangle \rightarrow_{tad} 
+    env_T[ti \mapsto (ti_p, env_A[contain \mapsto iti])] 
 } \\
+\text{where } env_T(ti) = (ti_p, env_A) \\
+\text{and } env_A(\text{contain}) \uparrow \\
+\text{and } env_{IT}(iti) \downarrow \\
 \end{gather}
 $$
 
 $$
 \begin{gather}
-\frac{}{
-    env_{IT}, env_{T} \vdash \langle \text{contain :} \; iti, env_A \rangle \rightarrow_{tad} 
-    env_A[contain \mapsto (iti, iti,\epsilon)]
+\frac{
+}{
+    env_{IT}, ti_1 \vdash \langle tai \text{ content in } ti_2 \text{ => } iti, env_T \rangle \rightarrow_{tad} 
+    env_T[ti_1 \mapsto (ti_{p_1}, env_{A_1}[tai \mapsto (\text{content in } ti_2, iti)])] 
 } \\
-\text{if} \; env_A(contain) \uparrow \\
-\text{and} \; env_{IT}(iti) \downarrow \\
+\text{where } env_T(ti_1) = (ti_{p_1}, env_{A_1}) \\
+\text{and } env_T(ti_2) = (ti_{p_2}, env_{A_2}) \\
+\text{and } env_{A_1}(tai) \uparrow \\
+\text{and } env_{IT}(iti) \downarrow \\
+\text{and } env_{A_2}(contain) = iti_c \\
+\text{and } iti_c \in env_{IT}*(iti)
 \end{gather}
 $$
 
 $$
 \begin{gather}
-\frac{}{
-    env_{IT}, env_{T} \vdash \langle tai \; \text{:} \; \text{content in} \; ti \text{=>} \; iti_o, env_A \rangle \rightarrow_{tad} 
-    env_A[tai \mapsto (iti_i, iti_o,ti)]
+\frac{ 
+    env_{IT}, ti_1 \vdash \langle tad_1, env_T \rangle \rightarrow_{tad} env_T'' \;\;\;
+    env_{IT}, ti_1 \vdash \langle tad_2, env_T'' \rangle \rightarrow_{tad} env_T' 
+}{
+    env_{IT}, ti_1 \vdash \langle tad_1, tad_2 , env_T \rangle \rightarrow_{tad}
+    env_T' 
 } \\
-\text{if} \; env_A(tai) \uparrow \\
-\text{and} \; env_{IT}(iti_o) \downarrow \\
-\text{and} \; env_{T}(ti) \downarrow \\
-\text{where} \; env_T(ti) = env_{A}' \\
-\text{and} \; env_{A}'(contain) = (iti_i, iti_i,\epsilon) \\
 \end{gather}
 $$
 
-### Step declaration transition system
+## Step declaration transition system
 
 $$
 \begin{gather}
