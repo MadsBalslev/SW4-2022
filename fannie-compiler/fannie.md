@@ -1,6 +1,6 @@
 # Pasta
 ### Ingredients
-- Pasta (100g,25whole)
+- Pasta (100g, 25 whole)
 - Water (1l)
 - Salt (10g)
 ### Tools
