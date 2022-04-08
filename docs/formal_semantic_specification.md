@@ -510,5 +510,28 @@ $$
 \end{gather}
 $$
 
+$$
+\begin{gather}
+\frac{
+}{
+    env_{IT}, env_T \vdash \langle \text{server } \{ii_1, ii_2, \dots, ii_n\}, env_I, env_P \rangle \rightarrow
+    \langle env_I[ii_1 \mapsto \epsilon, ii_2 \mapsto \epsilon, \dots, ii_n \mapsto \epsilon], env_P \rangle
+} \\
+\text{and } env_I(ii_1) = iti_1 \\
+\text{and } env_I(ii_2) = iti_2 \\
+\vdots \\
+\text{and } env_I(ii_n) = iti_n \\
+\end{gather}
+$$
 
-
+$$
+\begin{gather}
+\frac{
+    env_{IT}, env_T \vdash \langle \text{server } \{ii\}, env_I, env_P \rangle \rightarrow
+    \langle env_I', env_P \rangle
+}{
+    env_{IT}, env_T \vdash \langle \text{server } ii, env_I, env_P \rangle \rightarrow
+    \langle env_I', env_P \rangle
+} \\
+\end{gather}
+$$
