@@ -56,6 +56,30 @@ $$
 
 ## Additional sets and auxiliary functions
 
+$$
+\mathbf{EnvR} = RI \rightharpoonup \{\text{reserved}\} \cup RI \cup EnvT \times EnvI \times EnvIT \times EnvP 
+$$
+
+$$
+\mathbf{EnvI} = II \cup (\{ \text{content in} \} \circ TI) \rightharpoonup ITI 
+$$
+
+$$
+\mathbf{EnvA} = TAI \cup \{\text{contain, remove}\} \rightharpoonup ITI \times ITI \cup ITI 
+$$
+
+$$
+\mathbf{EnvIT} = ITI \rightharpoonup ITI
+$$
+
+$$
+\mathbf{EnvT} = TI \rightharpoonup TI \times EnvA
+$$
+
+$$
+\mathbf{EnvP} = PI \rightharpoonup PI \times TAI \times (II \times II \times \dots \times II)
+$$
+
 ## Transition system
 
 ### idk transition system
