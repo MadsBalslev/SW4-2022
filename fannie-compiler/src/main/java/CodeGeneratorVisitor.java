@@ -1,7 +1,7 @@
 import org.antlr.v4.runtime.*;
 
 public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
-    String markdownFormat = "";
+    StringBuilder markdownFormat = new StringBuilder();
     String filename = "";
     int stepNum = 1;
 
@@ -32,7 +32,7 @@ public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
 
     @Override
     public Void visitRecipeIdentifier(fannieParserParser.RecipeIdentifierContext ctx) {
-        markdownFormat += "# " + ctx.getText() + "\n";
+        markdownFormat.append("# " + ctx.getText() + "\n");
         filename += ctx.getText();
 
         visitChildren(ctx);
@@ -40,41 +40,41 @@ public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
     }
 
     public Void visitIngredientsList(fannieParserParser.IngredientsListContext ctx) {
-        markdownFormat += "### Ingredients" + "\n";
+        markdownFormat.append("### Ingredients" + "\n");
 
         visitChildren(ctx);
         return null;
     }
 
     public Void visitToolsList(fannieParserParser.ToolsListContext ctx) {
-        markdownFormat += "### Tools" + "\n";
+        markdownFormat.append("### Tools" + "\n");
 
         visitChildren(ctx);
         return null;
     }
 
     public Void visitToolDeclaration(fannieParserParser.ToolDeclarationContext ctx) {
-        markdownFormat += "- ";
+        markdownFormat.append("- ");
 
         visitChildren(ctx);
         return null;
     }
 
     public Void visitToolIdentifier(fannieParserParser.ToolIdentifierContext ctx) {
-        markdownFormat += ctx.getText();
+        markdownFormat.append(ctx.getText());
 
         // visitChildren(ctx);
         return null;
     }
 
     public Void visitToolActionDeclarationsList(fannieParserParser.ToolActionDeclarationsListContext ctx) {
-        markdownFormat += "\n";
+        markdownFormat.append("\n");
         return null;
     }
 
     public Void visitStepsList(fannieParserParser.StepsListContext ctx) {
         stepNum = 0;
-        markdownFormat += "### Steps";
+        markdownFormat.append("### Steps");
 
         visitChildren(ctx);
         return null;
@@ -82,7 +82,7 @@ public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
 
     public Void visitStepDeclaration(fannieParserParser.StepDeclarationContext ctx) {
         stepNum++;
-        markdownFormat += "\n" + stepNum + ". ";
+        markdownFormat.append("\n" + stepNum + ". ");
 
         visitChildren(ctx);
         return null;
@@ -103,11 +103,11 @@ public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
             String m = s.substring(1, s.length() - 1);
             mdString += infoArr[2] + " " + infoArr[4] + (infoArr[2] == "Put" ? " in " : " with ") + infoArr[0] + " "
                     + m;
-            markdownFormat += mdString;
+            markdownFormat.append(mdString);
             return null;
         } else {
             mdString += infoArr[2] + " " + infoArr[3] + (infoArr[2] == "Put" ? " in " : " with ") + infoArr[0];
-            markdownFormat += mdString;
+            markdownFormat.append(mdString);
             return null;
         }
     }
@@ -120,12 +120,12 @@ public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
             String s = infoArr[5];
             String m = s.substring(1, s.length() - 1);
             mdString += "With " + infoArr[2] + " " + infoArr[4] + " the " + infoArr[6] + " " + m;
-            markdownFormat += mdString;
+            markdownFormat.append(mdString);
             return null;
         } else {
 
             mdString += "With " + infoArr[2] + " " + infoArr[4] + " the " + infoArr[5];
-            markdownFormat += mdString;
+            markdownFormat.append(mdString);
             return null;
         }
     }
@@ -134,19 +134,19 @@ public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
         int i = ctx.getChildCount();
         String s = ctx.getChild(i - 1).toString();
         String m = s.substring(1, s.length() - 1);
-        markdownFormat += "Stop when " + m;
+        markdownFormat.append("Stop when " + m);
         return null;
     }
 
     public Void visitIngredientDeclaration(fannieParserParser.IngredientDeclarationContext ctx) {
-        markdownFormat += "- ";
+        markdownFormat.append("- ");
 
         visitChildren(ctx);
         return null;
     }
 
     public Void visitIngredientIdentifier(fannieParserParser.IngredientIdentifierContext ctx) {
-        markdownFormat += ctx.getText() + " ";
+        markdownFormat.append(ctx.getText() + " ");
 
         return null;
     }
@@ -158,17 +158,17 @@ public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
         {
             String[] r = s.split(",");
             r[1] = r[1].replaceAll( "(\\d)([A-Za-z])", "$1 $2" ); 
-            markdownFormat += String.join(", ", r) + "\n";
+            markdownFormat.append(String.join(", ", r) + "\n");
             return null;
         }
 
-        markdownFormat += s + "\n";
+        markdownFormat.append(s + "\n");
 
         return null;
     }
 
     public Void visitProcDeclaration(fannieParserParser.ProcIdentifierContext ctx) {
-        markdownFormat += ctx.getText();
+        markdownFormat.append(ctx.getText());
 
         return null;
     }
@@ -183,7 +183,7 @@ public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
         }
 
         mdString = infoArr[0] + " the " + infoArr[1] + " ";
-        markdownFormat += mdString;
+        markdownFormat.append(mdString);
 
         return null;
     }
