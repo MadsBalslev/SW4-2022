@@ -29,12 +29,9 @@ $$
 $$
 \begin{align}
 
-f ::=& \; mr \\
-\mid & \; mr, sr \\
-mr ::=& \; \text{main recipe } ri \text{ \{ ingredients \{ }  \; id \text{ \} } \text{ , tools \{ } td \text{ \} , steps \{ } sd \text{ \} \} } \\
-
-sr ::= & \; \text{recipe } ri \text{ \{ ingredients \{ }  \; id \text{ \} } \text{ , tools \{ } td \text{ \} , steps \{ } sd \text{ \} \} }   \\ 
-\mid & \; sr_1 \text{ , } sr_2 \\
+r ::=& \; r_1, r_2 \\
+\mid & \; \text{main recipe } ri \text{ \{ ingredients \{ }  \; id \text{ \} } \text{ , tools \{ } td \text{ \} , steps \{ } sd \text{ \} \} } \\
+\mid & \; \text{recipe } ri \text{ \{ ingredients \{ }  \; id \text{ \} } \text{ , tools \{ } td \text{ \} , steps \{ } sd \text{ \} \} }   \\ 
 
 id ::= & \; iti \; ii \; ad \\
 \mid & \; id_1 \text{ or } id_2 \\
@@ -61,22 +58,65 @@ $$
 
 ## Transition system
 
-### Fannie declaration transition system 
+### idk transition system
+
 
 $$
 \begin{gather}
 \frac{
-    \langle id, env_I, env_{IT}, env_R[ri \mapsto \text{reserved}], \rangle \rightarrow_{id} \langle env_I', env_{IT}',env_R'\rangle 
+    \langle r, env_R \rangle \rightarrow_r env_R'
+}{
+    env_R' \vdash r \rightarrow_c \text{bon apple tea} 
+} \\
+\text{if } \forall ri . (env_R'(ri) = (env_T, env_I, env_{IT}, env_P) \land env_I = \emptyset, env_p = \emptyset)  \lor env_R'(ri) \downarrow
+\end{gather}
+$$
+
+### Recipe declaration transition system 
+
+$$
+\begin{gather}
+\frac{
+    \langle id, env_I, env_{IT}, env_R[ri \mapsto reserved] \rangle \rightarrow_{id} \langle env_I', env_{IT}',env_R'\rangle 
     \;\;\;\;
-    env_{IT}' \vdash \langle td, env_T\rangle \rightarrow_{td} env_T'
+    env_{T}' \vdash \langle td, env_T\rangle \rightarrow_{td} env_T'
     \;\;\;\;
     env_{IT}', env_T' \vdash \langle sd, env_I', env_P \rangle \rightarrow_{sd} \langle env_I'', env_P' \rangle \;
 
 }{
-    \langle \text{main recipe } ri \text{ \{ ingredients \{ }  \; id \text{ \} } \text{ , tools \{ } td \text{ \} , steps \{ } sd \text{ \} \} }, env_R \rangle \rightarrow_{rd} 
+    \langle \text{main recipe } ri \text{ \{ ingredients \{ }  \; id \text{ \} } \text{ , tools \{ } td \text{ \} , steps \{ } sd \text{ \} \} }, env_R \rangle \rightarrow_{r} 
     env_R'[ri \mapsto (env_T', env_I'', env_{IT}', env_P') ]
 } \\
 \end{gather}
+$$
+
+$$
+\begin{gather}
+\frac{
+    \langle id, env_I, env_{IT}, env_R \rangle \rightarrow_{id} \langle env_I', env_{IT}',env_R'\rangle 
+    \;\;\;\;
+    env_{T}' \vdash \langle td, env_T\rangle \rightarrow_{td} env_T'
+    \;\;\;\;
+    env_{IT}', env_T' \vdash \langle sd, env_I', env_P \rangle \rightarrow_{sd} \langle env_I'', env_P' \rangle \;
+}{
+    \langle \text{recipe } ri \text{ \{ ingredients \{ }  \; id \text{ \} } \text{ , tools \{ } td \text{ \} , steps \{ } sd \text{ \} \} }, env_R \rangle \rightarrow_{r} 
+    env_R'[ri \mapsto (env_T', env_I'', env_{IT}', env_P') ]
+} \\
+\text{if } env_R(ri) = ri_p \\
+\text{and } env_R(ri_p) = (env_T, env_I''', env_{IT}, env_p''') 
+\end{gather} 
+$$
+
+$$
+\begin{gather}
+\frac{
+    \langle r_1, env_R \rangle \rightarrow_{r} env_R''
+    \;\;\;\;
+    \langle r_2, env_R'' \rangle \rightarrow_{r} env_R'
+}{
+    \langle r_1, r_2, env_R \rangle \rightarrow_{r} env_R' 
+} \\
+\end{gather} 
 $$
 
 ### Ingredient declaration transition system
