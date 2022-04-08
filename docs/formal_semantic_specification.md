@@ -29,12 +29,12 @@ $$
 $$
 \begin{align}
 
-mrd ::= & \; \text{main recipe } ri \text{ \{ ingredients \{ }  \; id \text{ \} } \text{ , tools \{ } td \text{ \} , steps \{ } sd \text{ \} \} } ,srd  \\ 
-\mid & \; \text{main recipe } ri \text{ \{ ingredients \{ }  \; id \text{ \} } \text{ , tools \{ } td \text{ \} , steps \{ } sd \text{ \} \} } \\ 
+f ::=& \; mr \\
+\mid & \; mr, sr \\
+mr ::=& \; \text{main recipe } ri \text{ \{ ingredients \{ }  \; id \text{ \} } \text{ , tools \{ } td \text{ \} , steps \{ } sd \text{ \} \} } \\
 
-srd ::= & \; \text{recipe } ri \text{ \{ ingredients \{ }  \; id \text{ \} } \text{ , tools \{ } td \text{ \} , steps \{ } sd \text{ \} \} }   \\ 
-\mid & \; srd_1 \text{ , } srd_2 \\
-
+sr ::= & \; \text{recipe } ri \text{ \{ ingredients \{ }  \; id \text{ \} } \text{ , tools \{ } td \text{ \} , steps \{ } sd \text{ \} \} }   \\ 
+\mid & \; sr_1 \text{ , } sr_2 \\
 
 id ::= & \; iti \; ii \; ad \\
 \mid & \; id_1 \text{ or } id_2 \\
@@ -61,8 +61,23 @@ $$
 
 ## Transition system
 
-### Recipe declaration transition system 
+### Fannie declaration transition system 
 
+$$
+\begin{gather}
+\frac{
+    \langle id, env_I, env_{IT}, env_R, \rangle \rightarrow_{id} \langle env_I', env_{IT}',env_R'\rangle 
+    \;\;\;\;
+    env_{IT}' \vdash \langle td, env_T\rangle \rightarrow_{td} env_T'
+    \;\;\;\;
+    env_{IT}', env_T' \vdash \langle sd, env_I', env_P \rangle \rightarrow_{sd} \langle env_I'', env_P' \rangle \;
+
+}{
+    \langle \text{main recipe } ri \text{ \{ ingredients \{ }  \; id \text{ \} } \text{ , tools \{ } td \text{ \} , steps \{ } sd \text{ \} \} }, env_R \rangle \rightarrow_{rd} 
+    env_R'[ri \mapsto (env_T', env_I'', env_{IT}', env_P') ]
+} \\
+\end{gather}
+$$
 
 ### Ingredient declaration transition system
 
@@ -232,25 +247,17 @@ $$
 
 $$
 \begin{gather}
-\frac{}{
+\frac{
+    env_{IT}, env_T \vdash \langle ti \text{ do } tai \; \text{ \{ } ii_1, ii_2, \dots, ii_n \text{ \} }, env_I, env_P \rangle \rightarrow
+    \langle env_I', env_P \rangle
+}{
     env_{IT}, env_T \vdash \langle ti \text{ do } tai \; \text{ \{ } ii_{i_1}, ii_{i_2}, \dots, ii_{i_n} \text{ \} } \text{ => } \text{ \{ } ii_{o_1}, ii_{o_2}, \dots, ii_{o_n} \text{ \} }, env_I, env_P \rangle \rightarrow
     \langle env_I[ii_{o_1} \mapsto iti_o, ii_{o_1} \mapsto iti_o, \dots, ii_{o_n} \mapsto iti_o, ii_{i_1} \mapsto \epsilon, ii_{i_1} \mapsto \epsilon, \dots, ii_{i_n} \mapsto \epsilon ], env_P \rangle
 } \\
-\text{if } iti_i \in env_{IT}^*(iti_1) \\
-\text{and } iti_i \in env_{IT}^*(iti_2) \\
-\vdots \\
-\text{and } iti_i \in env_{IT}^*(iti_n) \\
 \text{and } env_I(ii_{o_1})\uparrow \\
 \text{and } env_I(ii_{o_2})\uparrow \\
 \vdots \\
 \text{and } env_I(ii_{o_n})\uparrow \\
-\text{and } tai \not= (\text{remove} \cup \text{contain})\\
-\text{where } env_T(ti) = (ti_p,env_A) \\
-\text{and } env_A(tai) = (iti_i, iti_o) \\
-\text{and } env_I(ii_{i_1}) = iti_1 \\
-\text{and } env_I(ii_{i_2}) = iti_2 \\
-\vdots \\
-\text{and } env_I(ii_{i_n}) = iti_n \\
 \end{gather}
 $$
 
