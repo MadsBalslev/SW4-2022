@@ -66,7 +66,7 @@ $$
 $$
 \begin{gather}
 \frac{
-    \langle id, env_I, env_{IT}, env_R, \rangle \rightarrow_{id} \langle env_I', env_{IT}',env_R'\rangle 
+    \langle id, env_I, env_{IT}, env_R[ri \mapsto \text{reserved}], \rangle \rightarrow_{id} \langle env_I', env_{IT}',env_R'\rangle 
     \;\;\;\;
     env_{IT}' \vdash \langle td, env_T\rangle \rightarrow_{td} env_T'
     \;\;\;\;
