@@ -5,6 +5,7 @@ import java.util.List;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import Steps.Step;
 public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
 
     List<Tool> toolsList = new ArrayList<Tool>();
@@ -87,7 +88,6 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     @Override public ArrayList<Tool> visitToolsList(fannieParserParser.ToolsListContext context) 
     {
         System.out.println("Visiting toolslist");
-        List<Tool> toolsList = new ArrayList<Tool>();
         for (int i = 0; i < context.toolDeclaration().size(); i++) {
             Tool tool = visitToolDeclaration(context.toolDeclaration(i));
             scope.append(tool.toolIdentifier, tool);
@@ -200,16 +200,9 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         List<ToolAction> toolActionList = new ArrayList<ToolAction>();
         for (int i = 0; i < context.getChildCount(); i++) {
             if (context.getChild(i) instanceof fannieParserParser.ToolActionDeclarationContext) {
-                for (int j = 0; j < context.getChildCount(); j++) {
-                    if (context.getChild(j) instanceof fannieParserParser.ToolActionDeclarationContext) {
-                        //ToolAction toolAction = visitToolActionDeclaration((fannieParserParser.ToolActionDeclarationContext) context.getChild(j));
-                        //scope.append(toolAction.toolActionIdentifier, toolAction);
-                        // using list instead of scope 
-                        toolActionList.add(visitToolActionDeclaration((fannieParserParser.ToolActionDeclarationContext) context.getChild(j)));
-                    }
+                    toolActionList.add(visitToolActionDeclaration((fannieParserParser.ToolActionDeclarationContext) context.getChild(i)));
                 }
             }
-        }
         return (ArrayList<ToolAction>) toolActionList;
     }
     @Override public ToolAction visitToolActionDeclaration(fannieParserParser.ToolActionDeclarationContext context) 
