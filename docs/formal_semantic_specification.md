@@ -128,7 +128,7 @@ $$
 $$
 \begin{gather}
 \frac{
-    \langle id, env_I, env_{IT}, env_R[ri \mapsto reserved] \rangle \rightarrow_{id} \langle env_I', env_{IT}',env_R'\rangle 
+    ri \vdash \langle id, env_I, env_{IT}, env_R[ri \mapsto reserved] \rangle \rightarrow_{id} \langle env_I', env_{IT}',env_R'\rangle 
     \;\;\;\;
     env_{T}' \vdash \langle td, env_T\rangle \rightarrow_{td} env_T'
     \;\;\;\;
@@ -144,7 +144,7 @@ $$
 $$
 \begin{gather}
 \frac{
-    \langle id, env_I, env_{IT}, env_R \rangle \rightarrow_{id} \langle env_I', env_{IT}',env_R'\rangle 
+    ri \vdash \langle id, env_I, env_{IT}, env_R \rangle \rightarrow_{id} \langle env_I', env_{IT}',env_R'\rangle 
     \;\;\;\;
     env_{IT}' \vdash \langle td, env_T\rangle \rightarrow_{td} env_T'
     \;\;\;\;
@@ -175,7 +175,16 @@ $$
 $$
 \begin{gather}
 \frac{}{
-    \langle iti \; ii \; ad, env_I, env_{IT}\rangle \rightarrow_{id} \langle env_I[ii \mapsto iti_c], env_{IT}\rangle
+    ri_p \vdash \langle \text{recipe } ri, env_I, env_{IT}, env_R\rangle \rightarrow_{id} \langle env_I[ri \mapsto ingredient], env_{IT}, env_R[ri \mapsto ri_p ]\rangle
+} \\
+\text{if } env_I(ri)\uparrow
+\end{gather}
+$$
+
+$$
+\begin{gather}
+\frac{}{
+    ri \vdash \langle iti \; ii \; ad, env_I, env_{IT}, env_R\rangle \rightarrow_{id} \langle env_I[ii \mapsto iti_c], env_{IT}, env_R\rangle
 } \\
 \text{if} \; env_{IT}(iti)\downarrow \\
 \text{and} \; env_I(ii)\uparrow
@@ -185,7 +194,7 @@ $$
 $$
 \begin{gather}
 \frac{}{
-    \langle iti_p \; iti_c, env_I, env_{IT}, env_R \rangle \rightarrow_{id} \langle env_I, env_{IT}[iti_c \mapsto iti_p], env_R \rangle
+    ri \vdash \langle iti_p \; iti_c, env_I, env_{IT}, env_R \rangle \rightarrow_{id} \langle env_I, env_{IT}[iti_c \mapsto iti_p], env_R \rangle
 } \\
 \text{if} \; env_{IT}(iti_p)\downarrow \\
 \text{and} \; env_{IT}(iti_c)\uparrow \\
@@ -195,8 +204,8 @@ $$
 $$
 \begin{gather}
 \frac{
-    \langle id_1, env_I, env_{IT} \rangle \rightarrow_{id} \langle env_I'',env_{IT}'' \rangle \;
-    \langle id_2, env_I'', env_{IT}'' \rangle \rightarrow_{id} \langle env_I',env_{IT}' \rangle \;
+    ri \vdash \langle id_1, env_I, env_{IT} \rangle \rightarrow_{id} \langle env_I'',env_{IT}'' \rangle \;
+    ri \vdash \langle id_2, env_I'', env_{IT}'' \rangle \rightarrow_{id} \langle env_I',env_{IT}' \rangle \;
 }{
     \langle id_1\text{ , } id_2, env_I, env_{IT} \rangle \rightarrow_{id} \langle env_I', env_{IT}'\rangle
 } \\
@@ -206,7 +215,7 @@ $$
 $$
 \begin{gather}
 \frac{
-    \langle id_1, env_I, env_{IT} \rangle \rightarrow_{id} \langle env_I',env_{IT}' \rangle \;
+    ri \vdash \langle id_1, env_I, env_{IT} \rangle \rightarrow_{id} \langle env_I',env_{IT}' \rangle \;
 }{
     \langle id_1\text{ or } id_2, env_I, env_{IT} \rangle \rightarrow_{id} \langle env_I', env_{IT}'\rangle
 } \\
@@ -216,7 +225,7 @@ $$
 $$
 \begin{gather}
 \frac{
-    \langle id_2, env_I, env_{IT} \rangle \rightarrow_{id} \langle env_I',env_{IT}' \rangle \;
+    ri \vdash \langle id_2, env_I, env_{IT} \rangle \rightarrow_{id} \langle env_I',env_{IT}' \rangle \;
 }{
     \langle id_1\text{ or } id_2, env_I, env_{IT} \rangle \rightarrow_{id} \langle env_I', env_{IT}'\rangle
 } \\
