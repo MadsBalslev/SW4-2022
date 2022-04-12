@@ -55,29 +55,56 @@ sd ::= & \; ti \; \text{ do } tai \; ds \; in \\
 $$
 
 ## Additional sets and auxiliary functions
+- $x'=x[y \mapsto z]$ denotes that $y$ maps to $z$ in $x'$
+- $x'=x[y \mapsto \epsilon]$ denotes that $y$ is undefined in $x'$
+- $x(y)\downarrow$ denotes that $x(y)$ is defined.
+- $x(y)\uparrow$ denotes that $x(y)$ is undefined.
 
+### Recipe environment
 $$
 \mathbf{EnvR} = RI \rightharpoonup \{\text{reserved}\} \cup RI \cup EnvT \times EnvI \times EnvIT \times EnvP 
 $$
 
+### Ingredient environment
 $$
 \mathbf{EnvI} = II \cup (\{ \text{content in} \} \circ TI) \rightharpoonup ITI 
 $$
 
+### Action environment
 $$
 \mathbf{EnvA} = TAI \cup \{\text{contain, remove}\} \rightharpoonup ITI \times ITI \cup ITI 
 $$
 
+### Ingredient type environment
 $$
 \mathbf{EnvIT} = ITI \rightharpoonup ITI
 $$
 
 $$
+\begin{align}
+\forall env_{IT} \in EnvIT. \: & env_{IT}(\text{Ingredient}) = \text{Ingredient} \\
+ & env_{IT}(\text{vegetable}) = \text{ingredient} \\
+ & env_{IT}(\text{fruit}) = \text{ingredient} \\
+ & env_{IT}(\text{meat}) = \text{ingredient} \\
+ & env_{IT}(\text{liquid}) = \text{ingredient} \\
+ & env_{IT}(\text{spice}) = \text{ingredient} \\
+ & env_{IT}(\text{nut}) = \text{ingredient} \\
+ & env_{IT}(\text{dry}) = \text{ingredient} \\
+\end{align}
+$$
+
+### Tool environment
+$$
 \mathbf{EnvT} = TI \rightharpoonup TI \times EnvA
 $$
 
+### Procedure environment
 $$
 \mathbf{EnvP} = PI \rightharpoonup PI \times TAI \times (II \times II \times \dots \times II)
+$$
+
+$$
+\forall env_T \in EnvT. env_T(\text{tool}) = (\text{tool}, \emptyset) \\
 $$
 
 ## Transition system
@@ -92,7 +119,7 @@ $$
 }{
     env_R' \vdash r \rightarrow_c \text{bon apple tea} 
 } \\
-\text{if } \forall ri . (env_R'(ri) = (env_T, env_I, env_{IT}, env_P) \land env_I = \emptyset, env_p = \emptyset)  \lor env_R'(ri) \downarrow
+\text{if } \forall ri . (env_R'(ri) = (env_T, env_I, env_{IT}, env_P) \land env_I = \emptyset \land env_p = \emptyset)  \lor env_R'(ri) \downarrow
 \end{gather}
 $$
 
