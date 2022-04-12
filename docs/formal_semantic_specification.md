@@ -307,7 +307,7 @@ $$
     \;\;\;\;
     env_{IT}, ti_c \vdash \langle tad, env_T'' \rangle \rightarrow_{tad} env_T'
 }{
-    env_{IT} \vdash \langle ti_p ti_c [tad], env_T \rangle \rightarrow_{td} env_T'
+    env_{IT} \vdash \langle ti_p \; ti_c \; [tad], env_T \rangle \rightarrow_{td} env_T'
 } \\
 \text{Where } env_T(ti_p) = (ti_{gp}, env_A)
 \end{gather}
