@@ -5,9 +5,8 @@ public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
     String filename = "";
     int stepNum = 1;
 
-    private String SplitOnCapital(String s) {
-        String[] r = s.split("(?=\\p{Upper})");
-        return String.join(" ", r);
+    private String SplitContentIn(String s) {
+        return s.replaceAll("(content in)([A-Za-z])", "$1 $2");
     }
 
     private <T extends ParserRuleContext> String[] MakeStepDeclaration(T ctx) {
@@ -16,8 +15,7 @@ public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
         for (int i = 0; i < ctx.getChildCount(); i++) {
             if (ctx.getChild(i) instanceof fannieParserParser.StepInContext) {
                 if (ctx.getChild(i).getChild(0) instanceof fannieParserParser.ContentInContext) {
-                    infoArr[i] = SplitOnCapital(ctx.getChild(i).getChild(0).getText());
-
+                    infoArr[i] = SplitContentIn(ctx.getChild(i).getChild(0).getText());
                 } else {
                     infoArr[i] = ctx.getChild(i).getText();
                 }
@@ -154,10 +152,9 @@ public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
     public Void visitAmountDeclaration(fannieParserParser.AmountDeclarationContext ctx) {
         String s = ctx.getText();
 
-        if (ctx.getChildCount() > 4)
-        {
+        if (ctx.getChildCount() > 4) {
             String[] r = s.split(",");
-            r[1] = r[1].replaceAll( "(\\d)([A-Za-z])", "$1 $2" ); 
+            r[1] = r[1].replaceAll("(\\d)([A-Za-z])", "$1 $2");
             markdownFormat.append(String.join(", ", r) + "\n");
             return null;
         }
@@ -179,7 +176,7 @@ public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
         String mdString = "";
 
         for (int i = 0; i < ctx.getChildCount(); i++) {
-            infoArr[i] = SplitOnCapital(ctx.getChild(i).getText());
+            infoArr[i] = SplitContentIn(ctx.getChild(i).getText());
         }
 
         mdString = infoArr[0] + " the " + infoArr[1] + " ";

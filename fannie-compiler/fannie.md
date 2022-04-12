@@ -1,17 +1,43 @@
-# Pasta
+# Test
+
 ### Ingredients
-- Pasta (100g, 25 whole)
-- Water (1l)
-- Salt (10g)
+
+- Testingredient (1kg, 1 whole)
+- Testingredient2 (1g, 1 tbsp)
+- Testingredient3 (1g, 1 tsp)
+- Testingredient4 (1g, 1 pinch)
+- Testingredient5 (1g, 1 whole)
+- Testingredient6 (1g, 1 half)
+- Testingredient7 (1g, 1 third)
+- Testingredient8 (1g, 1 quarter)
+- Testingredient9 (1g, 1 eight)
+- Testingredient10 (to-taste)
+- TestingredientG (1g)
+- TestingredientKG (1kg)
+- TestingredientML (1ml)
+- TestingredientDL (1dl)
+- TestingredientL (1l)
+- TestingredientMG (1mg)
+- TestingredientLB (1lb)
+- TestingredientOZ (1oz)
+- TestingredientING (1g)
+- TestingredientVEG (1g)
+- TestingredientFRU (1g)
+- TestingredientMEA (1g)
+- TestingredientLIQ (1g)
+- TestingredientSPI (1g)
+- TestingredientNUT (1g)
+- TestingredientDRY (1g)
+
 ### Tools
-- Pot
-- Stove
-- Sifter
+
+- TestPOT
+- TestSTOVE
+- Knife
+
 ### Steps
-1. Put Water in Pot
-2. With Stove Heat the content in Pot Bring water to boil.
-3. Put Pasta in Pot
-4. Put Salt in Pot
-5. Stop when The pasta has boiled for 6-10 minutes or is al dente.
-6. Sift content in Pot with Sifter
-7. serve the content in Sifter 
+
+1. Put TestingredientLIQ in TestPOT
+2. Slice TestingredientMEA with Knife
+3. Put TestingredientMEA in TestPOT
+4. serve the content in TestPOT
