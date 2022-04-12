@@ -28,15 +28,15 @@ $$
 ### Formation rules
 $$
 \begin{align}
-
+f ::=& \; r \\
 r ::=& \; r_1, r_2 \\
 \mid & \; \text{main recipe } ri \text{ \{ ingredients \{ }  \; id \text{ \} } \text{ , tools \{ } td \text{ \} , steps \{ } sd \text{ \} \} } \\
 \mid & \; \text{recipe } ri \text{ \{ ingredients \{ }  \; id \text{ \} } \text{ , tools \{ } td \text{ \} , steps \{ } sd \text{ \} \} }   \\ 
 
 id ::= & \; iti \; ii \; ad \\
-\mid & \; id_1 \text{ or } id_2 \\
-\mid & \; \text{recipe} \; ii \; \\
 \mid & \; iti_p \; iti_c \\
+\mid & \; \text{recipe} \; ii \; \\
+\mid & \; id_1 \text{ or } id_2 \\
 \mid & \; id_1 \text{ , } id_2 \\
 
 td ::= & \; ti_p \; ti_r \text{ [ } tad \text{ ] } \\
@@ -117,7 +117,7 @@ $$
 \frac{
     \langle r, env_R \rangle \rightarrow_r env_R'
 }{
-    env_R' \vdash r \rightarrow_c \text{bon apple tea} 
+    env_R' \vdash r \rightarrow_f \text{bon apple tea} 
 } \\
 \text{if } \forall ri . (env_R'(ri) = (env_T, env_I, env_{IT}, env_P) \land env_I = \emptyset \land env_p = \emptyset)  \lor env_R'(ri) \downarrow
 \end{gather}
@@ -303,25 +303,26 @@ $$
 $$
 \begin{gather}
 \frac{
-    env_{IT} \vdash \langle td_1, env_T \rangle \rightarrow_{td} env_T'' \;\;\;\;
-    env_{IT} \vdash \langle td_1, td_2, env_T'' \rangle \rightarrow_{td} env_T'
+    env_{IT} \vdash \langle ti_p \; ti_c, env_T \rangle \rightarrow_{td} env_T''
+    \;\;\;\;
+    env_{IT}, ti_c \vdash \langle tad, env_T'' \rangle \rightarrow_{tad} env_T'
 }{
-    env_{IT} \vdash \langle td_1, td_2, env_T \rangle \rightarrow_{td} env_T''
+    env_{IT} \vdash \langle ti_p ti_c [tad], env_T \rangle \rightarrow_{td} env_T'
 } \\
+\text{Where } env_T(ti_p) = (ti_{gp}, env_A)
 \end{gather}
 $$
 
 $$
 \begin{gather}
 \frac{
-    env_{IT} \vdash \langle ti_p \; ti_c, env_T \rangle \rightarrow_{td} env_T'' \;\;\;\; 
-    env_{IT} \vdash \langle ti_p \; ti_c, env_T \rangle \rightarrow_{td} env_T''
+    env_{IT} \vdash \langle td_1, env_T \rangle \rightarrow_{td} env_T'' \;\;\;\;
+    env_{IT} \vdash \langle td_2, env_T'' \rangle \rightarrow_{td} env_T'
 }{
-    env_{IT} \vdash \langle td_1, td_2, env_T \rangle \rightarrow_{td} env_T
+    env_{IT} \vdash \langle td_1, td_2, env_T \rangle \rightarrow_{td} env_T'
 } \\
 \end{gather}
 $$
-
 
 ## Step declaration transition system
 
