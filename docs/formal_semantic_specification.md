@@ -146,7 +146,7 @@ $$
 \frac{
     \langle id, env_I, env_{IT}, env_R \rangle \rightarrow_{id} \langle env_I', env_{IT}',env_R'\rangle 
     \;\;\;\;
-    env_{T}' \vdash \langle td, env_T\rangle \rightarrow_{td} env_T'
+    env_{IT}' \vdash \langle td, env_T\rangle \rightarrow_{td} env_T'
     \;\;\;\;
     env_{IT}', env_T' \vdash \langle sd, env_I', env_P \rangle \rightarrow_{sd} \langle env_I'', env_P' \rangle \;
 }{
