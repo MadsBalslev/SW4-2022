@@ -5,7 +5,6 @@ import java.util.List;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import Steps.Step;
 public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
 
     List<Tool> toolsList = new ArrayList<Tool>();
@@ -278,5 +277,35 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
             //System.out.println("creating normal toolaction");
         }
         return toolAction;
+    }
+
+    public Step createStep(fannieParserParser.StepDeclarationContext context) 
+    {
+        Step step;
+        if (context.getChild(0) instanceof fannieParserParser.ServeStepDeclarationContext)
+        {
+            step = new DoStepDeclaration();
+            //System.out.println("creating serve step");
+        }
+        else if (context.getChild(0) instanceof fannieParserParser.DoStepDeclarationContext)
+        {
+            step = new ServeStepDeclaration();
+            //System.out.println("creating do step");
+        }
+        else if (context.getChild(0) instanceof fannieParserParser.ContinousDoStepStartDeclarationContext)
+        {
+            step = new ContinousDoStepStartDeclaration();
+            //System.out.println("creating continous do step");
+        }
+        else if (context.getChild(0) instanceof fannieParserParser.ContinousDoStepStopDeclarationContext)
+        {
+            step = new ContinousDoStepStopDeclaration();
+            //System.out.println("creating continous do step");
+        }
+        else {
+            return null;
+        }
+
+        return step;
     }
 }
