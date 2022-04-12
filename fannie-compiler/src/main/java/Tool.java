@@ -14,4 +14,15 @@ public class Tool {
         }
         return sb.toString();
     }
+    public ToolAction getToolAction(String toolActionIdentifier) throws Exception
+    {
+        ToolAction toolAction = new ToolAction();
+        for (ToolAction toolActionDeclaration : toolActionDeclarationsList) {
+            if (toolActionDeclaration.toolActionIdentifier.equals(toolActionIdentifier)) {
+                toolAction = toolActionDeclaration;
+            }
+            else throw new Exception("ToolAction not found");
+        }
+        return toolAction;
+    }
 }

@@ -58,5 +58,9 @@ public class Scope {
     {
         return symbolTable;
     }
+    public void Remove (String key)
+    {
+        symbolTable.remove(key);
+    }
         
 }

@@ -28,7 +28,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         return null;
     }
     @Override public Void visitMainRecipe(fannieParserParser.MainRecipeContext context) 
-    {        
+    {
         System.out.println("Visiting mainrecipe");
         Scope oldScope = scope;
         scope = oldScope.createScope();
@@ -290,6 +290,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         else if (context.getChild(0) instanceof fannieParserParser.DoStepDeclarationContext)
         {
             step = new ServeStepDeclaration();
+            
             //System.out.println("creating do step");
         }
         else if (context.getChild(0) instanceof fannieParserParser.ContinousDoStepStartDeclarationContext)
