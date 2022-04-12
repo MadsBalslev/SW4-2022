@@ -14,7 +14,6 @@ public class App {
 
         CodeGeneratorVisitor cgv = new CodeGeneratorVisitor();
         cgv.visit(tree);
-
         // System.out.println(cgv.markdownFormat);
 
         WriteToFile.write("fannie.md", cgv.markdownFormat);

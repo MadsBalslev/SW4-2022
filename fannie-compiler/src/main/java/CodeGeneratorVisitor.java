@@ -16,7 +16,6 @@ public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
             if (ctx.getChild(i) instanceof fannieParserParser.StepInContext) {
                 if (ctx.getChild(i).getChild(0) instanceof fannieParserParser.ContentInContext) {
                     infoArr[i] = SplitContentIn(ctx.getChild(i).getChild(0).getText());
-
                 } else {
                     infoArr[i] = ctx.getChild(i).getText();
                 }
@@ -178,7 +177,6 @@ public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
 
         for (int i = 0; i < ctx.getChildCount(); i++) {
             infoArr[i] = SplitContentIn(ctx.getChild(i).getText());
-            // infoArr[i] = ctx.getChild(i).getText();
         }
 
         mdString = infoArr[0] + " the " + infoArr[1] + " ";
