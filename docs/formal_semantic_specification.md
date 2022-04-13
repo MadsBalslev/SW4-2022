@@ -7,9 +7,9 @@ $$
     ii &\in II - \text{Ingredient identifier} \\
     ti &\in TI - \text{Tool identifier} \\
     tai &\in TAI - \text{Tool action identifier} \\
+    pi &\in PI - \text{Process identifier} \\
     \\
     iti &\in ITI - \text{Ingredient type identifier} \\
-    tti &\in TTI - \text{Tool type identifier} \\
     \\
     rd &\in RD - \text{Recipe declaration} \\
     id &\in ID - \text{Ingredient declaration} \\
@@ -18,10 +18,6 @@ $$
     tad &\in TAD - \text{Tool action declaration} \\
     sd &\in SD - \text{step declaration} \\
     \\
-    ds &\in DS - \text{Description string} \\
-    in &\in IN - \text{Step input} \\
-    out &\in OUT - \text{Step output} \\
-    ic &\in IC - \text{Ingredient collection} \\
 \end{align}
 $$
 
