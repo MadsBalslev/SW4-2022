@@ -1,7 +1,5 @@
 # Test
-
 ### Ingredients
-
 - Testingredient (1kg, 1 whole)
 - Testingredient2 (1g, 1 tbsp)
 - Testingredient3 (1g, 1 tsp)
@@ -28,16 +26,12 @@
 - TestingredientSPI (1g)
 - TestingredientNUT (1g)
 - TestingredientDRY (1g)
-
 ### Tools
-
 - TestPOT
 - TestSTOVE
 - Knife
-
 ### Steps
-
 1. Put TestingredientLIQ in TestPOT
 2. Slice TestingredientMEA with Knife
 3. Put TestingredientMEA in TestPOT
-4. serve the content in TestPOT
+4. serve the content in TestPOT 

@@ -78,8 +78,8 @@ public class CodeGeneratorVisitorTest {
     }
 
     @Test
-    public void shouldCreateFile() {
-        WriteToFile.write(file.getAbsolutePath(), cgv.markdownFormat);
+    public void shouldCreateFile() throws IOException {
+        WriteToFile.write(file.getAbsolutePath(), cgv.markdownFormat.toString());
         assertTrue("File was created", file.exists());
     }
 
