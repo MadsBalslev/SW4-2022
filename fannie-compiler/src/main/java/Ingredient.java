@@ -6,11 +6,7 @@ public class Ingredient {
     public Ingredient parentIngredient;
     @Override 
     public String toString() {
-        return identifier + ": " + type;
-    }
-    public Ingredient parentIngredient()
-    {
-        return null;
+        return "Identifier: " + identifier + "Type: " + type + "Parent: " + parentIngredient;
     }
     public Ingredient()
     {
@@ -24,7 +20,6 @@ public class Ingredient {
             if (ingredient.type.equals(identifier))
             {
                 this.parentIngredient = ingredient;
-                
             }
         }
         this.identifier = identifier;
