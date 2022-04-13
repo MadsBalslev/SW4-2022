@@ -51,6 +51,26 @@ tad ::= & \; tai \text{ : } iti_i \text{ => } iti_o \\
 
 sd ::= & \; ti \; \text{ do } tai \; ds \; \{ii_1, ii_2, \dots, ii_n\} \\
 \mid & \; ti \; \text{ do } tai \; ds \; \{ii_{i_1}, ii_{i_2}, \dots, ii_{i_n}\} \text{ => } \{ii_{o_1}, ii_{o_2}, \dots, ii_{o_n}\} \\
+\mid & \; ti \; \text{ do } tai \; ds \; ii \\
+\mid & \; ti \; \text{ do } tai \; ds \; ii_i \text{ => } ii_o \\
+\mid & \; ti \; \text{ do } tai \; ds \; \{ii_{1}, ii_{2}, \dots, ii_{n}\} \text{ => } ii \\
+\mid & \; ti \; \text{ do } tai \; ds \; ii \text{ => } \{ii_{1}, ii_{2}, \dots, ii_{n}\} \\
+\mid & \; ti_1 \text{ do } tai \text{ content in } ti_2 \\
+\mid & \; ti_1 \text{ do contain } \{ii_{1}, ii_{2}, \dots, ii_{n}\}\\
+\mid & \; ti_1 \text{ do contain } ii \\
+\mid & \; ti_1 \text{ do remove } \{ii_{1}, ii_{2}, \dots, ii_{n}\}\\
+\mid & \; ti_1 \text{ do remove } ii \\
+\mid & \text{ START } pi \; ti \text{ do } tai \; \{ii_1, ii_2, \dots ii_n\} \\
+\mid & \text{ START } pi \; ti \text{ do } tai \; ii \\
+\mid & \text{ START } pi \; ti \text{ do contain } \{ii_1, ii_2, \dots ii_n\} \\
+\mid & \text{ START } pi \; ti \text{ do contain } ii \\
+\mid & \text{ START } pi \; ti \text{ do remove } \{ii_1, ii_2, \dots ii_n\} \\
+\mid & \text{ START } pi \; ti \text{ do remove } ii \\
+\mid & \text{ STOP } pi \\
+\mid & \text{ STOP } pi \text{ => } \{ii_{o_1}, ii_{o_1}, \dots, ii_{o_n} \}\\
+\mid & \text{ STOP } pi \text{ => } ii \\
+\mid & \text{ server } \{ii_{1}, ii_{2}, \dots, ii_{n}\} \\
+\mid & \text{ server } ii \\
 \mid & \; sd_1 \text{ , } sd_2 \\
 \end{align}
 $$
@@ -562,7 +582,7 @@ $$
 \begin{gather}
 \frac{
 }{
-    env_{IT}, env_T \vdash \langle \text{server } \{ii_1, ii_2, \dots, ii_n\}, env_I, env_P \rangle \rightarrow_{sd}
+    env_{IT}, env_T \vdash \langle \text{serve } \{ii_1, ii_2, \dots, ii_n\}, env_I, env_P \rangle \rightarrow_{sd}
     \langle env_I[ii_1 \mapsto \epsilon, ii_2 \mapsto \epsilon, \dots, ii_n \mapsto \epsilon], env_P \rangle
 } \\
 \text{and } env_I(ii_1) = iti_1 \\
@@ -575,10 +595,10 @@ $$
 $$
 \begin{gather}
 \frac{
-    env_{IT}, env_T \vdash \langle \text{server } \{ii\}, env_I, env_P \rangle \rightarrow_{sd}
+    env_{IT}, env_T \vdash \langle \text{serve } \{ii\}, env_I, env_P \rangle \rightarrow_{sd}
     \langle env_I', env_P \rangle
 }{
-    env_{IT}, env_T \vdash \langle \text{server } ii, env_I, env_P \rangle \rightarrow_{sd}
+    env_{IT}, env_T \vdash \langle \text{serve } ii, env_I, env_P \rangle \rightarrow_{sd}
     \langle env_I', env_P \rangle
 } \\
 \end{gather}
