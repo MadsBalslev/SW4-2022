@@ -5,6 +5,8 @@ import java.util.List;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.TerminalNode;
+
+import fannieParserParser.StepDeclarationContext;
 public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
 
     List<Tool> toolsList = new ArrayList<Tool>();
@@ -99,7 +101,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     @Override public Void visitStepsList(fannieParserParser.StepsListContext context) 
     { 
         System.out.println("Visiting stepslist");
-        //visitChildren(context);
+        visitChildren(context);
         return null;
     }
     @Override public Ingredient visitIngredientDeclaration(fannieParserParser.IngredientDeclarationContext context) 
@@ -130,6 +132,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     }
     @Override public Void visitStepDeclaration(fannieParserParser.StepDeclarationContext context) 
     { 
+        System.out.println("DO WE VISIT STEPS");
         visitChildren(context);
         return null;
     }
@@ -218,6 +221,11 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     }
     @Override public Void visitDoStepDeclaration(fannieParserParser.DoStepDeclarationContext context) 
     { 
+        System.out.println("ARE WE IN HERE");
+        String toolIdentifier = context.toolIdentifier().getText();
+            String toolActionIdentifier = context.toolActionIdentifier().getText();
+            Object oldIngredients = context.stepIn().ingredientIdentifier().getText();
+            new DoStepDeclaration(toolIdentifier, toolActionIdentifier,scope, oldIngredients);
         visitChildren(context);
         return null;
     }
@@ -257,7 +265,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         {
             toolAction.ingredientTypeIdentifier = context.ingredientTypeIdentifier(0).getText();
             toolAction.transformedIngredientTypeIdentifier = "content in";
-            toolAction.toolActionIdentifier = "Contain";
+            toolAction.toolActionIdentifier = "contain";
             //System.out.println("creating contain toolaction");
             //return toolAction;
         }
@@ -284,15 +292,19 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         Step step;
         if (context.getChild(0) instanceof fannieParserParser.ServeStepDeclarationContext)
         {
-            step = new DoStepDeclaration();
+            step = new ServeStepDeclaration();
             //System.out.println("creating serve step");
         }
-        else if (context.getChild(0) instanceof fannieParserParser.DoStepDeclarationContext)
-        {
-            step = new ServeStepDeclaration();
+        // else if (context.getChild(0) instanceof fannieParserParser.DoStepDeclarationContext)
+        // {
+        //     String toolIdentifier = context.doStepDeclaration().toolIdentifier().getText();
+        //     String toolActionIdentifier = context.doStepDeclaration().toolActionIdentifier().getText();
+        //     Object oldIngredients = context.doStepDeclaration().stepIn().ingredientIdentifier().getText();
+        //     step = new DoStepDeclaration(toolIdentifier, toolActionIdentifier,scope, oldIngredients);
             
-            //System.out.println("creating do step");
-        }
+            
+        //     //System.out.println("creating do step");
+        // }
         else if (context.getChild(0) instanceof fannieParserParser.ContinousDoStepStartDeclarationContext)
         {
             step = new ContinousDoStepStartDeclaration();
@@ -304,6 +316,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
             //System.out.println("creating continous do step");
         }
         else {
+            step = null;
             return null;
         }
 

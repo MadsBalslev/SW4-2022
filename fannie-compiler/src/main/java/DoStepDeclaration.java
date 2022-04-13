@@ -5,10 +5,14 @@ public class DoStepDeclaration extends Step {
     Scope scope;
 
     public DoStepDeclaration(String toolIdentifier, String toolActionIdentifier, Scope scope, Object oldIngredients) {
+        System.out.println("in dostep");
         Tool tool = (Tool)scope.retrieve(toolIdentifier);
+        System.out.println(tool.toString());
+        System.out.println(toolActionIdentifier);
         ToolAction toolAction = new ToolAction();
         try {
             toolAction = tool.getToolAction(toolActionIdentifier);
+            //System.out.println(toolAction.toString());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -18,27 +22,42 @@ public class DoStepDeclaration extends Step {
             Ingredient newIngredient;
             Ingredient ingredient = new Ingredient();
             ingredient = (Ingredient)scope.retrieve(oldIngredients);
+            System.out.println(toolAction.ingredientTypeIdentifier);
             
-            if (toolAction.ingredientTypeIdentifier == ingredient.type)
+            if (toolAction.ingredientTypeIdentifier.equals(ingredient.type))
             {
                 newIngredient = new Ingredient();
                 newIngredient.identifier = ingredient.identifier;
                 newIngredient.type = toolAction.transformedIngredientTypeIdentifier;
                 scope.Remove(ingredient.identifier);
+                System.out.println("Removed " + ingredient.identifier + " from scope");
                 scope.append(newIngredient.identifier, newIngredient);
             }
             else
             {
-                throw new RuntimeException("Ingredient type mismatch");
+                throw new RuntimeException("Ingredient type mismatch" + " " + toolAction.ingredientTypeIdentifier + " " + ingredient.type);
             }
         }
+        //else if (context.getChild(3) instanceof fannieParserParser.ContentInContext){
+            //
+        // }
         else if (oldIngredients instanceof List)
         {
             //SUS TYPECAST
             for (String ingredient : (List<String>)oldIngredients)
             {
                 Ingredient newIngredient = (Ingredient)scope.retrieve(ingredient);
-                    
+                if (toolAction.ingredientTypeIdentifier == newIngredient.type)
+                {
+                    newIngredient.identifier = ingredient;
+                    newIngredient.type = toolAction.transformedIngredientTypeIdentifier;
+                    scope.Remove(newIngredient.identifier);
+                    scope.append(newIngredient.identifier, newIngredient);
+                }
+                else
+                {
+                    throw new RuntimeException("Ingredient type mismatch");
+                }
             }
         }
     }

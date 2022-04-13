@@ -1,5 +1,7 @@
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 
 public class Scope {
     private Scope parent;
@@ -61,6 +63,16 @@ public class Scope {
     public void Remove (String key)
     {
         symbolTable.remove(key);
+    }
+    public List<Ingredient> GetIngredients()
+    {
+        List<Ingredient> ingredients = new ArrayList<Ingredient>();
+        for (Map.Entry<String, Object> entry : symbolTable.entrySet()) {
+            if (entry.getValue().getClass().getName().equals("Ingredient")) {
+                ingredients.add((Ingredient)entry.getValue());
+            }
+        }
+        return ingredients;
     }
         
 }
