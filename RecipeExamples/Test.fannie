@@ -1,5 +1,4 @@
 main recipe Test{
-
     ingredients{
         ingredient Testingredient (1kg, 1 whole),
         ingredient Testingredient2 (1g, 1 tbsp),

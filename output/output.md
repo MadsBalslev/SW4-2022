@@ -26,7 +26,7 @@
 - TestingredientSPI (1g)
 - TestingredientNUT (1g)
 - TestingredientDRY (1g)
-- # TestSubrecipe
+- TestSubrecipe
 ### Tools
 - TestPOT
 - TestSTOVE
@@ -36,9 +36,11 @@
 2. Slice TestingredientMEA with Knife
 3. Put TestingredientMEA in TestPOT
 4. Put TestingredientSR in TestPOT
-5. serve the content in TestPOT # TestSubrecipe
+5. serve the content in TestPOT 
+# TestSubrecipe
 ### Ingredients
 - TestingredientSR (1g, 1 whole)
+
 ### Tools
 - TestPOT2
 ### Steps
