@@ -129,11 +129,18 @@ public class CodeGeneratorVisitorTest {
     }
 
     @Test
-    public void shouldhaveCorrectSteps() {
+    public void shouldHaveCorrectSteps() {
         String S = cgv.markdownFormat.toString();
 
         for (String step : steps) {
             assertTrue("Does not contain" + step, S.contains(step));
         }
+    }
+
+    // TODO
+    @Test
+    public void shouldHaveCorrectFormattingSubRecipes() {
+
+        assertTrue("Does not format subrecipe correctly", condition);
     }
 }
