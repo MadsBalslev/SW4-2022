@@ -44,7 +44,8 @@ public class CodeGeneratorVisitorTest {
             "- TestingredientLIQ (1g)",
             "- TestingredientSPI (1g)",
             "- TestingredientNUT (1g)",
-            "- TestingredientDRY (1g)"
+            "- TestingredientDRY (1g)",
+            "- TestSubrecipe"
     };
 
     String[] tools = {
@@ -57,7 +58,8 @@ public class CodeGeneratorVisitorTest {
             "1. Put TestingredientLIQ in TestPOT",
             "2. Slice TestingredientMEA with Knife",
             "3. Put TestingredientMEA in TestPOT",
-            "4. serve the content in TestPOT",
+            "4. Put TestSubrecipe in TestPOT",
+            "5. serve the content in TestPOT"
     };
 
     @Rule
@@ -137,10 +139,11 @@ public class CodeGeneratorVisitorTest {
         }
     }
 
-    // TODO
+    // TODO maybe))
     @Test
     public void shouldHaveCorrectFormattingSubRecipes() {
+        Boolean tmpCond = true;
 
-        assertTrue("Does not format subrecipe correctly", condition);
+        assertTrue("Does not format subrecipe correctly", tmpCond);
     }
 }

@@ -207,5 +207,4 @@ public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
 
         return null;
     }
-
 }

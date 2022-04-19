@@ -35,14 +35,14 @@ main recipe Test{
     tools{
         tool TestPOT[contain : ingredient],
         tool TestSTOVE[Heat : content in TestPOT => ingredient],
-        tool Knife[Slice : ingredient]
+        tool Knife[Slice : ingredient => SlicedIngredient]
     },
 
     steps{
         TestPOT do contain TestingredientLIQ,
         Knife do Slice TestingredientMEA,
         TestPOT do contain TestingredientMEA,
-        TestPOT do contain TestingredientSR,
+        TestPOT do contain TestSubrecipe,
 
         serve content in TestPOT
     }
