@@ -28,9 +28,27 @@ public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
         return infoArr;
     }
 
-    @Override
-    public Void visitRecipeIdentifier(fannieParserParser.RecipeIdentifierContext ctx) {
-        markdownFormat.append("# " + ctx.getText() + "\n");
+    // public Void visitRecipeIdentifier(fannieParserParser.RecipeIdentifierContext
+    // ctx) {
+    // markdownFormat.append("# " + ctx.getText() + "\n");
+    // filename += ctx.getText();
+
+    // visitChildren(ctx);
+    // return null;
+    // }
+
+    public Void visitMainRecipe(fannieParserParser.MainRecipeContext ctx) {
+        String title = ctx.getChild(2).getText();
+        markdownFormat.append("# " + title + "\n");
+        filename += ctx.getText();
+
+        visitChildren(ctx);
+        return null;
+    }
+
+    public Void visitSubRecipe(fannieParserParser.SubRecipeContext ctx) {
+        String title = ctx.getChild(1).getText();
+        markdownFormat.append("\n# " + title + "\n");
         filename += ctx.getText();
 
         visitChildren(ctx);
@@ -45,7 +63,7 @@ public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
     }
 
     public Void visitToolsList(fannieParserParser.ToolsListContext ctx) {
-        markdownFormat.append("### Tools" + "\n");
+        markdownFormat.append("\n### Tools" + "\n");
 
         visitChildren(ctx);
         return null;
@@ -143,6 +161,11 @@ public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
         return null;
     }
 
+    public Void visitRecipeIngredientDeclaration(fannieParserParser.RecipeIngredientDeclarationContext ctx) {
+        markdownFormat.append(ctx.getChild(1).getText());
+        return null;
+    }
+
     public Void visitIngredientIdentifier(fannieParserParser.IngredientIdentifierContext ctx) {
         markdownFormat.append(ctx.getText() + " ");
 
@@ -184,5 +207,4 @@ public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
 
         return null;
     }
-
 }
