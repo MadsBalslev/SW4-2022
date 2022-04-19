@@ -1,6 +1,10 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.crypto.dsig.Transform;
+
+import fannieParserParser.IngredientIdentifierContext;
+
 public class DoStepDeclaration extends Step {
     Scope scope;
 
@@ -24,14 +28,17 @@ public class DoStepDeclaration extends Step {
             ingredient = (Ingredient)scope.retrieve(oldIngredients);
             System.out.println(toolAction.ingredientTypeIdentifier);
             
-            if (toolAction.ingredientTypeIdentifier.equals(ingredient.type))
+            if (toolAction.ingredientTypeIdentifier.equals(ingredient.type) || ingredient.isDefaultIngredient(ingredient.type))
             {
                 newIngredient = new Ingredient();
-                newIngredient.identifier = ingredient.identifier;
+                if (toolAction.transformedIngredientTypeIdentifier.equals("content in")) newIngredient.identifier = "content in" + toolAction.toolIdentifier;
+                else newIngredient.identifier = ingredient.identifier;
                 newIngredient.type = toolAction.transformedIngredientTypeIdentifier;
                 scope.Remove(ingredient.identifier);
                 System.out.println("Removed " + ingredient.identifier + " from scope");
+                //System.out.println("NYE INGREDIENSTYPE: " + newIngredient.identifier);
                 scope.append(newIngredient.identifier, newIngredient);
+                //System.out.println("Eksisterer den stadig" + newIngredient.identifier);
             }
             else
             {

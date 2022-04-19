@@ -5,8 +5,6 @@ import java.util.List;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.TerminalNode;
-
-import fannieParserParser.StepDeclarationContext;
 public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
 
     List<Tool> toolsList = new ArrayList<Tool>();
@@ -69,14 +67,12 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         System.out.println("Visiting recipebody");
         //List<Ingredient> ingredientsList = new ArrayList<Ingredient>();
         // ingredientsList = visitIngredientsList(context.ingredientsList());
-        toolsList = visitToolsList(context.toolsList());
         visitChildren(context); 
         return null;
     }
-    @Override public ArrayList<Ingredient> visitIngredientsList(fannieParserParser.IngredientsListContext context) 
+    @Override public Void visitIngredientsList(fannieParserParser.IngredientsListContext context) 
     {   
         System.out.println("Visiting ingredientslist");
-        List<Ingredient> ingredientsList = new ArrayList<Ingredient>();
         for(int i = 0; i < context.ingredientDeclaration().size(); i++) {
             Ingredient ingredient = visitIngredientDeclaration(context.ingredientDeclaration(i));
             scope.append(ingredient.identifier, ingredient);
@@ -84,19 +80,17 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
             //ingredientsList.add(visitIngredientDeclaration(context.ingredientDeclaration(i)));
         }
         visitChildren(context); 
-        return (ArrayList<Ingredient>) ingredientsList;
+        return null;
     }
-    @Override public ArrayList<Tool> visitToolsList(fannieParserParser.ToolsListContext context) 
+    @Override public Void visitToolsList(fannieParserParser.ToolsListContext context) 
     {
         System.out.println("Visiting toolslist");
         for (int i = 0; i < context.toolDeclaration().size(); i++) {
             Tool tool = visitToolDeclaration(context.toolDeclaration(i));
             scope.append(tool.toolIdentifier, tool);
-            // using list instead of scope 
-            //toolsList.add(visitToolDeclaration(context.toolDeclaration(i)));
         }
         //visitChildren(context);
-        return (ArrayList<Tool>) toolsList;
+        return null;
     }
     @Override public Void visitStepsList(fannieParserParser.StepsListContext context) 
     { 
@@ -127,6 +121,9 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         tool.toolIdentifier = context.toolIdentifier().getText();
         tool.toolTypeIdentifier = context.toolTypeIdentifier().getText();
         tool.toolActionDeclarationsList = visitToolActionDeclarationsList(context.toolActionDeclarationsList());
+        for (ToolAction toolAction : tool.toolActionDeclarationsList) {
+            toolAction.toolIdentifier = tool.toolIdentifier;
+        }
         // visitChildren(context);
         return tool;
     }
@@ -223,10 +220,24 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     { 
         System.out.println("ARE WE IN HERE");
         String toolIdentifier = context.toolIdentifier().getText();
-            String toolActionIdentifier = context.toolActionIdentifier().getText();
-            Object oldIngredients = context.stepIn().ingredientIdentifier().getText();
-            new DoStepDeclaration(toolIdentifier, toolActionIdentifier,scope, oldIngredients);
-        visitChildren(context);
+        String toolActionIdentifier = context.toolActionIdentifier().getText();
+        if (context.stepIn().getChild(0) instanceof fannieParserParser.IngredientIdentifierContext)
+        {
+            System.out.print("boom");
+            Object oldIngredients = context.stepIn().getChild(0).getText();
+            new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, oldIngredients);
+        }
+        else if (context.stepIn().getChild(0) instanceof fannieParserParser.ContentInContext)
+        {
+            System.out.print("i content in ");
+            Object oldIngredients = context.stepIn().contentIn().getText();
+            new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, oldIngredients);
+        }
+        else if (context.stepIn().getChild(0) instanceof fannieParserParser.IngredientCollectionContext)
+        {
+            Object oldIngredients = context.stepIn().ingredientCollection().getText();
+            new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, oldIngredients);
+        }
         return null;
     }
     @Override public Void visitContinousDoStepStartDeclaration(fannieParserParser.ContinousDoStepStartDeclarationContext context) 
@@ -235,7 +246,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         return null;
     }
     @Override public Void visitContinousDoStepStopDeclaration(fannieParserParser.ContinousDoStepStopDeclarationContext context) 
-    { 
+    {
         visitChildren(context);
         return null;
     }
@@ -315,11 +326,15 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
             step = new ContinousDoStepStopDeclaration();
             //System.out.println("creating continous do step");
         }
-        else {
+        else 
+        {
             step = null;
             return null;
         }
 
         return step;
     }
+
+   
+
 }

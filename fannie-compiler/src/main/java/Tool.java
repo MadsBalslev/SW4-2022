@@ -17,11 +17,17 @@ public class Tool {
     public ToolAction getToolAction(String toolActionIdentifier) throws Exception
     {
         ToolAction toolAction = new ToolAction();
+        Boolean actionFound = false;
         for (ToolAction toolActionDeclaration : toolActionDeclarationsList) {
+            //System.out.println(toolActionDeclaration.toolActionIdentifier+"1");
+            //System.out.println(toolActionIdentifier+"2");
             if (toolActionDeclaration.toolActionIdentifier.equals(toolActionIdentifier)) {
                 toolAction = toolActionDeclaration;
+                actionFound = true;
             }
-            else throw new Exception("ToolAction not found");
+        }
+        if (actionFound == false) {
+            throw new Exception("ToolAction not found");
         }
         return toolAction;
     }
