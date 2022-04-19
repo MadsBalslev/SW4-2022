@@ -21,7 +21,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         for (Tool tool : toolsList) {
             System.out.println(tool.toolIdentifier + " " + tool.toolTypeIdentifier);
             for (ToolAction toolAction : tool.toolActionDeclarationsList) {
-                System.out.println("er i toolaction print");
+                //System.out.println("er i toolaction print");
                 System.out.println("Action " + toolAction.toolActionIdentifier + " Ingredient Type " + toolAction.ingredientTypeIdentifier + " Becomes " + toolAction.transformedIngredientTypeIdentifier);
             }
         }
@@ -34,6 +34,12 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         scope = oldScope.createScope();
         visitChildren(context);
         scope.stringPrinter(scope.getSymbolTable(), "Tool");
+        System.out.println("INGREDIENSER: ");
+        scope.stringPrinter(scope.getSymbolTable(), "Ingredient");
+        if(IsIngredientslistEmpty(scope) == false)
+        {
+            throw new RuntimeException("Not all ingredients are served");
+        }
         scope = oldScope;
         return null;
     }
@@ -129,7 +135,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     }
     @Override public Void visitStepDeclaration(fannieParserParser.StepDeclarationContext context) 
     { 
-        System.out.println("DO WE VISIT STEPS");
+        //System.out.println("DO WE VISIT STEPS");
         visitChildren(context);
         return null;
     }
@@ -213,23 +219,24 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     }
     @Override public Void visitServeStepDeclaration(fannieParserParser.ServeStepDeclarationContext context) 
     { 
+        scope.Remove(context.stepIn().getText());
         visitChildren(context);
         return null;
     }
     @Override public Void visitDoStepDeclaration(fannieParserParser.DoStepDeclarationContext context) 
     { 
-        System.out.println("ARE WE IN HERE");
+        //System.out.println("ARE WE IN HERE");
         String toolIdentifier = context.toolIdentifier().getText();
         String toolActionIdentifier = context.toolActionIdentifier().getText();
         if (context.stepIn().getChild(0) instanceof fannieParserParser.IngredientIdentifierContext)
         {
-            System.out.print("boom");
+            //System.out.print("boom");
             Object oldIngredients = context.stepIn().getChild(0).getText();
             new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, oldIngredients);
         }
         else if (context.stepIn().getChild(0) instanceof fannieParserParser.ContentInContext)
         {
-            System.out.print("i content in ");
+            //System.out.print("i content in ");
             Object oldIngredients = context.stepIn().contentIn().getText();
             new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, oldIngredients);
         }
@@ -333,6 +340,15 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         }
 
         return step;
+    }
+    public boolean IsIngredientslistEmpty(Scope scope)
+    {
+        if (scope.getTypeAmount(scope.getSymbolTable(), "Ingredient") != 0 )
+        {
+            System.out.println("Ingredients list is not empty");
+            return false;
+        }
+        return true;
     }
 
    

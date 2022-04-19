@@ -56,6 +56,16 @@ public class Scope {
             }
         }
     }
+    public int getTypeAmount(HashMap<String, Object> symbolTable, String type)
+    {
+        int amount = 0;
+        for (Map.Entry<String, Object> entry : symbolTable.entrySet()) {
+            if (entry.getValue().getClass().getName().equals(type)) {
+                amount++;
+            }
+        }
+        return amount;
+    }
     public HashMap<String, Object> getSymbolTable()
     {
         return symbolTable;
