@@ -16,6 +16,7 @@ public class Scope {
 
     Scope() {
         this.parent = null;
+        ArrayList<String> toolTable = new ArrayList<String>();
         this.symbolTable = new HashMap<>();
     }
     Scope(Scope parent)
@@ -83,6 +84,28 @@ public class Scope {
             }
         }
         return ingredients;
+    }
+    public List<Tool> GetTools()
+    {
+        List<Tool> tools = new ArrayList<Tool>();
+        for (Map.Entry<String, Object> entry : symbolTable.entrySet()) {
+            if (entry.getValue().getClass().getName().equals("Tool")) {
+                tools.add((Tool)entry.getValue());
+            }
+        }
+        return tools;
+    }
+    public Boolean hasToolsBeenUsed()
+    {
+        for (Map.Entry<String, Object> entry : symbolTable.entrySet()) {
+            if (entry.getValue().getClass().getName().equals("Tool")) {
+                if (((Tool)entry.getValue()).getHasToolBeenUsed() == false) {
+                    System.out.println("Tool has not been used");
+                    return false;
+                }
+            }
+        }
+        return true;
     }
         
 }

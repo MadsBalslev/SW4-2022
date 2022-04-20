@@ -4,6 +4,7 @@ public class Tool {
     public String toolTypeIdentifier;
     public String toolIdentifier;
     public List<ToolAction> toolActionDeclarationsList = new ArrayList<ToolAction>();
+    public Boolean hasToolBeenUsed = false;
 
     @Override
     public String toString() {
@@ -19,8 +20,6 @@ public class Tool {
         ToolAction toolAction = new ToolAction();
         Boolean actionFound = false;
         for (ToolAction toolActionDeclaration : toolActionDeclarationsList) {
-            //System.out.println(toolActionDeclaration.toolActionIdentifier+"1");
-            //System.out.println(toolActionIdentifier+"2");
             if (toolActionDeclaration.toolActionIdentifier.equals(toolActionIdentifier)) {
                 toolAction = toolActionDeclaration;
                 actionFound = true;
@@ -30,5 +29,56 @@ public class Tool {
             throw new Exception("ToolAction not found");
         }
         return toolAction;
+    }
+    public void useToolAction(ToolAction toolAction, Object doStep, Scope scope)
+    {
+        if (doStep instanceof Ingredient)
+        {
+            Ingredient oldIngredient = (Ingredient) doStep;
+            if (toolAction.ingredientTypeIdentifier.equals(oldIngredient.type) || oldIngredient.isDefaultIngredient(oldIngredient.type))
+            {
+                Ingredient newIngredient = new Ingredient();
+                if (toolAction.transformedIngredientTypeIdentifier.equals("content in")) newIngredient.identifier = "content in" + toolAction.toolIdentifier;
+                else newIngredient.identifier = oldIngredient.identifier;
+                newIngredient.type = toolAction.transformedIngredientTypeIdentifier;
+                System.out.println("Removed " + oldIngredient.identifier + " from scope");
+                scope.Remove(oldIngredient.identifier);
+                scope.append(newIngredient.identifier, newIngredient);
+                this.hasToolBeenUsed = true;
+            }
+            else
+            {
+                throw new RuntimeException("Ingredient type mismatch");
+            }
+        }
+        else if (doStep instanceof List)
+        {
+            List<String> ingredientList = (List<String>) doStep;
+            for (String ingredient : (List<String>)ingredientList)
+            {
+                Ingredient oldIngredient = (Ingredient)scope.retrieve(ingredient);
+                if (toolAction.ingredientTypeIdentifier.equals(oldIngredient.type) || oldIngredient.isDefaultIngredient(oldIngredient.type))
+                {
+                    Ingredient newIngredient = new Ingredient();
+                    if (toolAction.transformedIngredientTypeIdentifier.equals("content in")) newIngredient.identifier = "content in" + toolAction.toolIdentifier;
+                    else newIngredient.identifier = oldIngredient.identifier;
+                    {
+                        newIngredient.identifier = oldIngredient.identifier;
+                        newIngredient.type = toolAction.transformedIngredientTypeIdentifier;
+                        scope.Remove(oldIngredient.identifier);
+                        scope.append(newIngredient.identifier, newIngredient);
+                    }
+                }
+                else
+                {
+                    throw new RuntimeException("Ingredient type mismatch");
+                }
+            }   
+            this.hasToolBeenUsed = true;
+        }
+    }
+    public Boolean getHasToolBeenUsed()
+    {
+        return this.hasToolBeenUsed;
     }
 }
