@@ -100,7 +100,6 @@ public class Scope {
         for (Map.Entry<String, Object> entry : symbolTable.entrySet()) {
             if (entry.getValue().getClass().getName().equals("Tool")) {
                 if (((Tool)entry.getValue()).getHasToolBeenUsed() == false) {
-                    System.out.println("Tool has not been used");
                     return false;
                 }
             }
