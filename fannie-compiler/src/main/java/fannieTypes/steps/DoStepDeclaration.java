@@ -1,9 +1,9 @@
+package fannieTypes.steps;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.crypto.dsig.Transform;
-
-
+import fannieTypes.*;
+import scope.Scope;
 
 public class DoStepDeclaration extends Step {
     Scope scope;
@@ -45,4 +45,15 @@ public class DoStepDeclaration extends Step {
             }
         }
     }
+
+    public DoStepDeclaration(String toolIdentifier, String toolActionIdentifier, Scope scope, Ingredient oldIngredient) {
+        Tool tool = (Tool)scope.retrieve(toolIdentifier);
+        try { ToolAction toolAction = tool.getToolAction(toolActionIdentifier);
+            tool.useToolAction(toolAction, oldIngredient, scope);
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 }

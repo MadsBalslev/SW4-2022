@@ -5,6 +5,12 @@ import java.util.List;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.TerminalNode;
+
+import fannieTypes.Ingredient;
+import fannieTypes.Tool;
+import fannieTypes.ToolAction;
+import fannieTypes.steps.*;
+import scope.Scope;
 public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
 
     List<Tool> toolsList = new ArrayList<Tool>();
@@ -236,6 +242,25 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     }
     @Override public Void visitContinousDoStepStartDeclaration(fannieParserParser.ContinousDoStepStartDeclarationContext context) 
     { 
+        // String toolIdentifier = context.toolIdentifier().getText();
+        // String toolActionIdentifier = context.toolActionIdentifier().getText();
+        // ProcIdentifier procIdentifier = new ProcIdentifier(context.procIdentifier().getText());
+        // scope.append(procIdentifier.getValue(), procIdentifier);
+        // if (context.stepIn().getChild(0) instanceof fannieParserParser.IngredientIdentifierContext)
+        // {
+        //     Object oldIngredients = context.stepIn().getChild(0).getText();
+        //     new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, oldIngredients);
+        // }
+        // else if (context.stepIn().getChild(0) instanceof fannieParserParser.ContentInContext)
+        // {
+        //     Object oldIngredients = context.stepIn().contentIn().getText();
+        //     new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, oldIngredients);
+        // }
+        // else if (context.stepIn().getChild(0) instanceof fannieParserParser.IngredientCollectionContext)
+        // {
+        //     Object oldIngredients = context.stepIn().ingredientCollection().getText();
+        //     new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, oldIngredients);
+        // }
         visitChildren(context);
         return null;
     }
@@ -297,11 +322,11 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         }
         else if (context.getChild(0) instanceof fannieParserParser.ContinousDoStepStartDeclarationContext)
         {
-            step = new ContinousDoStepStartDeclaration();
+            step = null;
         }
         else if (context.getChild(0) instanceof fannieParserParser.ContinousDoStepStopDeclarationContext)
         {
-            step = new ContinousDoStepStopDeclaration();
+            step = null;
         }
         else 
         {

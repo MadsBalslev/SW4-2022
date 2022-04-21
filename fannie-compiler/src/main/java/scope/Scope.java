@@ -1,6 +1,11 @@
+package scope;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import fannieTypes.Ingredient;
+import fannieTypes.Tool;
+
 import java.util.ArrayList;
 
 public class Scope {
@@ -13,10 +18,8 @@ public class Scope {
     public Scope parentScope() {
         return parent;
     }
-
-    Scope() {
+    public Scope() {
         this.parent = null;
-        ArrayList<String> toolTable = new ArrayList<String>();
         this.symbolTable = new HashMap<>();
     }
     Scope(Scope parent)
@@ -33,10 +36,18 @@ public class Scope {
         this.parent = parent;
         return this;
     }
-
     public void append(String key, Object value)
     {
         symbolTable.put(key, value);
+    }
+    public void appendGlobal(String key, Object value)
+    {
+        if (isGlobalScope()) {
+            symbolTable.put(key, value);
+        }
+        else {
+            parent.appendGlobal(key, value);
+        }
     }
     public Object retrieve(Object name)
     {
@@ -106,5 +117,4 @@ public class Scope {
         }
         return true;
     }
-        
 }

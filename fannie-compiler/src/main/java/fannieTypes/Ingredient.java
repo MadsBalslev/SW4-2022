@@ -1,6 +1,8 @@
+package fannieTypes;
 import java.util.List;
+import java.util.Map;
 
-import org.antlr.v4.runtime.CommonTokenStream;
+import scope.Scope;
 
 public class Ingredient {
     public String identifier;
@@ -40,23 +42,39 @@ public class Ingredient {
                     
                 return true;
             case "content in":
-                    
                 return true;
         }
         return false;
         
     }
-    public Ingredient(String identifier, String type, Scope scope)
+    public Ingredient(String identifier, String ingredientType, Scope scope)
     {
-        List<Ingredient> ingredients = scope.GetIngredients();
-        for (Ingredient ingredient : ingredients)
-        {
-            if (ingredient.type.equals(identifier))
-            {
-                this.parentIngredient = ingredient;
-            }
-        }
+        
+        
         this.identifier = identifier;
-        this.type = type;
+        //if (type.Identifier == parentIngredient.type.Identifier)
+
+    }
+    public Boolean isType(String type)
+    {
+        if (this.type.equals(type))
+        {
+            return true;
+        }
+        else if(this.parentIngredient != null)
+        {
+            return this.parentIngredient.isType(type);
+        }
+        else 
+        {
+            return false;
+        }
+    }
+    public Ingredient createIngredient(String identifier, String type, Scope scope)
+    {
+
+        Ingredient ingredient = new Ingredient(identifier, type, scope);
+        scope.append(identifier, ingredient);
+        return ingredient;
     }
 }

@@ -1,3 +1,4 @@
+package fannieTypes;
 public class ToolAction {
     public String toolActionIdentifier;
     public String ingredientTypeIdentifier;
@@ -6,5 +7,7 @@ public class ToolAction {
     @Override
     public String toString() {
         return toolActionIdentifier + ": " + ingredientTypeIdentifier + " -> " + transformedIngredientTypeIdentifier;
-    }  
+    } 
+    public ToolAction() {
+    }
 }
