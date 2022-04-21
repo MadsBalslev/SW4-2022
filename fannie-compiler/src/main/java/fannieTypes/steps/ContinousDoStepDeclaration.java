@@ -30,7 +30,7 @@ public class ContinousDoStepDeclaration extends Step {
             ingredient = (Ingredient)scope.retrieve(oldIngredients);
             System.out.println(toolAction.ingredientTypeIdentifier);
             
-            if (toolAction.ingredientTypeIdentifier.equals(ingredient.type) || ingredient.isDefaultIngredient(ingredient.type))
+            if (toolAction.ingredientTypeIdentifier.equals(ingredient.type) || ingredient.isDefaultIngredient(ingredient.type.Identifier))
             {
                 tool.useToolAction(toolAction, ingredient, scope);
             }

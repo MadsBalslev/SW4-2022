@@ -16,7 +16,6 @@ public class DoStepDeclaration extends Step {
         ToolAction toolAction = new ToolAction();
         try {
             toolAction = tool.getToolAction(toolActionIdentifier);
-            //System.out.println(toolAction.toString());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -27,7 +26,7 @@ public class DoStepDeclaration extends Step {
             ingredient = (Ingredient)scope.retrieve(oldIngredients);
             System.out.println(toolAction.ingredientTypeIdentifier);
             
-            if (toolAction.ingredientTypeIdentifier.equals(ingredient.type) || ingredient.isDefaultIngredient(ingredient.type))
+            if (toolAction.ingredientTypeIdentifier.equals(ingredient.type.Identifier) || ingredient.isDefaultIngredient(ingredient.type.Identifier))
             {
                 tool.useToolAction(toolAction, ingredient, scope);
             }
@@ -41,7 +40,7 @@ public class DoStepDeclaration extends Step {
             //SUS TYPECAST
             for (String ingredient : (List<String>)oldIngredients)
             {
-                tool.useToolAction(toolAction, ingredient, scope);
+                //tool.useToolAction(toolAction, ingredient, scope);
             }
         }
     }
@@ -55,5 +54,4 @@ public class DoStepDeclaration extends Step {
             System.out.println(e.getMessage());
         }
     }
-
 }

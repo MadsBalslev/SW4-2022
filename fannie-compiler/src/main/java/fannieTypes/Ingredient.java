@@ -6,7 +6,7 @@ import scope.Scope;
 
 public class Ingredient {
     public String identifier;
-    public String type;
+    public IngredientType type;
     public Ingredient parentIngredient;
     @Override 
     public String toString() {
@@ -20,7 +20,9 @@ public class Ingredient {
     {
         
         switch (type) {
-
+            case "ingredient":
+                return true;
+                
             case "spice":
                 return true;
             case "vegetable":
@@ -57,7 +59,7 @@ public class Ingredient {
     }
     public Boolean isType(String type)
     {
-        if (this.type.equals(type))
+        if (this.type.Identifier.equals(type))
         {
             return true;
         }
@@ -65,7 +67,11 @@ public class Ingredient {
         {
             return this.parentIngredient.isType(type);
         }
-        else 
+        else if (this.type.isDefaultType(type))
+        {
+            return true;
+        }
+        else
         {
             return false;
         }

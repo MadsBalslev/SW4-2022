@@ -7,6 +7,7 @@ import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import fannieTypes.Ingredient;
+import fannieTypes.IngredientType;
 import fannieTypes.Tool;
 import fannieTypes.ToolAction;
 import fannieTypes.steps.*;
@@ -148,7 +149,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     { 
         Ingredient ingredient = new Ingredient();
         ingredient.identifier = context.ingredientIdentifier().getText();
-        ingredient.type = context.ingredientTypeIdentifier().getText();
+        ingredient.type = new IngredientType(context.ingredientTypeIdentifier().getText());
        // visitChildren(context);
         return ingredient;
     }
@@ -162,7 +163,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     { 
         Ingredient ingredient = new Ingredient();
         ingredient.identifier = context.recipeIdentifier().getText();
-        ingredient.type = context.RECIPE().getText();
+        ingredient.type = new IngredientType (context.RECIPE().getText());
         visitChildren(context);
         return ingredient;
     }

@@ -5,34 +5,33 @@ public class IngredientType {
     public String Identifier;
     public IngredientType(String identifier) {
         this.Identifier = identifier;
-        switch (identifier) {
+        if (this.isDefaultType(identifier)) {
+            this.parentIngredientType = new IngredientType("Ingredient");
+        }
+    }
+
+    public Boolean isDefaultType(String Type) {
+        switch (Type) {
+            case "ingredient":
+                return true;
             case "Vegetable":
-                this.parentIngredientType = new IngredientType("Ingredient");
-                break;
+                return true;
             case "Fruit":
-                this.parentIngredientType = new IngredientType("Ingredient");
-                break;
+                return true;
             case "Meat":
-                this.parentIngredientType = new IngredientType("Ingredient");
-                break;
-            case "Liquid":
-                this.parentIngredientType = new IngredientType("Ingredient");
-                break;
+                return true;
+            case "liquid":
+                return true;
             case "Spice":
-                this.parentIngredientType = new IngredientType("Ingredient");                
-                break;
+                return true;
             case "Nut":
-                this.parentIngredientType = new IngredientType("Ingredient");
-                break;
+                return true;
             case "Dry":
-                this.parentIngredientType = new IngredientType("Ingredient");
-                 break;
+                return true;
             case "Content in":
-                this.parentIngredientType = new IngredientType("Ingredient");
-                break;
-        
+                return true;
             default:
-                break;
+                return false;
         }
     }
 }
