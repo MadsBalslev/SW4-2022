@@ -1,6 +1,6 @@
 package fannieTypes;
 
-import javax.swing.text.StyledEditorKit.BoldAction;
+
 
 public class IngredientType {
 
@@ -49,6 +49,18 @@ public class IngredientType {
             default:
                 return false;
         }
+    }
+    
+    public String toString()
+    {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("IngredientType Identifier: " + this.Identifier);
+        if( this.parentIngredientType != null)
+        {
+            sb.append(" Parent IngredientType: " + this.parentIngredientType.Identifier+ "\n");
+        }
+        return sb.toString();
     }
     
 }

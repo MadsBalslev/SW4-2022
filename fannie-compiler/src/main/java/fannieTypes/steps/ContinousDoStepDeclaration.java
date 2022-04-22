@@ -2,6 +2,7 @@ package fannieTypes.steps;
 import java.util.ArrayList;
 import java.util.List;
 
+import Handlers.IngredientTypeHandler;
 import fannieTypes.*;
 import scope.Scope;
 public class ContinousDoStepDeclaration extends Step {
@@ -10,7 +11,7 @@ public class ContinousDoStepDeclaration extends Step {
 
     Scope scope;
 
-    public ContinousDoStepDeclaration(String toolIdentifier, String toolActionIdentifier, Scope scope, Object oldIngredients, ProcIdentifier procIdentifier) {
+    public ContinousDoStepDeclaration(String toolIdentifier, String toolActionIdentifier, Scope scope, Object oldIngredients, ProcIdentifier procIdentifier, IngredientTypeHandler ingredientTypeHandler) {
         System.out.println("in continousdostep");
         Tool tool = (Tool)scope.retrieve(toolIdentifier);
         scope.append(procIdentifier.getValue(), procIdentifier);
@@ -30,13 +31,13 @@ public class ContinousDoStepDeclaration extends Step {
             ingredient = (Ingredient)scope.retrieve(oldIngredients);
             System.out.println(toolAction.ingredientTypeIdentifier);
             
-            if (toolAction.ingredientTypeIdentifier.equals(ingredient.type) || ingredient.isDefaultIngredient(ingredient.type.Identifier))
+            if (toolAction.ingredientTypeIdentifier.equals(ingredient.ingredientType.Identifier) || ingredient.isDefaultIngredient(ingredient.ingredientType.Identifier))
             {
-                tool.useToolAction(toolAction, ingredient, scope);
+                tool.useToolAction(toolAction, ingredient, scope, ingredientTypeHandler);
             }
             else
             {
-                throw new RuntimeException("Ingredient type mismatch" + " " + toolAction.ingredientTypeIdentifier + " " + ingredient.type);
+                throw new RuntimeException("Ingredient type mismatch" + " " + toolAction.ingredientTypeIdentifier + " " + ingredient.ingredientType);
             }
         }
         else if (oldIngredients instanceof List)

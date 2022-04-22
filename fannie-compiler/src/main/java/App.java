@@ -15,7 +15,7 @@ public class App {
         interpreterVisitor.visit(tree);
 
         CodeGeneratorVisitor cgv = new CodeGeneratorVisitor();
-        cgv.visit(tree);
+        //cgv.visit(tree);
         // System.out.println(cgv.markdownFormat);
         String HTML = FileConvert.MDToHTML(cgv.markdownFormat);
         try {

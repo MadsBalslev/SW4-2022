@@ -7,10 +7,9 @@ import scope.Scope;
 public class Ingredient {
     public String identifier;
     public IngredientType ingredientType;
-    public Ingredient parentIngredient;
     @Override 
     public String toString() {
-        return "Identifier: " + identifier + "Type: " + ingredientType + "Parent: " + parentIngredient;
+        return "Ingredient Identifier: " + identifier + " IngredientType: " + ingredientType.toString();
     }
     public Ingredient()
     {

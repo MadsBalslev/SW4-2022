@@ -1,10 +1,10 @@
+package Handlers;
 import java.util.ArrayList;
 import fannieTypes.*;
 import java.util.List;
 
-import java.util.Iterator;
 
-public class IngredientTypeHandler implements Iterable<IngredientType> {
+public class IngredientTypeHandler {
     private List<IngredientType> ingredientTypes;
     public IngredientTypeHandler() {
         this.ingredientTypes = createDefaultIngredientTypes();
@@ -12,6 +12,7 @@ public class IngredientTypeHandler implements Iterable<IngredientType> {
 
     private ArrayList<IngredientType> createDefaultIngredientTypes()
     {
+        //Det her kan nok gøres bedre lol
         ArrayList<IngredientType> defaultIngredientTypes = new ArrayList<IngredientType>();
         IngredientType ingredient = new IngredientType("ingredient", null);
         IngredientType spice = new IngredientType("spice", ingredient);
@@ -21,34 +22,53 @@ public class IngredientTypeHandler implements Iterable<IngredientType> {
         IngredientType meat = new IngredientType("meat", ingredient);
         IngredientType dry = new IngredientType("dry", ingredient);
         IngredientType nut = new IngredientType("nut", ingredient);
+        IngredientType contentIn = new IngredientType("content in", ingredient);
+        defaultIngredientTypes.add(ingredient);
+        defaultIngredientTypes.add(spice);
+        defaultIngredientTypes.add(liquid);
+        defaultIngredientTypes.add(vegetable);
+        defaultIngredientTypes.add(fruit);
+        defaultIngredientTypes.add(meat);
+        defaultIngredientTypes.add(dry);
+        defaultIngredientTypes.add(nut);
+        defaultIngredientTypes.add(contentIn);
         return defaultIngredientTypes;
     }
-    @Override
-    public Iterator<IngredientType> iterator() {
-        return ingredientTypes.iterator();
-    }
+    //@Override
+    // public Iterator<IngredientType> iterator() {
+    //     return ingredientTypes.iterator();
+    // }
 
     public IngredientType AssignIngredientType(Ingredient ingredient, String ingredientTypeIdentifier)
     {
+
+        System.out.println("Assigning ingredient type: " + ingredientTypeIdentifier );
+        IngredientType newIngredientType = null;
         for (IngredientType ingredientType : ingredientTypes)
         {
             if (ingredientType.Identifier.equals(ingredientTypeIdentifier))
             {
-                return ingredientType;
+                System.out.println("Found ingredient type: " + ingredientType.toString());
+                newIngredientType = ingredientType;
+                break;
             }
             else if (ingredient.identifier.equals(ingredientTypeIdentifier))
             {
-                IngredientType newIngredientType = new IngredientType(ingredientTypeIdentifier, ingredient.ingredientType);
+                newIngredientType = new IngredientType(ingredientTypeIdentifier, ingredient.ingredientType);
                 ingredientTypes.add(newIngredientType);
-                return newIngredientType;
-            }
-            else 
-            {
-                throw new IllegalArgumentException("IngredientType " + ingredientTypeIdentifier + " does not exist");
+                break;
+                
             }
         }
+        if (newIngredientType != null)
+        {
+            return newIngredientType;
+        }
+        else
+        {
+            throw new RuntimeException("Ingredient type not found: " + ingredientTypeIdentifier);
+        }
         
-        return null;
     }
 
 }

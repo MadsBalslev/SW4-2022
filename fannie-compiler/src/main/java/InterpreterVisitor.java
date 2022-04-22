@@ -1,4 +1,4 @@
-import java.security.cert.CertPathBuilderException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -6,12 +6,14 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import Handlers.IngredientTypeHandler;
 import fannieTypes.Ingredient;
 import fannieTypes.IngredientType;
 import fannieTypes.Tool;
 import fannieTypes.ToolAction;
 import fannieTypes.steps.*;
 import scope.Scope;
+import Handlers.IngredientTypeHandler;
 public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
 
     List<Tool> toolsList = new ArrayList<Tool>();
@@ -152,6 +154,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         ingredient.identifier = context.ingredientIdentifier().getText();
         ingredient.ingredientType = ingredientTypeHandler.AssignIngredientType(ingredient, context.ingredientTypeIdentifier().getText());
         // visitChildren(context);
+        System.out.println(ingredient.toString());
         return ingredient;
     }
     // pt fungerer nondeterministic som en deterministic der tager første ingrediens ind
@@ -228,17 +231,17 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         if (context.stepIn().getChild(0) instanceof fannieParserParser.IngredientIdentifierContext)
         {
             Object oldIngredients = context.stepIn().getChild(0).getText();
-            new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, oldIngredients);
+            new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, oldIngredients, ingredientTypeHandler);
         }
         else if (context.stepIn().getChild(0) instanceof fannieParserParser.ContentInContext)
         {
             Object oldIngredients = context.stepIn().contentIn().getText();
-            new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, oldIngredients);
+            new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, oldIngredients, ingredientTypeHandler);
         }
         else if (context.stepIn().getChild(0) instanceof fannieParserParser.IngredientCollectionContext)
         {
             Object oldIngredients = context.stepIn().ingredientCollection().getText();
-            new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, oldIngredients);
+            new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, oldIngredients, ingredientTypeHandler);
         }
         return null;
     }

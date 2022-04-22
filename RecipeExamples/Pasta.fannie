@@ -8,14 +8,12 @@ main recipe Pasta{
 
     tools{
         tool Pot[contain : ingredient],
-        tool Knife[Dice : ingredient => vegetable],
         tool Stove[Heat : content in Pot => ingredient],
         tool Sifter[contain : ingredient, Sift : content in Sifter => ingredient]
     },
     
     
     steps{
-        Knife do Dice Pasta,
         Pot do contain Water,
 
         Stove do Heat "bring to boil" content in Pot,
