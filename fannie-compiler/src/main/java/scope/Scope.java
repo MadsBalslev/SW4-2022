@@ -63,7 +63,7 @@ public class Scope {
     public void stringPrinter(HashMap<String, Object> symbolTable, String type)
     {
         for (Map.Entry<String, Object> entry : symbolTable.entrySet()) {
-            if (entry.getValue().getClass().getName().equals(type)) {
+            if (entry.getValue().getClass().getName().equals("fannieTypes."+type)) {
                 System.out.println(entry.getKey() + ": " + entry.getValue().toString());
             }
         }

@@ -243,25 +243,6 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     }
     @Override public Void visitContinousDoStepStartDeclaration(fannieParserParser.ContinousDoStepStartDeclarationContext context) 
     { 
-        // String toolIdentifier = context.toolIdentifier().getText();
-        // String toolActionIdentifier = context.toolActionIdentifier().getText();
-        // ProcIdentifier procIdentifier = new ProcIdentifier(context.procIdentifier().getText());
-        // scope.append(procIdentifier.getValue(), procIdentifier);
-        // if (context.stepIn().getChild(0) instanceof fannieParserParser.IngredientIdentifierContext)
-        // {
-        //     Object oldIngredients = context.stepIn().getChild(0).getText();
-        //     new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, oldIngredients);
-        // }
-        // else if (context.stepIn().getChild(0) instanceof fannieParserParser.ContentInContext)
-        // {
-        //     Object oldIngredients = context.stepIn().contentIn().getText();
-        //     new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, oldIngredients);
-        // }
-        // else if (context.stepIn().getChild(0) instanceof fannieParserParser.IngredientCollectionContext)
-        // {
-        //     Object oldIngredients = context.stepIn().ingredientCollection().getText();
-        //     new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, oldIngredients);
-        // }
         visitChildren(context);
         return null;
     }
@@ -339,7 +320,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     }
     public boolean IsIngredientslistEmpty(Scope scope)
     {
-        if (scope.getTypeAmount(scope.getSymbolTable(), "Ingredient") != 0 )
+        if (scope.getTypeAmount(scope.getSymbolTable(), "fannieTypes.Ingredient") != 0 )
         {
             System.out.println("Ingredients list is not empty");
             return false;
