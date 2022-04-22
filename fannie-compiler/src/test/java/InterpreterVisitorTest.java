@@ -1,3 +1,4 @@
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -22,26 +23,93 @@ import fannieTypes.ToolAction;
 import scope.Scope;
 
 public class InterpreterVisitorTest {
+    InterpreterVisitor interpreterVisitor;
 
     @Before
     public void init() throws IOException {
-        List<Tool> toolsList = new ArrayList<Tool>();
-        List<String> recipesList = new ArrayList<String>();
-        Scope scope = new Scope();
-        List<ToolAction> toolActionsList = new ArrayList<ToolAction>();
+        interpreterVisitor = new InterpreterVisitor();
     }
 
-     @Test
-     public void correctlyVisitsFannie()
+     @Test(expected = RuntimeException.class)
+     public void ingredientListMissingFromRecipeTest() throws IOException
      {
+        CharStream input = CharStreams.fromStream(RecipeTestStrings.ingredientListMissingFromRecipeTest());
+        
+        fannieParserLexer lexer = new fannieParserLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        fannieParserParser parser = new fannieParserParser(tokens);
+        ParseTree tree = parser.fannie();
 
+        interpreterVisitor.visit(tree);
      }
 
-     @Test //Jeg fatter ikke hvad vi skal lave ? XD TAK CASPER :DD:D:
-     public void correctlyVisitsRecipe()
+     @Test(expected = RuntimeException.class)
+     public void ingredientNotDeclaredButUsedTest() throws IOException
      {
+        CharStream input = CharStreams.fromStream(RecipeTestStrings.ingredientListMissingFromRecipeTest());
+        
+        fannieParserLexer lexer = new fannieParserLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        fannieParserParser parser = new fannieParserParser(tokens);
+        ParseTree tree = parser.fannie();
 
+        interpreterVisitor.visit(tree);
      }
+
+     @Test(expected = RuntimeException.class)
+     public void mainRecipeKeywordMissingTest() throws IOException
+     {
+        CharStream input = CharStreams.fromStream(RecipeTestStrings.mainRecipeKeywordMissingTest());
+        
+        fannieParserLexer lexer = new fannieParserLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        fannieParserParser parser = new fannieParserParser(tokens);
+        ParseTree tree = parser.fannie();
+
+        interpreterVisitor.visit(tree);
+     }
+
+     @Test(expected = RuntimeException.class)
+     public void stepListMissingFromRecipeTest() throws IOException
+     {
+        CharStream input = CharStreams.fromStream(RecipeTestStrings.stepListMissingFromRecipeTest());
+        
+        fannieParserLexer lexer = new fannieParserLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        fannieParserParser parser = new fannieParserParser(tokens);
+        ParseTree tree = parser.fannie();
+
+        interpreterVisitor.visit(tree);
+     }
+
+     @Test(expected = RuntimeException.class)
+     public void toolNotDeclaredButUsedTest() throws IOException
+     {
+        CharStream input = CharStreams.fromStream(RecipeTestStrings.toolNotDeclaredButUsedTest());
+        
+        fannieParserLexer lexer = new fannieParserLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        fannieParserParser parser = new fannieParserParser(tokens);
+        ParseTree tree = parser.fannie();
+
+        interpreterVisitor.visit(tree);
+     }
+
+     @Test(expected = RuntimeException.class)
+     public void toolsListMissingFromRecipeTest() throws IOException
+     {
+        CharStream input = CharStreams.fromStream(RecipeTestStrings.toolsListMissingFromRecipeTest());
+        
+        fannieParserLexer lexer = new fannieParserLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        fannieParserParser parser = new fannieParserParser(tokens);
+        ParseTree tree = parser.fannie();
+
+        interpreterVisitor.visit(tree);
+     }
+
+
+
 
      // Casper er wack. Skal vi kicke ham? [X] Ja [ ] Nej
      // Skal vi lave en handleplan til ham? [ ] Ja [ ] Nej
