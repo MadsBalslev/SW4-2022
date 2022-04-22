@@ -18,6 +18,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     List<String> recipesList = new ArrayList<String>();
     Scope scope = new Scope();
     List<ToolAction> toolActionsList = new ArrayList<ToolAction>();
+    
     @Override public Void visitFannie(fannieParserParser.FannieContext context) 
     {
         System.out.println("Visiting fannie");
@@ -33,6 +34,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         }
         return null;
     }
+    
     @Override public Void visitMainRecipe(fannieParserParser.MainRecipeContext context) 
     {
         System.out.println("Visiting mainrecipe");
@@ -102,6 +104,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         visitChildren(context);
         return null;
     }
+
     @Override public Ingredient visitIngredientDeclaration(fannieParserParser.IngredientDeclarationContext context) 
     { 
         for (int i = 0; i < context.getChildCount(); i++) {
@@ -119,6 +122,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
        // visitChildren(context);
         return visitDeterministicIngredientDeclaration(context.deterministicIngredientDeclaration());
     }
+
     @Override public Tool visitToolDeclaration(fannieParserParser.ToolDeclarationContext context) 
     { 
         Tool tool = new Tool();

@@ -3,8 +3,7 @@ main recipe Pasta{
     ingredients{
         ingredient Pasta (100g), 
         liquid Water (1l),
-        spice Salt (10g),
-        spice Xd (10g)
+        spice Salt (10g)
     },
 
     tools{
@@ -13,7 +12,6 @@ main recipe Pasta{
         tool Stove[Heat : content in Pot => ingredient],
         tool Sifter[contain : ingredient, Sift : content in Sifter => ingredient]
     },
-    
     
     steps{
         Knife do Dice Pasta,

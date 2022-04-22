@@ -1,0 +1,16 @@
+main recipe Pasta{
+
+    ingredients{
+        ingredient Pasta (100g), 
+        liquid Water (1l),
+        spice Salt (10g)
+    },
+
+    tools{
+        tool Pot[contain : ingredient],
+        tool Knife[Dice : ingredient => vegetable],
+        tool Stove[Heat : content in Pot => ingredient],
+        tool Sifter[contain : ingredient, Sift : content in Sifter => ingredient]
+    },
+    
+}

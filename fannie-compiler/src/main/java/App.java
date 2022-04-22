@@ -19,7 +19,11 @@ public class App
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         fannieParserParser parser = new fannieParserParser(tokens);
         ParseTree tree = parser.fannie();
-        interpreterVisitor.visit(tree);
+        try {
+            interpreterVisitor.visit(tree);
+        } catch (Exception e) {
+            System.err.println(e);
+        }
         //System.out.println(tree.toStringTree(parser));
     }
 }
