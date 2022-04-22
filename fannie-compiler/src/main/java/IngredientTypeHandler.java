@@ -38,7 +38,7 @@ public class IngredientTypeHandler implements Iterable<IngredientType> {
             }
             else if (ingredient.identifier.equals(ingredientTypeIdentifier))
             {
-                IngredientType newIngredientType = new IngredientType(ingredientTypeIdentifier, ingredient.type);
+                IngredientType newIngredientType = new IngredientType(ingredientTypeIdentifier, ingredient.ingredientType);
                 ingredientTypes.add(newIngredientType);
                 return newIngredientType;
             }
