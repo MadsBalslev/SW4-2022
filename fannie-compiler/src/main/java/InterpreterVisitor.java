@@ -16,6 +16,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
 
     List<Tool> toolsList = new ArrayList<Tool>();
     List<String> recipesList = new ArrayList<String>();
+    IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
     Scope scope = new Scope();
     List<ToolAction> toolActionsList = new ArrayList<ToolAction>();
     @Override public Void visitFannie(fannieParserParser.FannieContext context) 
@@ -149,8 +150,8 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     { 
         Ingredient ingredient = new Ingredient();
         ingredient.identifier = context.ingredientIdentifier().getText();
-        ingredient.type = new IngredientType(context.ingredientTypeIdentifier().getText());
-       // visitChildren(context);
+        ingredient.ingredientType = ingredientTypeHandler.AssignIngredientType(ingredient, context.ingredientTypeIdentifier().getText());
+        // visitChildren(context);
         return ingredient;
     }
     // pt fungerer nondeterministic som en deterministic der tager første ingrediens ind
@@ -163,7 +164,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     { 
         Ingredient ingredient = new Ingredient();
         ingredient.identifier = context.recipeIdentifier().getText();
-        ingredient.type = new IngredientType (context.RECIPE().getText());
+        ingredient.ingredientType = new IngredientType (context.RECIPE().getText(), null);
         visitChildren(context);
         return ingredient;
     }

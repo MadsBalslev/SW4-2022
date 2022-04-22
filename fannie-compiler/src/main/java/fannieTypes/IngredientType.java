@@ -1,15 +1,31 @@
 package fannieTypes;
 
+import javax.swing.text.StyledEditorKit.BoldAction;
+
 public class IngredientType {
+
     public IngredientType parentIngredientType;
     public String Identifier;
-    public IngredientType(String identifier) {
+    public IngredientType(String identifier, IngredientType parentIngredientType) {
         this.Identifier = identifier;
-        if (this.isDefaultType(identifier)) {
-            this.parentIngredientType = new IngredientType("Ingredient");
+        this.parentIngredientType = parentIngredientType;
+    }
+    public Boolean isType(String type)
+    {
+        if (this.Identifier.equals(type))
+        {
+            return true;
+        }
+        else if (this.parentIngredientType != null)
+        {
+            return this.parentIngredientType.isType(type);
+        }
+        else
+        {
+            return false;
         }
     }
-
+    
     public Boolean isDefaultType(String Type) {
         switch (Type) {
             case "ingredient":
@@ -34,4 +50,5 @@ public class IngredientType {
                 return false;
         }
     }
+    
 }

@@ -2,6 +2,8 @@ package fannieTypes;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 import scope.Scope;
 public class Tool {
     public String toolTypeIdentifier;
@@ -93,7 +95,7 @@ public class Tool {
             Ingredient newIngredient = new Ingredient();
             if (toolAction.transformedIngredientTypeIdentifier.equals("content in")) newIngredient.identifier = "content in" + toolAction.toolIdentifier;
             else newIngredient.identifier = ingredient.identifier;
-            newIngredient.type =  new IngredientType(toolAction.transformedIngredientTypeIdentifier);
+            newIngredient.type =  new IngredientType(toolAction.transformedIngredientTypeIdentifier, null);
             System.out.println("Removed " + ingredient.identifier + " from scope");
             System.out.println("using tool action " + toolAction.toolActionIdentifier + " on " + ingredient.identifier +" creating " + newIngredient.type);
             scope.Remove(ingredient.identifier);
