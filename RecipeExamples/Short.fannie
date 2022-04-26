@@ -1,0 +1,16 @@
+main recipe Pasta{
+
+    ingredients{
+        ingredient Pasta (100g, 25 whole)
+    },
+
+    tools{
+        tool Pot[contain : ingredient]
+    },
+    
+    steps{
+        Pot do contain Pasta,
+
+        serve content in Pot
+    }
+}

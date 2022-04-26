@@ -7,8 +7,8 @@ main recipe Lasagne{
     },
 
     tools{
-        HeatSource Oven[Heat: content in Cookingcontainer],
-        Cookingcontainer OvenproofDish
+        tool OvenproofDish[contain : ingredient],
+        tool Oven[Heat: content in OvenproofDish => ingredient]
     },
 
     steps{
@@ -44,10 +44,10 @@ recipe LasagneSauce{
     },
 
     tools{
-        tool Knife[Slice:vegetable, Slice:fruit, Mince:vegetable],
-        Cookingcontainer Pot[contain:(4l)],
-        HeatSource Stove[Heat:Cookingcontainer],
-        tool Grater[Grate:Vegetable]
+        tool Knife[Slice:vegetable => vegetable, Slice:fruit => fruit, Mince:vegetable => vegetable],
+        tool Pot[contain:ingredient],
+        tool Stove[Heat:content in Pot => ingredient],
+        tool Grater[Grate:vegetable => vegetable]
     },
 
     steps{
@@ -100,10 +100,10 @@ recipe MornaySauce{
     },
     
     tools{
-        Cookingcontainer Pot[contain:(2l)],
-        HeatSource Stove[Heat:Cookingcontainer],
-        tool Grater[Grate:Nut],
-        tool Whisk[Whisk:Ingredient]
+        tool Pot[contain:ingredient],
+        tool Stove[Heat:content in Pot => ingredient],
+        tool Grater[Grate:nut => nut],
+        tool Whisk[Whisk:ingredient => ingredient]
     },
 
     steps{
