@@ -103,6 +103,31 @@ public class InterpreterVisitorTest {
         interpreterVisitor.visit(tree);
      }
 
+     @Test(expected = RuntimeException.class)
+     public void CommasAfterListingsMissingFromTestRecipe() throws IOException
+     {
+        CharStream input = CharStreams.fromStream(RecipeTestStrings.CommasAfterListingsMissingFromTestRecipe());
+        
+        fannieParserLexer lexer = new fannieParserLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        fannieParserParser parser = new fannieParserParser(tokens);
+        ParseTree tree = parser.fannie();
+
+        interpreterVisitor.visit(tree);
+     }
+
+     @Test(expected = RuntimeException.class)
+     public void CommasMissingInsideIngredientBlockTest() throws IOException
+     {
+        CharStream input = CharStreams.fromStream(RecipeTestStrings.CommasMissingInsideIngredientBlockTest());
+        
+        fannieParserLexer lexer = new fannieParserLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        fannieParserParser parser = new fannieParserParser(tokens);
+        ParseTree tree = parser.fannie();
+
+        interpreterVisitor.visit(tree);
+     }
 
 
 

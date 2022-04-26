@@ -37,7 +37,15 @@ public class RecipeTestStrings {
         return ReadFile.read("../RecipeExamples/TestRecipes/ToolsListMissingFromRecipeTest.fannie");
     }
 
+    public static InputStream CommasAfterListingsMissingFromTestRecipe() throws IOException 
+    {
+        return ReadFile.read("../RecipeExamples/TestRecipes/CommasAfterListingsMissingFromTestRecipe.fannie");
+    }
 
+    public static InputStream CommasMissingInsideIngredientBlockTest() throws IOException 
+    {
+        return ReadFile.read("../RecipeExamples/TestRecipes/CommasMissingInsideIngredientBlockTest.fannie");
+    }
 
 
 
