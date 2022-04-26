@@ -1,0 +1,65 @@
+main recipe Test{
+    ingredients{
+        ingredient Testingredient (1kg, 1 whole),
+        ingredient Testingredient2 (1g, 1 tbsp),
+        ingredient Testingredient3 (1g, 1 tsp),
+        ingredient Testingredient4 (1g, 1 pinch),
+        ingredient Testingredient5 (1g, 1 whole),
+        ingredient Testingredient6 (1g, 1 half),
+        ingredient Testingredient7 (1g, 1 third),
+        ingredient Testingredient8 (1g, 1 quarter),
+        ingredient Testingredient9 (1g, 1 eight),
+        ingredient Testingredient10 (to-taste),
+
+        ingredient TestingredientG (1g),
+        ingredient TestingredientKG (1kg),
+        ingredient TestingredientML (1ml),
+        ingredient TestingredientDL (1dl),
+        ingredient TestingredientL (1l),
+        ingredient TestingredientMG (1mg),
+        ingredient TestingredientLB (1lb),
+        ingredient TestingredientOZ (1oz),
+
+        ingredient TestingredientING (1g),
+        vegetable TestingredientVEG (1g),
+        fruit TestingredientFRU (1g),
+        meat TestingredientMEA (1g),
+        liquid TestingredientLIQ (1g),
+        spice TestingredientSPI (1g),
+        nut TestingredientNUT (1g),
+        dry TestingredientDRY (1g),
+
+        recipe TestSubrecipe
+    },
+
+    tools{
+        tool TestPOT[contain : ingredient],
+        tool TestSTOVE[Heat : content in TestPOT => ingredient],
+        tool Knife[Slice : ingredient => SlicedIngredient]
+    },
+
+    steps{
+        TestPOT do contain TestingredientLIQ,
+        Knife do Slice TestingredientMEA,
+        TestPOT do contain TestingredientMEA,
+        TestPOT do contain TestSubrecipe,
+
+        serve content in TestPOT
+    }
+}
+
+recipe TestSubrecipe{
+    ingredients{
+        ingredient TestingredientSR (1g, 1 whole)
+    },
+
+    tools{
+        tool TestPOT2[contain : ingredient]
+    },
+
+    steps{
+        TestPOT2 do contain TestingredientSR,
+
+        serve content in TestPOT
+    }
+}

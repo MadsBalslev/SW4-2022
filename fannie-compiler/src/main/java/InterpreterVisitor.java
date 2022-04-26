@@ -255,26 +255,25 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         visitChildren(context);
         return null;
     }
-    @Override public Void visitStepIn(fannieParserParser.StepInContext context) 
-    { 
-        visitChildren(context);
-        return null;
-    }
+
     @Override public Void visitStepOut(fannieParserParser.StepOutContext context) 
     { 
         visitChildren(context);
         return null;
     }
+
     @Override public String visitContentIn(fannieParserParser.ContentInContext context) 
     { 
         visitChildren(context);
         return context.getText();
     }
+
     @Override public Void visitIngredientCollection(fannieParserParser.IngredientCollectionContext context) 
     { 
         visitChildren(context);
         return null;
     }
+    
     public ToolAction createToolAction(fannieParserParser.ToolActionDeclarationContext context) {
         ToolAction toolAction = new ToolAction();
         if (context.getChild(0) instanceof TerminalNode)
