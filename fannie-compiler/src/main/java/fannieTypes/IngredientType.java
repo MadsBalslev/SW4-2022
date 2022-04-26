@@ -1,15 +1,13 @@
 package fannieTypes;
 
-
-
 public class IngredientType {
-
     public IngredientType parentIngredientType;
     public String Identifier;
     public IngredientType(String identifier, IngredientType parentIngredientType) {
         this.Identifier = identifier;
         this.parentIngredientType = parentIngredientType;
     }
+
     public Boolean isType(String type)
     {
         if (this.Identifier.equals(type))
@@ -53,14 +51,6 @@ public class IngredientType {
     
     public String toString()
     {
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("IngredientType Identifier: " + this.Identifier);
-        if( this.parentIngredientType != null)
-        {
-            sb.append(" Parent IngredientType: " + this.parentIngredientType.Identifier+ "\n");
-        }
-        return sb.toString();
+        return this.Identifier;
     }
-    
 }

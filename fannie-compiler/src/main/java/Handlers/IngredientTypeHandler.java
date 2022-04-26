@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import fannieTypes.*;
 import java.util.List;
 
-
 public class IngredientTypeHandler {
     private List<IngredientType> ingredientTypes;
     public IngredientTypeHandler() {
@@ -34,21 +33,16 @@ public class IngredientTypeHandler {
         defaultIngredientTypes.add(contentIn);
         return defaultIngredientTypes;
     }
-    //@Override
-    // public Iterator<IngredientType> iterator() {
-    //     return ingredientTypes.iterator();
-    // }
 
     public IngredientType AssignIngredientType(Ingredient ingredient, String ingredientTypeIdentifier)
     {
-
-        System.out.println("Assigning ingredient type: " + ingredientTypeIdentifier );
+        System.out.println("Assigning ingredient type: " + ingredientTypeIdentifier + " to " + ingredient.identifier);
         IngredientType newIngredientType = null;
         for (IngredientType ingredientType : ingredientTypes)
         {
             if (ingredientType.Identifier.equals(ingredientTypeIdentifier))
             {
-                System.out.println("Found ingredient type: " + ingredientType.toString());
+                //System.out.println("Found ingredient type: " + ingredientType.toString());
                 newIngredientType = ingredientType;
                 break;
             }
@@ -68,7 +62,5 @@ public class IngredientTypeHandler {
         {
             throw new RuntimeException("Ingredient type not found: " + ingredientTypeIdentifier);
         }
-        
     }
-
 }

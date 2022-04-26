@@ -4,7 +4,6 @@ public class ToolAction {
     public String ingredientTypeIdentifier;
     public String transformedIngredientTypeIdentifier;
     public String toolIdentifier;
-    @Override
     public String toString() {
         return toolActionIdentifier + ": " + ingredientTypeIdentifier + " -> " + transformedIngredientTypeIdentifier;
     } 

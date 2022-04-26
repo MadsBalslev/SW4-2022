@@ -1,5 +1,4 @@
 package fannieTypes.steps;
-import java.util.ArrayList;
 import java.util.List;
 
 import fannieTypes.*;
@@ -27,9 +26,6 @@ public class DoStepDeclaration extends Step {
             catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-            
         }
     }
-
-    
 }

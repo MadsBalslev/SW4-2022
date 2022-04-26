@@ -11,16 +11,16 @@ public class Tool {
     public String toolIdentifier;
     public List<ToolAction> toolActionDeclarationsList = new ArrayList<ToolAction>();
     public Boolean hasToolBeenUsed = false;
-
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(toolIdentifier + ": " + toolTypeIdentifier + "\n Toolactions \n");
         for (ToolAction toolAction : toolActionDeclarationsList) {
             sb.append(toolAction.toString() + "\n");
         }
+
         return sb.toString();
     }
+    
     public ToolAction getToolAction(String toolActionIdentifier) throws Exception
     {
         ToolAction toolAction = new ToolAction();
@@ -34,6 +34,7 @@ public class Tool {
         if (actionFound == false) {
             throw new Exception("ToolAction not found");
         }
+
         return toolAction;
     }
     
@@ -50,11 +51,12 @@ public class Tool {
             else
             { 
                 newIngredient.identifier = ingredient.identifier;
-                newIngredient.ingredientType = ingredientTypeHandler.AssignIngredientType(ingredient, newIngredient.identifier);
+                newIngredient.ingredientType = ingredientTypeHandler.AssignIngredientType(ingredient, toolAction.transformedIngredientTypeIdentifier);
             }
-            System.out.println("Removed " + ingredient.identifier + " from scope");
+            //System.out.println("Removed " + ingredient.identifier + " from scope");
             System.out.println("using tool action " + toolAction.toolActionIdentifier + " on " + ingredient.identifier +" creating " + newIngredient.ingredientType);
             scope.Remove(ingredient.identifier);
+            System.out.println("Added " + newIngredient.identifier + " to scope");
             scope.append(newIngredient.identifier, newIngredient);
             this.hasToolBeenUsed = true;
         }

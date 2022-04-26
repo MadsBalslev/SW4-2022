@@ -1,20 +1,19 @@
 package fannieTypes;
 
-import java.util.Map;
-
 import scope.Scope;
 
 public class Ingredient {
     public String identifier;
     public IngredientType ingredientType;
-    @Override 
     public String toString() {
         return "Ingredient Identifier: " + identifier + " IngredientType: " + ingredientType.toString();
     }
+
     public Ingredient()
     {
-        System.out.println(this.getClass().getName() + ": " + identifier);
+        // System.out.println(this.getClass().getName() + ": " + identifier);
     }
+
     public Boolean isDefaultIngredient(String type)
     {
         switch (type) {
@@ -44,14 +43,14 @@ public class Ingredient {
         }
         return false;
     }
+
     public Ingredient(String identifier, IngredientType ingredientType, Scope scope)
     {
         this.identifier = identifier;
         this.ingredientType = ingredientType;
-        
-        
         //if (type.Identifier == parentIngredient.type.Identifier)
     }
+
     public Boolean isType(String type)
     {
         if (this.ingredientType.isType(type))
@@ -60,6 +59,7 @@ public class Ingredient {
         }
         return false;
     }
+
     public Ingredient createIngredient(String identifier, IngredientType type, Scope scope)
     {
         Ingredient ingredient = new Ingredient(identifier, type, scope);
