@@ -47,7 +47,10 @@ public class RecipeTestStrings {
         return ReadFile.read("../RecipeExamples/TestRecipes/CommasMissingInsideIngredientBlockTest.fannie");
     }
 
-
+    public static InputStream ServeKeywordMissingFromRecipe() throws IOException 
+    {
+        return ReadFile.read("../RecipeExamples/TestRecipes/ServeKeywordMissingFromRecipe.fannie");
+    }
 
     
     

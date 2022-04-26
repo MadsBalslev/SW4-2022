@@ -129,6 +129,19 @@ public class InterpreterVisitorTest {
         interpreterVisitor.visit(tree);
      }
 
+     @Test(expected = RuntimeException.class)
+     public void ServeKeywordMissingFromRecipe() throws IOException
+     {
+        CharStream input = CharStreams.fromStream(RecipeTestStrings.ServeKeywordMissingFromRecipe());
+        
+        fannieParserLexer lexer = new fannieParserLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        fannieParserParser parser = new fannieParserParser(tokens);
+        ParseTree tree = parser.fannie();
+
+        interpreterVisitor.visit(tree);
+     }
+
 
 
      // Casper er wack. Skal vi kicke ham? [X] Ja [ ] Nej
