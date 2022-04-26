@@ -41,8 +41,6 @@ public class Ingredient {
             case "nut":
                     
                 return true;
-            case "content in":
-                return true;
         }
         return false;
     }

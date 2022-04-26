@@ -166,8 +166,8 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     @Override public Ingredient visitRecipeIngredientDeclaration(fannieParserParser.RecipeIngredientDeclarationContext context) 
     { 
         Ingredient ingredient = new Ingredient();
-        ingredient.identifier = context.recipeIdentifier().getText();
-        ingredient.ingredientType = new IngredientType (context.RECIPE().getText(), null);
+        String ingredientIdentifier = context.recipeIdentifier().getText();
+        ingredient.createIngredient(ingredientIdentifier, ingredientTypeHandler.AssignIngredientType(ingredient, ingredientIdentifier), scope);
         visitChildren(context);
         return ingredient;
     }

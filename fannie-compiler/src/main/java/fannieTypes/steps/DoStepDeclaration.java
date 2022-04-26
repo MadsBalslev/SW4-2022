@@ -26,7 +26,7 @@ public class DoStepDeclaration extends Step {
             ingredient = (Ingredient)scope.retrieve(oldIngredients);
             System.out.println(toolAction.ingredientTypeIdentifier);
             
-            if (toolAction.ingredientTypeIdentifier.equals(ingredient.ingredientType.Identifier) || ingredient.isDefaultIngredient(ingredient.ingredientType.Identifier))
+            if (ingredient.isType(toolAction.ingredientTypeIdentifier) || ingredient.isDefaultIngredient(ingredient.ingredientType.Identifier))
             {
                tool.useToolAction(toolAction, ingredient, scope, ingredientTypeHandler);
             }
