@@ -1,20 +1,13 @@
-<<<<<<< HEAD
-
-=======
 import org.antlr.v4.runtime.*;
->>>>>>> dd38e284a44fed250ed5725534e53694e175cdf9
 
 public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
     StringBuilder markdownFormat = new StringBuilder();
     String filename = "";
     int stepNum = 1;
 
-<<<<<<< HEAD
-=======
     private String SplitContentIn(String s) {
         return s.replaceAll("(content in)([A-Za-z])", "$1 $2");
     }
->>>>>>> dd38e284a44fed250ed5725534e53694e175cdf9
 
     private <T extends ParserRuleContext> String[] MakeStepDeclaration(T ctx) {
         String[] infoArr = new String[ctx.getChildCount()];
@@ -34,9 +27,6 @@ public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
 
         return infoArr;
     }
-<<<<<<< HEAD
-}
-=======
 
     // public Void visitRecipeIdentifier(fannieParserParser.RecipeIdentifierContext
     // ctx) {
@@ -218,4 +208,3 @@ public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
         return null;
     }
 }
->>>>>>> dd38e284a44fed250ed5725534e53694e175cdf9
