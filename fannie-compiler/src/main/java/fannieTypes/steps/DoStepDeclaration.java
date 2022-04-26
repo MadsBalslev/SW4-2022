@@ -6,7 +6,6 @@ import scope.Scope;
 import Handlers.IngredientTypeHandler;
 public class DoStepDeclaration extends Step {
     Scope scope;
-
     public DoStepDeclaration(String toolIdentifier, String toolActionIdentifier, Scope scope, Ingredient oldIngredient, IngredientTypeHandler ingredientTypeHandler) {
         Tool tool = (Tool)scope.retrieve(toolIdentifier);
         try { ToolAction toolAction = tool.getToolAction(toolActionIdentifier);

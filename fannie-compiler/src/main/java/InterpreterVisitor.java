@@ -112,7 +112,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     }
     
     @Override public Ingredient visitIngredientDeclaration(fannieParserParser.IngredientDeclarationContext context) 
-    { 
+    {
         for (int i = 0; i < context.getChildCount(); i++) {
         
             if (context.getChild(i) instanceof fannieParserParser.DeterministicIngredientDeclarationContext) {
@@ -259,7 +259,10 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     
     @Override public Void visitContinousDoStepStartDeclaration(fannieParserParser.ContinousDoStepStartDeclarationContext context) 
     { 
-        visitChildren(context);
+        String toolIdentifier = context.toolIdentifier().getText();
+        String toolActionIdentifier = context.toolActionIdentifier().getText();
+        String procIdentifier = context.procIdentifier().getText();
+        new ContinousDoStepDeclaration(toolIdentifier, toolActionIdentifier, procIdentifier, scope, visitStepIn(context.stepIn()), ingredientTypeHandler);
         return null;
     }
     
