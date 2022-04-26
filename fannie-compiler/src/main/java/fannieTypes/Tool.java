@@ -43,9 +43,15 @@ public class Tool {
         if (ingredient.isType(toolAction.ingredientTypeIdentifier))
         {
             Ingredient newIngredient = new Ingredient();
-            if (toolAction.transformedIngredientTypeIdentifier.equals("content in")) newIngredient.identifier = "content in" + toolAction.toolIdentifier;
-            else newIngredient.identifier = ingredient.identifier;
-            newIngredient.ingredientType =  ingredientTypeHandler.AssignIngredientType(ingredient, "content in");
+            if (toolAction.transformedIngredientTypeIdentifier.equals("content in")){
+                newIngredient.identifier = "content in" + toolAction.toolIdentifier;
+                newIngredient.ingredientType =  ingredientTypeHandler.AssignIngredientType(ingredient, "content in");
+            }
+            else
+            { 
+                newIngredient.identifier = ingredient.identifier;
+                newIngredient.ingredientType = ingredientTypeHandler.AssignIngredientType(ingredient, newIngredient.identifier);
+            }
             System.out.println("Removed " + ingredient.identifier + " from scope");
             System.out.println("using tool action " + toolAction.toolActionIdentifier + " on " + ingredient.identifier +" creating " + newIngredient.ingredientType);
             scope.Remove(ingredient.identifier);

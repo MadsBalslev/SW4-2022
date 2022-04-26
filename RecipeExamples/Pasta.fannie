@@ -3,13 +3,10 @@ main recipe Pasta{
     ingredients{
         ingredient Pasta (100g), 
         liquid Water (1l),
-        spice Salt (10g),
-        ingredient TestIngredient (100g)
-        
+        spice Salt (10g)
     },
 
     tools{
-        tool Converter[Convert : ingredient => newIngredient],
         tool Pot[contain : ingredient],
         tool Stove[Heat : content in Pot => ingredient],
         tool Sifter[contain : ingredient, Sift : content in Sifter => ingredient]
@@ -18,7 +15,6 @@ main recipe Pasta{
     
     steps{
         Pot do contain Water,
-        Converter do Convert TestIngredient,
         Stove do Heat "bring to boil" content in Pot,
 
         START Proc1 Stove do Heat content in Pot,
