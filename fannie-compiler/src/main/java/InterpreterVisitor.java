@@ -254,26 +254,6 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         String toolActionIdentifier = context.toolActionIdentifier().getText();
         
         new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, visitStepIn(context.stepIn()), ingredientTypeHandler);
-        // if (context.stepIn().getChild(0) instanceof fannieParserParser.IngredientIdentifierContext)
-        // {
-        //     Ingredient oldIngredients = (Ingredient)scope.retrieve(context.stepIn().ingredientIdentifier().getText());
-        //     new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, oldIngredients, ingredientTypeHandler);
-        // }
-        // else if (context.stepIn().getChild(0) instanceof fannieParserParser.ContentInContext)
-        // {
-        //     Ingredient oldIngredients = (Ingredient)scope.retrieve(context.stepIn().contentIn().getText());
-        //     new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, oldIngredients, ingredientTypeHandler);
-        // }
-        // else if (context.stepIn().getChild(0) instanceof fannieParserParser.IngredientCollectionContext)
-        // {
-        //     List<Ingredient> oldIngredients = new ArrayList<Ingredient>();
-        //     for (int i = 0; i < context.stepIn().ingredientCollection().getChildCount(); i++) {
-        //         if (context.stepIn().ingredientCollection().getChild(i) instanceof fannieParserParser.IngredientIdentifierContext) {
-        //             oldIngredients.add((Ingredient)scope.retrieve(context.stepIn().ingredientCollection().ingredientIdentifier(i).getText()));
-        //         }
-        //     }
-        //     new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, oldIngredients, ingredientTypeHandler);
-        // }
         return null;
     }
     
