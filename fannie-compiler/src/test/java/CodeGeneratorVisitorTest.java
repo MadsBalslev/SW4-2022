@@ -1,3 +1,4 @@
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -17,6 +18,9 @@ public class CodeGeneratorVisitorTest {
     ParseTree tree;
     CodeGeneratorVisitor cgv;
     File file;
+    InputStream assumedTestToMD = ReadFile.read("../RecipeExamples/AssumedTestToMD.fannie");
+    File generatedTestToMD = new File("");
+
     File testFile = new File("/fannie-compiler/fannie.md");
     String[] ingredients = {
             "- Testingredient (1kg, 1 whole)",
@@ -137,6 +141,11 @@ public class CodeGeneratorVisitorTest {
         for (String step : steps) {
             assertTrue("Does not contain" + step, S.contains(step));
         }
+    }
+
+    @Test
+    public void sourceFileConvertedCorrectlyAndIsEqual() {
+        assertEquals(assumedTestToMD, file);
     }
 
     // TODO maybe))
