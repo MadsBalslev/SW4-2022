@@ -299,9 +299,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         return null;
     }
     
-
-   
-
+    //this is not good, should probably be associated to the tool class, but this works for now
     public ToolAction createToolAction(fannieParserParser.ToolActionDeclarationContext context) {
         ToolAction toolAction = new ToolAction();
         if (context.getChild(0) instanceof TerminalNode)
