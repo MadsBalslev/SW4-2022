@@ -88,10 +88,6 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     @Override public Void visitIngredientsList(fannieParserParser.IngredientsListContext context) 
     {   
         System.out.println("Visiting ingredientslist");
-        for(int i = 0; i < context.ingredientDeclaration().size(); i++) {
-            Ingredient ingredient = visitIngredientDeclaration(context.ingredientDeclaration(i));
-            scope.append(ingredient.identifier, ingredient);
-        }
         visitChildren(context); 
         return null;
     }
@@ -99,11 +95,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     @Override public Void visitToolsList(fannieParserParser.ToolsListContext context) 
     {
         System.out.println("Visiting toolslist");
-        for (int i = 0; i < context.toolDeclaration().size(); i++) {
-            Tool tool = visitToolDeclaration(context.toolDeclaration(i));
-            scope.append(tool.toolIdentifier, tool);
-        }
-        //visitChildren(context);
+        visitChildren(context);
         return null;
     }
     
@@ -120,7 +112,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         return ingredient;
     }
     
-    @Override public Tool visitToolDeclaration(fannieParserParser.ToolDeclarationContext context) 
+    @Override public Void visitToolDeclaration(fannieParserParser.ToolDeclarationContext context) 
     { 
         Tool tool = new Tool();
         tool.toolIdentifier = context.toolIdentifier().getText();
@@ -129,8 +121,8 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         for (ToolAction toolAction : tool.toolActionDeclarationsList) {
             toolAction.toolIdentifier = tool.toolIdentifier;
         }
-        // visitChildren(context);
-        return tool;
+        scope.append(tool.toolIdentifier, tool);
+        return null;
     }
     
     @Override public Void visitStepDeclaration(fannieParserParser.StepDeclarationContext context) 
@@ -151,20 +143,21 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         return null;
     }
     
-    @Override public Ingredient visitDeterministicIngredientDeclaration(fannieParserParser.DeterministicIngredientDeclarationContext context) 
+    @Override public Void visitDeterministicIngredientDeclaration(fannieParserParser.DeterministicIngredientDeclarationContext context) 
     { 
         Ingredient ingredient = new Ingredient();
         ingredient.identifier = context.ingredientIdentifier().getText();
         ingredient.ingredientType = ingredientTypeHandler.AssignIngredientType(ingredient, context.ingredientTypeIdentifier().getText());
+        scope.append(ingredient.identifier, ingredient);
         //System.out.println(ingredient.toString());
-        return ingredient;
+        return null;
     }
     // pt fungerer nondeterministic som en deterministic der tager første ingrediens ind
     
-    @Override public Ingredient visitNondeterministicIngredientDeclaration(fannieParserParser.NondeterministicIngredientDeclarationContext context) 
+    @Override public Void visitNondeterministicIngredientDeclaration(fannieParserParser.NondeterministicIngredientDeclarationContext context) 
     { 
         visitChildren(context);
-        return visitDeterministicIngredientDeclaration((fannieParserParser.DeterministicIngredientDeclarationContext) context.getChild(0));
+        return null;
     }
     
     @Override public Ingredient visitRecipeIngredientDeclaration(fannieParserParser.RecipeIngredientDeclarationContext context) 
