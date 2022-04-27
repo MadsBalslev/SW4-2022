@@ -12,10 +12,15 @@ import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
 public class FileConvert {
+    private static String HTMLSanitize(String s) {
+        s = s.replaceAll("<", "&lt;");
+        s = s.replaceAll(">", "&gt;");
+        return s;
+    }
 
     public static String MDToHTML(StringBuilder markdownFormat) {
         Parser parser = Parser.builder().build();
-        Node document = parser.parse(markdownFormat.toString());
+        Node document = parser.parse(HTMLSanitize(markdownFormat.toString()));
         HtmlRenderer htmlRenderer = HtmlRenderer.builder().build();
         return htmlRenderer.render(document);
     }

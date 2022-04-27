@@ -40,7 +40,7 @@ main recipe Test{
 
     steps{
         TestPOT do contain TestingredientLIQ,
-        Knife do Slice TestingredientMEA,
+        Knife do Slice "<customTag>Meget fint</customTag>" TestingredientMEA,
         TestPOT do contain TestingredientMEA,
         TestPOT do contain TestSubrecipe,
 
@@ -58,7 +58,7 @@ recipe TestSubrecipe{
     },
 
     steps{
-        TestPOT2 do contain TestingredientSR,
+        TestPOT2 do contain "<customTag>Meget fint</customTag>" TestingredientSR,
 
         serve content in TestPOT
     }
