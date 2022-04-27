@@ -1,7 +1,7 @@
 main recipe Pasta{
 
     ingredients{
-        ingredient Pasta (100g), 
+        ingredient Pasta (100g),
         liquid Water (1l),
         spice Salt (10g)
     },

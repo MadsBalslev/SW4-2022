@@ -116,20 +116,8 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     
     @Override public Ingredient visitIngredientDeclaration(fannieParserParser.IngredientDeclarationContext context) 
     {
-        for (int i = 0; i < context.getChildCount(); i++) {
-        
-            if (context.getChild(i) instanceof fannieParserParser.DeterministicIngredientDeclarationContext) {
-                return visitDeterministicIngredientDeclaration((fannieParserParser.DeterministicIngredientDeclarationContext) context.getChild(i));
-            }
-            else if (context.getChild(i) instanceof fannieParserParser.RecipeIngredientDeclarationContext) {
-                return visitRecipeIngredientDeclaration((fannieParserParser.RecipeIngredientDeclarationContext) context.getChild(i));
-            }
-            else if (context.getChild(i) instanceof fannieParserParser.NondeterministicIngredientDeclarationContext) {
-                return visitNondeterministicIngredientDeclaration((fannieParserParser.NondeterministicIngredientDeclarationContext) context.getChild(i));
-            }
-        }
-       // visitChildren(context);
-        return visitDeterministicIngredientDeclaration(context.deterministicIngredientDeclaration());
+        Ingredient ingredient = (Ingredient)visitChildren(context);
+        return ingredient;
     }
     
     @Override public Tool visitToolDeclaration(fannieParserParser.ToolDeclarationContext context) 
