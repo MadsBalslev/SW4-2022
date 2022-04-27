@@ -1,4 +1,4 @@
-main recipe Pasta{
+smain recipe Pasta{
 
     ingredients{
         ingredient Pasta (100g), 
@@ -11,7 +11,6 @@ main recipe Pasta{
         tool Stove[Heat : content in Pot => ingredient],
         tool Sifter[contain : ingredient, Sift : content in Sifter => ingredient]
     },
-    
     
     steps{
         Pot do contain Water,
