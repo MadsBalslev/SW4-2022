@@ -1,5 +1,4 @@
 main recipe Pasta{
-
     ingredients{
         ingredient Pasta (100g, 25 whole)
     },
@@ -12,7 +11,7 @@ main recipe Pasta{
         Knife do Dice Pasta,
         Pot do contain Water,
 
-        START Proc1 Stove do Heat "<h1>Bring water to boil.</h1>" content in Pot,
+        START Proc1 Stove do Heat "Bring water to boil." content in Pot,
         
         Pot do contain Pasta,
         Pot do contain Salt,

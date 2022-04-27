@@ -33,7 +33,7 @@
 - Knife
 ### Steps
 1. Put TestingredientLIQ in TestPOT
-2. Slice TestingredientMEA with Knife
+2. Slice TestingredientMEA with Knife <customTag>Meget fint</customTag>
 3. Put TestingredientMEA in TestPOT
 4. Put TestSubrecipe in TestPOT
 5. serve the content in TestPOT 
@@ -44,5 +44,5 @@
 ### Tools
 - TestPOT2
 ### Steps
-1. Put TestingredientSR in TestPOT2
+1. Put TestingredientSR in TestPOT2 <customTag>Meget fint</customTag>
 2. serve the content in TestPOT 
