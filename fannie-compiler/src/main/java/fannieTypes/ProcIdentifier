@@ -1,0 +1,8 @@
+public class ProcIdentifier
+{
+    public String Identifier;
+    public ProcIdentifier(String identifier)
+    {
+        this.Identifier = identifier;
+    }
+}

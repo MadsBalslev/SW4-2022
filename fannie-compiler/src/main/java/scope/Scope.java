@@ -84,7 +84,11 @@ public class Scope {
     }
     public void Remove (String key)
     {
+        if (symbolTable.containsKey((key)))
+        {
         symbolTable.remove(key);
+        }
+        else throw new RuntimeException("Key not found");
     }
     public List<Ingredient> GetIngredients()
     {
@@ -116,5 +120,23 @@ public class Scope {
             }
         }
         return true;
+    }
+
+    public Boolean isIngredientListEmpty()
+    {
+        if(getTypeAmount(symbolTable, "fannieTypes.Ingredient") == 0)
+        {
+            return true;
+        }
+        else return false;
+    }
+
+    public Boolean isProcListEmpty()
+    {
+        if(getTypeAmount(symbolTable, "fannieTypes.ProcIdentifier") == 0)
+        {
+            return true;
+        }
+        else return false;
     }
 }
