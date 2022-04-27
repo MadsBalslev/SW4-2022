@@ -1,4 +1,3 @@
-
 import java.lang.constant.Constable;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +21,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
     Scope scope = new Scope();
     List<ToolAction> toolActionsList = new ArrayList<ToolAction>();
+    
     @Override public Void visitFannie(fannieParserParser.FannieContext context) 
     {
         System.out.println("Visiting fannie");
@@ -34,7 +34,6 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         }
         return null;
     }
-
     @Override public Void visitMainRecipe(fannieParserParser.MainRecipeContext context) 
     {
         System.out.println("Visiting mainrecipe");
@@ -296,18 +295,6 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         scope.stringPrinter(scope.getSymbolTable(), "Ingredient");
         Ingredient ingredient = (Ingredient)scope.retrieve(context.getText());
         return ingredient;
-    }
-    
-    public List<Ingredient> visitIngredientCollection(fannieParserParser.IngredientCollectionContext context) 
-    {
-        List<Ingredient> oldIngredients = new ArrayList<Ingredient>();
-            for (int i = 0; i < context.getChildCount(); i++) {
-                if (context.getChild(i) instanceof fannieParserParser.IngredientIdentifierContext) {
-                    oldIngredients.add((Ingredient)scope.retrieve(context.ingredientIdentifier(i).getText()));
-                }
-            }
-        visitChildren(context);
-        return oldIngredients;
     }
     
     public ToolAction createToolAction(fannieParserParser.ToolActionDeclarationContext context) {
