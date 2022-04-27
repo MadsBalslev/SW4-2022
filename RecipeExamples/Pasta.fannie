@@ -21,7 +21,6 @@ smain recipe Pasta{
         Pot do contain Salt,
 
         STOP Proc1 when "boil pasta for 6-10 minutes",
-        START Proc2 Sifter do Sift content in Pot,
 
         Sifter do contain content in Pot,
         Sifter do Sift content in Sifter,
