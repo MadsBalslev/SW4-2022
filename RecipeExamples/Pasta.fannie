@@ -1,4 +1,4 @@
-smain recipe Pasta{
+main recipe Pasta{
 
     ingredients{
         ingredient Pasta (100g), 
