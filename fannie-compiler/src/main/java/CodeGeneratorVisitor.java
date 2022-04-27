@@ -207,4 +207,9 @@ public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
 
         return null;
     }
+
+    public Void visitEndOfFile(fannieParserParser.ToolDeclarationContext ctx) {
+
+        return null;
+    }
 }

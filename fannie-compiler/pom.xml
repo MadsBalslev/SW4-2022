@@ -134,7 +134,7 @@
         <configuration>
           <mainClass>App</mainClass>
           <arguments>
-            <argument>../RecipeExamples/Test.fannie</argument>
+            <argument>../RecipeExamples/Pasta.fannie</argument>
         </arguments>
         </configuration>
       </plugin>
