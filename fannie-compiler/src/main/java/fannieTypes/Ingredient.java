@@ -1,17 +1,13 @@
 package fannieTypes;
 
+import Handlers.IngredientTypeHandler;
 import scope.Scope;
 
-public class Ingredient {
+public class Ingredient extends BaseFannieType {
     public String identifier;
     public IngredientType ingredientType;
     public String toString() {
         return "Ingredient Identifier: " + identifier + " IngredientType: " + ingredientType.toString();
-    }
-
-    public Ingredient()
-    {
-        // System.out.println(this.getClass().getName() + ": " + identifier);
     }
 
     public Boolean isDefaultIngredient(String type)
@@ -46,11 +42,21 @@ public class Ingredient {
 
     public Ingredient(String identifier, IngredientType ingredientType, Scope scope)
     {
+        super(identifier, "Ingredient");
+        System.out.println(this.getClass().getName() + ": " + identifier);
         this.identifier = identifier;
         this.ingredientType = ingredientType;
+        scope.append(this.identifier, this);
         //if (type.Identifier == parentIngredient.type.Identifier)
     }
 
+    public Ingredient(String Identifier, IngredientTypeHandler ingredientTypeHandler,String ingredientTypeIdentifier, Scope scope)
+    {
+        super(Identifier, "Ingredient");
+        this.identifier = Identifier;
+        this.ingredientType = ingredientTypeHandler.AssignIngredientType(this, ingredientTypeIdentifier);
+        scope.append(this.identifier, this);
+    }
     public Boolean isType(String type)
     {
         if (this.ingredientType.isType(type))
@@ -60,10 +66,10 @@ public class Ingredient {
         return false;
     }
 
-    public Ingredient createIngredient(String identifier, IngredientType type, Scope scope)
-    {
-        Ingredient ingredient = new Ingredient(identifier, type, scope);
-        scope.append(identifier, ingredient);
-        return ingredient;
-    }
+    // public Ingredient createIngredient(String identifier, IngredientType type, Scope scope)
+    // {
+    //     Ingredient ingredient = new Ingredient(identifier, type, scope);
+    //     scope.append(identifier, ingredient);
+    //     return ingredient;
+    // }
 }

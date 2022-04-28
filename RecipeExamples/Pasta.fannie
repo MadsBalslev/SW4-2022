@@ -25,6 +25,6 @@ main recipe Pasta{
         Sifter do contain content in Pot,
         Sifter do Sift content in Sifter,
 
-        serve content in Sifter,
+        serve content in Sifter
     }
 }

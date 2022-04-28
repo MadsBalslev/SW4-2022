@@ -2,7 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import Handlers.IngredientTypeHandler;
+import fannieTypes.HasBeenServed;
 import fannieTypes.Ingredient;
+import fannieTypes.IngredientType;
 import fannieTypes.Tool;
 import fannieTypes.ToolAction;
 import fannieTypes.steps.*;
@@ -80,10 +82,10 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     
     @Override public Void visitIngredientsList(fannieParserParser.IngredientsListContext context) 
     {   
-        Boolean hasServed = false;
+        HasBeenServed hasServed = new HasBeenServed(scope);
         scope.append("hasServed", hasServed);
         System.out.println("Visiting ingredientslist");
-        visitChildren(context); 
+        visitChildren(context);
         return null;
     }
     
@@ -109,10 +111,10 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     
     @Override public Void visitToolDeclaration(fannieParserParser.ToolDeclarationContext context) 
     { 
-        Tool tool = new Tool();
-        tool.toolIdentifier = context.toolIdentifier().getText();
-        tool.toolTypeIdentifier = context.toolTypeIdentifier().getText();
-        tool.toolActionDeclarationsList = visitToolActionDeclarationsList(context.toolActionDeclarationsList());
+        String toolIdentifier = context.toolIdentifier().getText();
+        String toolTypeIdentifier = context.toolTypeIdentifier().getText();
+        List<ToolAction> toolActionDeclarationsList = visitToolActionDeclarationsList(context.toolActionDeclarationsList());
+        Tool tool = new Tool(toolIdentifier, toolTypeIdentifier, toolActionDeclarationsList, scope);
         for (ToolAction toolAction : tool.toolActionDeclarationsList) {
             toolAction.toolIdentifier = tool.toolIdentifier;
         }
@@ -140,9 +142,9 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     
     @Override public Void visitDeterministicIngredientDeclaration(fannieParserParser.DeterministicIngredientDeclarationContext context) 
     { 
-        Ingredient ingredient = new Ingredient();
-        ingredient.identifier = context.ingredientIdentifier().getText();
-        ingredient.ingredientType = ingredientTypeHandler.AssignIngredientType(ingredient, context.ingredientTypeIdentifier().getText());
+        String identifier = context.ingredientIdentifier().getText();
+        String ingredientType = context.ingredientTypeIdentifier().getText();
+        Ingredient ingredient = new Ingredient(identifier, ingredientTypeHandler, ingredientType, scope);
         scope.append(ingredient.identifier, ingredient);
         return null;
     }
@@ -154,13 +156,14 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         return null;
     }
     
-    @Override public Ingredient visitRecipeIngredientDeclaration(fannieParserParser.RecipeIngredientDeclarationContext context) 
+    @Override public Void visitRecipeIngredientDeclaration(fannieParserParser.RecipeIngredientDeclarationContext context) 
     {
-        Ingredient ingredient = new Ingredient();
-        String ingredientIdentifier = context.recipeIdentifier().getText();
-        ingredient.createIngredient(ingredientIdentifier, ingredientTypeHandler.AssignIngredientType(ingredient, ingredientIdentifier), scope);
-        visitChildren(context);
-        return ingredient;
+        // String ingredientIdentifier = context.recipeIdentifier().getText();
+        // Ingredient ingredient = new Ingredient(ingredientIdentifier, null , scope);
+        // ingredient.ingredientType = ingredientTypeHandler.AssignIngredientType(ingredient, context.ingredientTypeIdentifier().getText());
+        // visitChildren(context);
+        // return ingredient;
+        return null;
     }
     
     @Override public Void visitIngredientTypeDeclaration(fannieParserParser.IngredientTypeDeclarationContext context) 
@@ -221,12 +224,12 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     
     @Override public Void visitServeStepDeclaration(fannieParserParser.ServeStepDeclarationContext context) 
     {
-        boolean hasServed = (Boolean)scope.retrieve("hasServed");
-        if (hasServed) {
+        HasBeenServed hasBeenServed = (HasBeenServed)scope.retrieve("hasServed");
+        if (hasBeenServed.isServed) {
             throw new RuntimeException("Recipe already has served");
         }
-        hasServed = true;
-        scope.append("hasServed", hasServed);
+        hasBeenServed.isServed = true;
+        scope.append("hasServed", hasBeenServed);
         visitChildren(context);
         scope.stringPrinter(scope.getSymbolTable(), "Ingredient");
         scope.Remove(context.stepIn().getText());
