@@ -4,7 +4,6 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import Handlers.IngredientTypeHandler;
 import fannieTypes.HasBeenServed;
 import fannieTypes.Ingredient;
-import fannieTypes.IngredientType;
 import fannieTypes.Tool;
 import fannieTypes.ToolAction;
 import fannieTypes.steps.*;
