@@ -25,125 +25,126 @@ public class InterpreterVisitorTest {
         interpreterVisitor = new InterpreterVisitor();
     }
 
-     @Test(expected = RuntimeException.class)
-     public void ingredientListMissingFromRecipeTest() throws IOException
-     {
+    @Test(expected = RuntimeException.class)
+    public void ingredientListMissingFromRecipeTest() throws IOException {
         CharStream input = CharStreams.fromStream(RecipeTestStrings.ingredientListMissingFromRecipeTest());
-        
+
         fannieParserLexer lexer = new fannieParserLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         fannieParserParser parser = new fannieParserParser(tokens);
         ParseTree tree = parser.fannie();
 
         interpreterVisitor.visit(tree);
-     }
+    }
 
-     @Test(expected = RuntimeException.class)
-     public void ingredientNotDeclaredButUsedTest() throws IOException
-     {
+    @Test(expected = RuntimeException.class)
+    public void ingredientNotDeclaredButUsedTest() throws IOException {
         CharStream input = CharStreams.fromStream(RecipeTestStrings.ingredientListMissingFromRecipeTest());
-        
+
         fannieParserLexer lexer = new fannieParserLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         fannieParserParser parser = new fannieParserParser(tokens);
         ParseTree tree = parser.fannie();
 
         interpreterVisitor.visit(tree);
-     }
+    }
 
-     @Test(expected = RuntimeException.class)
-     public void mainRecipeKeywordMissingTest() throws IOException
-     {
+    @Test(expected = RuntimeException.class)
+    public void mainRecipeKeywordMissingTest() throws IOException {
         CharStream input = CharStreams.fromStream(RecipeTestStrings.mainRecipeKeywordMissingTest());
-        
+
         fannieParserLexer lexer = new fannieParserLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         fannieParserParser parser = new fannieParserParser(tokens);
         ParseTree tree = parser.fannie();
 
         interpreterVisitor.visit(tree);
-     }
+    }
 
-     @Test(expected = RuntimeException.class)
-     public void stepListMissingFromRecipeTest() throws IOException
-     {
+    @Test(expected = RuntimeException.class)
+    public void stepListMissingFromRecipeTest() throws IOException {
         CharStream input = CharStreams.fromStream(RecipeTestStrings.stepListMissingFromRecipeTest());
-        
+
         fannieParserLexer lexer = new fannieParserLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         fannieParserParser parser = new fannieParserParser(tokens);
         ParseTree tree = parser.fannie();
 
         interpreterVisitor.visit(tree);
-     }
+    }
 
-     @Test(expected = RuntimeException.class)
-     public void toolNotDeclaredButUsedTest() throws IOException
-     {
+    @Test(expected = RuntimeException.class)
+    public void toolNotDeclaredButUsedTest() throws IOException {
         CharStream input = CharStreams.fromStream(RecipeTestStrings.toolNotDeclaredButUsedTest());
-        
+
         fannieParserLexer lexer = new fannieParserLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         fannieParserParser parser = new fannieParserParser(tokens);
         ParseTree tree = parser.fannie();
 
         interpreterVisitor.visit(tree);
-     }
+    }
 
-     @Test(expected = RuntimeException.class)
-     public void toolsListMissingFromRecipeTest() throws IOException
-     {
+    @Test(expected = RuntimeException.class)
+    public void toolsListMissingFromRecipeTest() throws IOException {
         CharStream input = CharStreams.fromStream(RecipeTestStrings.toolsListMissingFromRecipeTest());
-        
+
         fannieParserLexer lexer = new fannieParserLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         fannieParserParser parser = new fannieParserParser(tokens);
         ParseTree tree = parser.fannie();
 
         interpreterVisitor.visit(tree);
-     }
+    }
 
-     @Test(expected = RuntimeException.class)
-     public void CommasAfterListingsMissingFromTestRecipe() throws IOException
-     {
+    @Test(expected = RuntimeException.class)
+    public void CommasAfterListingsMissingFromTestRecipe() throws IOException {
         CharStream input = CharStreams.fromStream(RecipeTestStrings.CommasAfterListingsMissingFromTestRecipe());
-        
+
         fannieParserLexer lexer = new fannieParserLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         fannieParserParser parser = new fannieParserParser(tokens);
         ParseTree tree = parser.fannie();
 
         interpreterVisitor.visit(tree);
-     }
+    }
 
-     @Test(expected = RuntimeException.class)
-     public void CommasMissingInsideIngredientBlockTest() throws IOException
-     {
+    @Test(expected = RuntimeException.class)
+    public void CommasMissingInsideIngredientBlockTest() throws IOException {
         CharStream input = CharStreams.fromStream(RecipeTestStrings.CommasMissingInsideIngredientBlockTest());
-        
+
         fannieParserLexer lexer = new fannieParserLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         fannieParserParser parser = new fannieParserParser(tokens);
         ParseTree tree = parser.fannie();
 
         interpreterVisitor.visit(tree);
-     }
+    }
 
-     @Test(expected = RuntimeException.class)
-     public void ServeKeywordMissingFromRecipe() throws IOException
-     {
+    @Test(expected = RuntimeException.class)
+    public void ServeKeywordMissingFromRecipe() throws IOException {
         CharStream input = CharStreams.fromStream(RecipeTestStrings.ServeKeywordMissingFromRecipe());
-        
+
         fannieParserLexer lexer = new fannieParserLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         fannieParserParser parser = new fannieParserParser(tokens);
         ParseTree tree = parser.fannie();
 
         interpreterVisitor.visit(tree);
-     }
+    }
 
+    @Test(expected = RuntimeException.class)
+    public void ToolAndIngredientSameIdentifierTest() throws IOException {
+        CharStream input = CharStreams.fromStream(RecipeTestStrings.ToolAndIngredientSameIdentifierTest());
 
+        fannieParserLexer lexer = new fannieParserLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        fannieParserParser parser = new fannieParserParser(tokens);
+        ParseTree tree = parser.fannie();
 
-     // Casper er wack. Skal vi kicke ham? [X] Ja [ ] Nej
-     // Skal vi lave en handleplan til ham? [ ] Ja [ ] Nej
+        interpreterVisitor.visit(tree);
+    }
+
+    // Casper er wack. Skal vi kicke ham? [X] Ja [ ] Nej
+    // Skal vi lave en handleplan til ham? [ ] Ja [ ] Nej
 }

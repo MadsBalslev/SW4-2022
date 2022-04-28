@@ -52,6 +52,11 @@ public class RecipeTestStrings {
         return ReadFile.read("../RecipeExamples/TestRecipes/ServeKeywordMissingFromRecipe.fannie");
     }
 
+    public static InputStream ToolAndIngredientSameIdentifierTest() throws IOException
+    {
+        return ReadFile.read("../RecipeExamples/TestRecipes/ToolAndIngredientSameIdentifierTest.fannie");
+    }
+
     
     
 }

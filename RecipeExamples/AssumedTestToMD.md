@@ -1,5 +1,4 @@
 # Test
-
 ### Ingredients
 - Testingredient (1kg, 1 whole)
 - Testingredient2 (1g, 1 tbsp)
@@ -28,27 +27,21 @@
 - TestingredientNUT (1g)
 - TestingredientDRY (1g)
 - TestSubrecipe
-
 ### Tools
 - TestPOT
 - TestSTOVE
 - Knife
-
 ### Steps
 1. Put TestingredientLIQ in TestPOT
 2. Slice TestingredientMEA with Knife <customTag>Meget fint</customTag>
 3. Put TestingredientMEA in TestPOT
 4. Put TestSubrecipe in TestPOT
-5. Serve content in TestPOT
-
-## TestSubrecipe
-
+5. serve the content in TestPOT 
+# TestSubrecipe
 ### Ingredients
 - TestingredientSR (1g, 1 whole)
-
 ### Tools
 - TestPOT2
-
 ### Steps
 1. Put TestingredientSR in TestPOT2 <customTag>Meget fint</customTag>
-2. Serve content in TestPOT2
+2. serve the content in TestPOT2 
