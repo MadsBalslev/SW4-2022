@@ -152,17 +152,14 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     
     @Override public Void visitNondeterministicIngredientDeclaration(fannieParserParser.NondeterministicIngredientDeclarationContext context) 
     { 
+        //Not implemented
         visitChildren(context);
         return null;
     }
     
     @Override public Void visitRecipeIngredientDeclaration(fannieParserParser.RecipeIngredientDeclarationContext context) 
-    {
-        // String ingredientIdentifier = context.recipeIdentifier().getText();
-        // Ingredient ingredient = new Ingredient(ingredientIdentifier, null , scope);
-        // ingredient.ingredientType = ingredientTypeHandler.AssignIngredientType(ingredient, context.ingredientTypeIdentifier().getText());
-        // visitChildren(context);
-        // return ingredient;
+    {   
+        //Not implemented
         return null;
     }
     
