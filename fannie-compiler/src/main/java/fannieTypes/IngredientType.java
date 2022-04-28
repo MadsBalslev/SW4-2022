@@ -1,9 +1,10 @@
 package fannieTypes;
 
-public class IngredientType {
+public class IngredientType extends BaseFannieType {
     public IngredientType parentIngredientType;
     public String Identifier;
     public IngredientType(String identifier, IngredientType parentIngredientType) {
+        super(identifier, "IngredientType");
         this.Identifier = identifier;
         this.parentIngredientType = parentIngredientType;
     }

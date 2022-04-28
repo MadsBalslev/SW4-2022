@@ -27,7 +27,7 @@ import static org.testng.Assert.*;
 import fannieTypes.Ingredient;
 
 public class InterpreterVisitorTest {
-    InterpreterVisitor interpreterVisitor;
+      InterpreterVisitor interpreterVisitor;
 
     private <T extends RuleContext> T mockForVisitorResult(final Class<T> nodeType, final String visitResult) {
         final T mock = mock(nodeType);
