@@ -23,6 +23,17 @@ public class App {
         } catch (Exception e) {
             System.out.println("Could not generate PDF");
         }
+        //System.out.println(tree.toStringTree(parser));
+
+        CodeGeneratorVisitor cgv = new CodeGeneratorVisitor();
+        cgv.visit(tree);
+        // System.out.println(cgv.markdownFormat);
+        String HTML = FileConvert.MDToHTML(cgv.markdownFormat);
+        try {
+            FileConvert.HTMLToPDF(HTML);
+        } catch (Exception e) {
+            System.out.println("Could not generate PDF");
+        }
         WriteToFile.write("../output/output.html", HTML);
         WriteToFile.write("../output/output.md", cgv.markdownFormat.toString());
     }

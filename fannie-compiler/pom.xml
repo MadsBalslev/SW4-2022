@@ -146,7 +146,7 @@
         <configuration>
           <mainClass>App</mainClass>
           <arguments>
-            <argument>../RecipeExamples/Pasta.fannie</argument>
+            <argument>../RecipeExamples/TestRecipes/ToolAndIngredientSameIdentifierTest.fannie</argument>
         </arguments>
         </configuration>
       </plugin>

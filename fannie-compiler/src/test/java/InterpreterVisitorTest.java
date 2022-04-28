@@ -157,6 +157,9 @@ public class InterpreterVisitorTest {
         assertEquals("Does not return correct node!",interpreterVisitor.visitIngredientDeclaration(ingredientNode), ingredientNode.deterministicIngredientDeclaration());
      }
 
+    @Test(expected = RuntimeException.class)
+    public void ToolAndIngredientSameIdentifierTest() throws IOException {
+        CharStream input = CharStreams.fromStream(RecipeTestStrings.ToolAndIngredientSameIdentifierTest());
 
     // Casper er wack. Skal vi kicke ham? [X] Ja [ ] Nej
     // Skal vi lave en handleplan til ham? [ ] Ja [ ] Nej
