@@ -1,14 +1,8 @@
-import java.lang.constant.Constable;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.TerminalNode;
-
 import Handlers.IngredientTypeHandler;
 import fannieTypes.Ingredient;
-import fannieTypes.IngredientType;
 import fannieTypes.Tool;
 import fannieTypes.ToolAction;
 import fannieTypes.steps.*;
@@ -52,7 +46,6 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         if (scope.isProcListEmpty() == false) {
             throw new RuntimeException("Not all procedures are stopped");
         }
-
         scope = oldScope;
         return null;
     }
@@ -87,6 +80,8 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     
     @Override public Void visitIngredientsList(fannieParserParser.IngredientsListContext context) 
     {   
+        Boolean hasServed = false;
+        scope.append("hasServed", hasServed);
         System.out.println("Visiting ingredientslist");
         visitChildren(context); 
         return null;
@@ -149,7 +144,6 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         ingredient.identifier = context.ingredientIdentifier().getText();
         ingredient.ingredientType = ingredientTypeHandler.AssignIngredientType(ingredient, context.ingredientTypeIdentifier().getText());
         scope.append(ingredient.identifier, ingredient);
-        //System.out.println(ingredient.toString());
         return null;
     }
     // pt fungerer nondeterministic som en deterministic der tager første ingrediens ind
@@ -227,6 +221,12 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     
     @Override public Void visitServeStepDeclaration(fannieParserParser.ServeStepDeclarationContext context) 
     {
+        boolean hasServed = (Boolean)scope.retrieve("hasServed");
+        if (hasServed) {
+            throw new RuntimeException("Recipe already has served");
+        }
+        hasServed = true;
+        scope.append("hasServed", hasServed);
         visitChildren(context);
         scope.stringPrinter(scope.getSymbolTable(), "Ingredient");
         scope.Remove(context.stepIn().getText());
