@@ -1,14 +1,18 @@
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -17,6 +21,8 @@ public class CodeGeneratorVisitorTest {
     ParseTree tree;
     CodeGeneratorVisitor cgv;
     File file;
+    InputStream assumedTestToMD = ReadFile.read("../RecipeExamples/AssumedTestToMD.md");
+
     File testFile = new File("/fannie-compiler/fannie.md");
     String[] ingredients = {
             "- Testingredient (1kg, 1 whole)",
@@ -138,8 +144,23 @@ public class CodeGeneratorVisitorTest {
             assertTrue("Does not contain" + step, S.contains(step));
         }
     }
+    // Todo: This does not work as expected
+    @Ignore
+    @Test //No clue hvorfor denne test failer =D
+    public void sourceFileConvertedCorrectlyAndIsEqual() throws IOException {
+        String a = new String(assumedTestToMD.readAllBytes());
+        String b = cgv.markdownFormat.toString();
 
-    // TODO maybe))
+        a.replaceAll("\r", "");
+        b.replaceAll("\r", "");
+
+        a.replaceAll("\n", "");
+        b.replaceAll("\n", "");
+
+        assertEquals(a, b);
+    }
+
+    // TODO: maybe))
     @Test
     public void shouldHaveCorrectFormattingSubRecipes() {
         Boolean tmpCond = true;

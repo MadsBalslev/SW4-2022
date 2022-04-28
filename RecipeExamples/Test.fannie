@@ -60,6 +60,6 @@ recipe TestSubrecipe{
     steps{
         TestPOT2 do contain "<customTag>Meget fint</customTag>" TestingredientSR,
 
-        serve content in TestPOT
+        serve content in TestPOT2
     }
 }
