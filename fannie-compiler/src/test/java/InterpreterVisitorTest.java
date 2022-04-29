@@ -47,29 +47,29 @@ public class InterpreterVisitorTest {
         interpreterVisitor = new InterpreterVisitor();
     }
 
-    @Test(expected = RuntimeException.class)
-    public void ingredientListMissingFromRecipeTest() throws IOException {
-        CharStream input = CharStreams.fromStream(RecipeTestStrings.ingredientListMissingFromRecipeTest());
+    // @Test(expected = RuntimeException.class)
+    // public void ingredientListMissingFromRecipeTest() throws IOException {
+    //     CharStream input = CharStreams.fromStream(RecipeTestStrings.ingredientListMissingFromRecipeTest());
 
-        fannieParserLexer lexer = new fannieParserLexer(input);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        fannieParserParser parser = new fannieParserParser(tokens);
-        ParseTree tree = parser.fannie();
+    //     fannieParserLexer lexer = new fannieParserLexer(input);
+    //     CommonTokenStream tokens = new CommonTokenStream(lexer);
+    //     fannieParserParser parser = new fannieParserParser(tokens);
+    //     ParseTree tree = parser.fannie();
 
-        interpreterVisitor.visit(tree);
-    }
+    //     interpreterVisitor.visit(tree);
+    // }
 
-    @Test(expected = RuntimeException.class)
-    public void ingredientNotDeclaredButUsedTest() throws IOException {
-        CharStream input = CharStreams.fromStream(RecipeTestStrings.ingredientListMissingFromRecipeTest());
+    // @Test(expected = RuntimeException.class)
+    // public void ingredientNotDeclaredButUsedTest() throws IOException {
+    //     CharStream input = CharStreams.fromStream(RecipeTestStrings.ingredientListMissingFromRecipeTest());
 
-        fannieParserLexer lexer = new fannieParserLexer(input);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        fannieParserParser parser = new fannieParserParser(tokens);
-        ParseTree tree = parser.fannie();
+    //     fannieParserLexer lexer = new fannieParserLexer(input);
+    //     CommonTokenStream tokens = new CommonTokenStream(lexer);
+    //     fannieParserParser parser = new fannieParserParser(tokens);
+    //     ParseTree tree = parser.fannie();
 
-        interpreterVisitor.visit(tree);
-    }
+    //     interpreterVisitor.visit(tree);
+    // }
 
     @Test(expected = RuntimeException.class)
     public void mainRecipeKeywordMissingTest() throws IOException {
