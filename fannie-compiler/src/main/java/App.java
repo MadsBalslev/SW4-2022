@@ -13,20 +13,9 @@ public class App {
 
         ParseTree tree = parser.fannie();
         interpreterVisitor.visit(tree);
-
-        CodeGeneratorVisitor cgv = new CodeGeneratorVisitor();
-        //cgv.visit(tree);
-        // System.out.println(cgv.markdownFormat);
-        String HTML = FileConvert.MDToHTML(cgv.markdownFormat);
-        try {
-            FileConvert.HTMLToPDF(HTML);
-        } catch (Exception e) {
-            System.out.println("Could not generate PDF");
-        }
-        //System.out.println(tree.toStringTree(parser));
-
         CodeGeneratorVisitor cgv = new CodeGeneratorVisitor();
         cgv.visit(tree);
+        
         // System.out.println(cgv.markdownFormat);
         String HTML = FileConvert.MDToHTML(cgv.markdownFormat);
         try {

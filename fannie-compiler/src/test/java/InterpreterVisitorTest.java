@@ -26,15 +26,16 @@ import static org.testng.Assert.*;
 
 import fannieTypes.Ingredient;
 
+
 public class InterpreterVisitorTest {
-      InterpreterVisitor interpreterVisitor;
+        InterpreterVisitor interpreterVisitor;
 
     private <T extends RuleContext> T mockForVisitorResult(final Class<T> nodeType, final String visitResult) {
         final T mock = mock(nodeType);
         when(mock.accept(interpreterVisitor)).thenReturn(visitResult);
         return mock;
     }
-
+    
     @Before
     public void init() throws IOException {
         interpreterVisitor = new InterpreterVisitor();
@@ -149,18 +150,41 @@ public class InterpreterVisitorTest {
     }
 
     @Test
-     public void wrongIngredientReturned()
-     {
+    public void wrongIngredientReturned()
+    {
         fannieParserParser.IngredientDeclarationContext ingredientNode = mock(fannieParserParser.IngredientDeclarationContext.class);
 
 
-        assertEquals("Does not return correct node!",interpreterVisitor.visitIngredientDeclaration(ingredientNode), ingredientNode.deterministicIngredientDeclaration());
-     }
+        assertEquals(interpreterVisitor.visitIngredientDeclaration(ingredientNode), ingredientNode.deterministicIngredientDeclaration(), "Did not return correct node!");
+    }
 
+    @Test
+    public void wrongToolActionDeclaration ()
+    {
+        fannieParserParser.ToolActionDeclarationContext toolActionDeclarationNode = mock(fannieParserParser.ToolActionDeclarationContext.class);
+
+        System.out.println("we are here XD: " + toolActionDeclarationNode.getText());
+
+        assertEquals("Tool action node did not return correct children!",interpreterVisitor.visitToolActionDeclaration(toolActionDeclarationNode), toolActionDeclarationNode);
+
+        
+    }
+ 
     @Test(expected = RuntimeException.class)
     public void ToolAndIngredientSameIdentifierTest() throws IOException {
         CharStream input = CharStreams.fromStream(RecipeTestStrings.ToolAndIngredientSameIdentifierTest());
 
+    }
+    
+    @Test
+    public void visitContentIn() throws Exception {
+  
+        final fannieParserParser.ContentInContext contentIn = mock(fannieParserParser.ContentInContext.class);
+        contentIn.
+        
+    }
+    
+    
     // Casper er wack. Skal vi kicke ham? [X] Ja [ ] Nej
     // Skal vi lave en handleplan til ham? [ ] Ja [ ] Nej
     // hello my friendssssssss

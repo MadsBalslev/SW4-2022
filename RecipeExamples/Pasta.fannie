@@ -10,7 +10,7 @@ main recipe Pasta{
         tool Pot[contain : ingredient],
         tool Stove[Heat : content in Pot => ingredient],
         tool Knife[Slice : ingredient => SlicedIngredient],
-        tool Sifter[Sift : content in Pot => ingredient]
+        tool Sifter[contain : ingredient, Sift : content in Sifter => ingredient]
     },
     
     steps{
@@ -22,7 +22,7 @@ main recipe Pasta{
         Pot do contain Pasta,
         Pot do contain Salt,
 
-        STOP Proc1 when "boil pasta for 6-10 minutes",
+        STOP Proc1 when "The pasta has boiled for 6-10 minutes or is al dente.",
 
         Sifter do contain content in Pot,
         Sifter do Sift content in Sifter,
