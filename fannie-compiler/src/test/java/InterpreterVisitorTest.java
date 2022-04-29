@@ -12,6 +12,7 @@ import java.io.InputStream;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.RuleContext;
@@ -20,11 +21,14 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.*;
 
 import fannieTypes.Ingredient;
+import fannieTypes.*;
+import scope.Scope;
 
 
 public class InterpreterVisitorTest {
@@ -150,38 +154,50 @@ public class InterpreterVisitorTest {
     }
 
     @Test
-    public void wrongIngredientReturned()
+    public void correctIngredientReturned()
     {
-        fannieParserParser.IngredientDeclarationContext ingredientNode = mock(fannieParserParser.IngredientDeclarationContext.class);
+        final Ingredient mockIngredient = mock(Ingredient.class);
+        fannieParserParser.IngredientDeclarationContext ingredientDeclarationNode = mock(fannieParserParser.IngredientDeclarationContext.class);
+        // when(interpreterVisitor.visitIngredientDeclaration(ingredientDeclarationNode)).thenReturn(mockIngredient);
 
+        final Ingredient actual = interpreterVisitor.visitIngredientDeclaration(ingredientDeclarationNode);
 
-        assertEquals(interpreterVisitor.visitIngredientDeclaration(ingredientNode), ingredientNode.deterministicIngredientDeclaration(), "Did not return correct node!");
+        assertEquals(actual, mockIngredient);
+
     }
-
+    
     @Test
     public void wrongToolActionDeclaration ()
     {
-        fannieParserParser.ToolActionDeclarationContext toolActionDeclarationNode = mock(fannieParserParser.ToolActionDeclarationContext.class);
-
-        System.out.println("we are here XD: " + toolActionDeclarationNode.getText());
-
-        assertEquals("Tool action node did not return correct children!",interpreterVisitor.visitToolActionDeclaration(toolActionDeclarationNode), toolActionDeclarationNode);
-
+    
+        // public IngredientDeclarationContext(ParserRuleContext parent, int invokingState) {
+		//	super(parent, invokingState);
+		// }
         
+        final fannieParserParser.ToolActionDeclarationContext mockToolActionDeclarationContext = mock(fannieParserParser.ToolActionDeclarationContext.class);
+        when(mockToolActionDeclarationContext.getChild(0)).thenReturn();
+
     }
- 
+    
     @Test(expected = RuntimeException.class)
     public void ToolAndIngredientSameIdentifierTest() throws IOException {
         CharStream input = CharStreams.fromStream(RecipeTestStrings.ToolAndIngredientSameIdentifierTest());
 
     }
     
+
     @Test
-    public void visitContentIn() throws Exception {
-  
-        final fannieParserParser.ContentInContext contentIn = mock(fannieParserParser.ContentInContext.class);
-        contentIn.
-        
+    public void scopeRetrievesFromParentSymbolTable () throws Exception
+    {
+
+        Scope scope = new Scope();
+        Scope parentScope = new Scope();
+        ProcIdentifier procIdentifier = new ProcIdentifier("Test");
+        parentScope.append("Test", procIdentifier);
+        scope.setParent(parentScope);
+                
+        ProcIdentifier actual = (ProcIdentifier)scope.retrieve("Test");
+        assertEquals(actual, procIdentifier);
     }
     
     
