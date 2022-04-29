@@ -21,6 +21,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import Handlers.IngredientTypeHandler;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -29,6 +30,7 @@ import static org.testng.Assert.*;
 import fannieTypes.Ingredient;
 import fannieTypes.*;
 import scope.Scope;
+import Handlers.IngredientTypeHandler;
 
 
 public class InterpreterVisitorTest {
@@ -163,7 +165,6 @@ public class InterpreterVisitorTest {
         final Ingredient actual = interpreterVisitor.visitIngredientDeclaration(ingredientDeclarationNode);
 
         assertEquals(actual, mockIngredient);
-
     }
     
     // @Test
@@ -224,17 +225,54 @@ public class InterpreterVisitorTest {
         HasBeenServed hasServed = new HasBeenServed(new Scope());
         assertEquals(hasServed.isServed, false);
     }
-
+    @Test
     public void hasBeenServedTrue()
     {
         final HasBeenServed hasBeenServed = new HasBeenServed(new Scope());
         hasBeenServed.isServed = true;
         final  HasBeenServed mock = mock(HasBeenServed.class);
-        when(mock.isServed).thenReturn(true);
+        mock.isServed = true;
         assertEquals(mock.isServed, hasBeenServed.isServed);
-
     }
-    // Casper er wack. Skal vi kicke ham? [X] Ja [ ] Nej
-    // Skal vi lave en handleplan til ham? [ ] Ja [ ] Nej
-    // hello my friendssssssss
+
+    @Test
+    public void ingredientIsType()
+    {
+        IngredientType ingredientType = new IngredientType("vegetable", null);
+        Ingredient ingredient = new Ingredient("ingredient", ingredientType, new Scope());
+        Boolean actual = ingredient.isType("vegetable");
+        
+        final Ingredient mock = mock(Ingredient.class);
+        when(mock.isType("vegetable")).thenReturn(true);
+        assertEquals(mock.isType("vegetable"), actual);
+    }
+
+    @Test 
+    public void ingredientIsNotType()
+    {
+        IngredientType ingredientType = new IngredientType("vegetable", null);
+        Ingredient ingredient = new Ingredient("ingredient", ingredientType, new Scope());
+        Boolean actual = ingredient.isType("fruit");
+        
+        final Ingredient mock = mock(Ingredient.class);
+        when(mock.isType("fruit")).thenReturn(false);
+
+        assertEquals(mock.isType("fruit"), actual);
+    }
+
+    @Test 
+    public void ingredientTypeAssignedCorrectly()
+    {
+        IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
+        Ingredient ingredient = new Ingredient("ingredient",ingredientTypeHandler,"liquid", new Scope());
+
+        assertEquals(ingredient.ingredientType.Identifier, "liquid");
+    }
+    @Test(expected = RuntimeException.class)
+    public void ingredientTypeAssignedIncorrectly()
+    {
+        IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
+        Ingredient ingredient = new Ingredient("ingredient",ingredientTypeHandler,"mushroom", new Scope());
+    }
+   
 }
