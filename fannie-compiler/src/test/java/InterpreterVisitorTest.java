@@ -158,7 +158,7 @@ public class InterpreterVisitorTest {
     {
         final Ingredient mockIngredient = mock(Ingredient.class);
         fannieParserParser.IngredientDeclarationContext ingredientDeclarationNode = mock(fannieParserParser.IngredientDeclarationContext.class);
-        // when(interpreterVisitor.visitIngredientDeclaration(ingredientDeclarationNode)).thenReturn(mockIngredient);
+        when(interpreterVisitor.visitIngredientDeclaration(ingredientDeclarationNode)).thenReturn(mockIngredient);
 
         final Ingredient actual = interpreterVisitor.visitIngredientDeclaration(ingredientDeclarationNode);
 
@@ -166,18 +166,18 @@ public class InterpreterVisitorTest {
 
     }
     
-    @Test
-    public void wrongToolActionDeclaration ()
-    {
+    // @Test
+    // public void wrongToolActionDeclaration ()
+    // {
     
-        // public IngredientDeclarationContext(ParserRuleContext parent, int invokingState) {
-		//	super(parent, invokingState);
-		// }
+    //     // public IngredientDeclarationContext(ParserRuleContext parent, int invokingState) {
+	// 	//	super(parent, invokingState);
+	// 	// }
         
-        final fannieParserParser.ToolActionDeclarationContext mockToolActionDeclarationContext = mock(fannieParserParser.ToolActionDeclarationContext.class);
-        when(mockToolActionDeclarationContext.getChild(0)).thenReturn();
+    //     final fannieParserParser.ToolActionDeclarationContext mockToolActionDeclarationContext = mock(fannieParserParser.ToolActionDeclarationContext.class);
+    //     when(mockToolActionDeclarationContext.getChild(0)).thenReturn();
 
-    }
+    // }
     
     @Test(expected = RuntimeException.class)
     public void ToolAndIngredientSameIdentifierTest() throws IOException {
@@ -185,11 +185,9 @@ public class InterpreterVisitorTest {
 
     }
     
-
     @Test
     public void scopeRetrievesFromParentSymbolTable () throws Exception
     {
-
         Scope scope = new Scope();
         Scope parentScope = new Scope();
         ProcIdentifier procIdentifier = new ProcIdentifier("Test");
@@ -199,8 +197,43 @@ public class InterpreterVisitorTest {
         ProcIdentifier actual = (ProcIdentifier)scope.retrieve("Test");
         assertEquals(actual, procIdentifier);
     }
+    @Test(expected = RuntimeException.class)
+    public void cannotRetrieveFromSymboltable() throws Exception
+    {
+        Scope scope = new Scope();
+        scope.retrieve("Test");
+    }
     
-    
+    @Test
+    public void isDefaultIngredient()
+    {
+        IngredientType ingredientType = new IngredientType("ingredient", null);
+        Boolean actual = ingredientType.isDefaultType("ingredient");
+        assertEquals(true, actual);
+    }
+    @Test
+    public void isNotDefaultIngredient()
+    {
+        IngredientType ingredientType = new IngredientType("Ingredient", null);
+        Boolean actual = ingredientType.isDefaultType("Ingredient");
+        assertEquals(actual, false);
+    }
+    @Test
+    public void hasBeenServedFalse()
+    {
+        HasBeenServed hasServed = new HasBeenServed(new Scope());
+        assertEquals(hasServed.isServed, false);
+    }
+
+    public void hasBeenServedTrue()
+    {
+        final HasBeenServed hasBeenServed = new HasBeenServed(new Scope());
+        hasBeenServed.isServed = true;
+        final  HasBeenServed mock = mock(HasBeenServed.class);
+        when(mock.isServed).thenReturn(true);
+        assertEquals(mock.isServed, hasBeenServed.isServed);
+
+    }
     // Casper er wack. Skal vi kicke ham? [X] Ja [ ] Nej
     // Skal vi lave en handleplan til ham? [ ] Ja [ ] Nej
     // hello my friendssssssss
