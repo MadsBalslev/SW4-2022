@@ -36,7 +36,9 @@ public class IngredientTypeHandler {
 
     public IngredientType AssignIngredientType(Ingredient ingredient, String ingredientTypeIdentifier)
     {
+        //debug code
         System.out.println("Assigning ingredient type: " + ingredientTypeIdentifier + " to " + ingredient.identifier);
+        //debug code
         IngredientType newIngredientType = null;
         for (IngredientType ingredientType : ingredientTypes)
         {

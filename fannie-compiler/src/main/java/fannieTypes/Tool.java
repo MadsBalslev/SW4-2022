@@ -2,9 +2,7 @@ package fannieTypes;
 import java.util.ArrayList;
 import java.util.List;
 import Handlers.IngredientTypeHandler;
-
-
-
+import fannieTypes.toolActions.*;
 import scope.Scope;
 public class Tool extends BaseFannieType{
     public String toolTypeIdentifier;
@@ -20,7 +18,7 @@ public class Tool extends BaseFannieType{
 
         return sb.toString();
     }
-    public Tool(String toolIdentifier, String toolTypeIdentifier,List<ToolAction> toolActionList, Scope scope)
+    public Tool(String toolIdentifier, String toolTypeIdentifier,List<ToolAction> toolActionList)
     {
         super(toolIdentifier, "Tool");
         this.toolIdentifier = toolIdentifier;
@@ -56,11 +54,15 @@ public class Tool extends BaseFannieType{
             if (toolAction.transformedIngredientTypeIdentifier.equals("content in")){
                 ingredientIdentifier = "content in" + toolAction.toolIdentifier;
                 ingredientType =  ingredientTypeHandler.AssignIngredientType(ingredient, "content in");
+                //debug code
                 //System.out.println("using tool action " + toolAction.toolActionIdentifier + " on " + ingredient.identifier +" creating " + newIngredient.ingredientType);
+                //debug code
                 scope.Remove(ingredient.identifier);
-                Ingredient newIngredient = new Ingredient(ingredientIdentifier, ingredientType, scope);
+                Ingredient newIngredient = new Ingredient(ingredientIdentifier, ingredientType);
                 scope.append(newIngredient.identifier, newIngredient);
+                //debug code
                 System.out.println("Added " + ingredientIdentifier + " to scope");
+                //debug code
                 this.hasToolBeenUsed = true;
             }
             else
@@ -70,12 +72,16 @@ public class Tool extends BaseFannieType{
                 ingredientType = ingredientTypeHandler.AssignIngredientType(ingredient, toolAction.transformedIngredientTypeIdentifier);
                 //System.out.println("using tool action " + toolAction.toolActionIdentifier + " on " + ingredient.identifier +" creating " + newIngredient.ingredientType);
                 scope.Remove(ingredient.identifier);
-                Ingredient newIngredient = new Ingredient(ingredientIdentifier, ingredientType, scope);
+                Ingredient newIngredient = new Ingredient(ingredientIdentifier, ingredientType);
                 scope.append(newIngredient.identifier, newIngredient);
+                //debug code
                 System.out.println("Added " + ingredientIdentifier + " to scope");
+                //debug code
                 this.hasToolBeenUsed = true;
             }
+            //debug code
             //System.out.println("Removed " + ingredient.identifier + " from scope");
+            //debug code
         }
         else
         {

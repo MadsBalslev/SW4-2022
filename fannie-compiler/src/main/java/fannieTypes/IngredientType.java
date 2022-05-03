@@ -49,9 +49,10 @@ public class IngredientType extends BaseFannieType {
                 return false;
         }
     }
-    
+    //debug code
     public String toString()
     {
         return this.Identifier;
     }
+    //debug code
 }

@@ -14,9 +14,9 @@ public class App {
         ParseTree tree = parser.fannie();
         interpreterVisitor.visit(tree);
 
-        
+        //debug code
         //System.out.println(tree.toStringTree(parser));
-
+        //debug code
         CodeGeneratorVisitor cgv = new CodeGeneratorVisitor();
         cgv.visit(tree);
         // System.out.println(cgv.markdownFormat);
