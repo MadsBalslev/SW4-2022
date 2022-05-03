@@ -56,7 +56,7 @@ public class FileConvertTest {
 
     String[] steps = {
             "<li>Put TestingredientLIQ in TestPOT</li>",
-            "<li>Slice TestingredientMEA with Knife</li>",
+            "<li>Slice TestingredientMEA with Knife &lt;customTag&gt;Meget fint&lt;/customTag&gt;</li>",
             "<li>Put TestingredientMEA in TestPOT</li>",
             "<li>Put TestSubrecipe in TestPOT</li>",
             "<li>serve the content in TestPOT</li>",
@@ -74,6 +74,11 @@ public class FileConvertTest {
         cgv = new CodeGeneratorVisitor();
         cgv.visit(tree);
         HTML = FileConvert.MDToHTML(cgv.markdownFormat);
+    }
+
+    @Test
+    public void escapesWrongHtmlTagsCorrectly() {
+        assertTrue("message", (!HTML.contains("<customTag>") && !HTML.contains("</customTag>")));
     }
 
     @Test
