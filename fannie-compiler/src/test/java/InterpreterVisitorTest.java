@@ -22,6 +22,8 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import Handlers.IngredientTypeHandler;
+import fannieParserParser.IngredientIdentifierContext;
+import fannieParserParser.ToolDeclarationContext;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -41,6 +43,33 @@ public class InterpreterVisitorTest {
         when(mock.accept(interpreterVisitor)).thenReturn(visitResult);
         return mock;
     }
+
+    public ToolAction createToolAction(fannieParserParser.ToolActionDeclarationContext context) {
+        ToolAction toolAction = new ToolAction();
+        if (context.getChild(0) instanceof TerminalNode)
+        {
+            toolAction.ingredientTypeIdentifier = context.ingredientTypeIdentifier(0).getText();
+            toolAction.transformedIngredientTypeIdentifier = "content in";
+            toolAction.toolActionIdentifier = "contain";
+        }
+        /* we have to check if the first ingredienttype identifier is  contentin,
+        since it changes whether ingredienttypeidentifier(0) is the original or transformed ingredient */
+        else if (context.getChild(2) instanceof fannieParserParser.ContentInContext) {
+            toolAction.ingredientTypeIdentifier = context.contentIn().CONTENT_IN().getText();
+            toolAction.transformedIngredientTypeIdentifier= context.ingredientTypeIdentifier(0).getText();
+            toolAction.toolActionIdentifier = context.toolActionIdentifier().getText();
+        } 
+        else if (context.getChild(2) instanceof fannieParserParser.IngredientTypeIdentifierContext)
+        {
+            toolAction.ingredientTypeIdentifier = context.ingredientTypeIdentifier(0).getText();
+            toolAction.transformedIngredientTypeIdentifier = context.ingredientTypeIdentifier(1).getText();
+            toolAction.toolActionIdentifier = context.toolActionIdentifier().getText();
+        }
+        
+        return toolAction;
+    }
+
+
     
     @Before
     public void init() throws IOException {
@@ -156,15 +185,17 @@ public class InterpreterVisitorTest {
     }
 
     @Test
-    public void correctIngredientReturned()
+    public void ingredientDeclarationReturnsIngredient()
     {
-        final Ingredient mockIngredient = mock(Ingredient.class);
-        fannieParserParser.IngredientDeclarationContext ingredientDeclarationNode = mock(fannieParserParser.IngredientDeclarationContext.class);
-        when(interpreterVisitor.visitIngredientDeclaration(ingredientDeclarationNode)).thenReturn(mockIngredient);
+        fannieParserParser.IngredientDeclarationContext ingredientDeclarationctx = mock(fannieParserParser.IngredientDeclarationContext.class);
+        fannieParserParser.DeterministicIngredientDeclarationContext deterministicIngredientDeclarationctx = mock(fannieParserParser.DeterministicIngredientDeclarationContext.class);
+        ingredientDeclarationctx.addChild(deterministicIngredientDeclarationctx);
 
-        final Ingredient actual = interpreterVisitor.visitIngredientDeclaration(ingredientDeclarationNode);
+        Ingredient mockIngredient = mock(Ingredient.class);
 
-        assertEquals(actual, mockIngredient);
+
+
+        assertEquals("Did not return type Ingredient!", ingredientDeclarationctx.getChild(0), mockIngredient instanceof Ingredient);
     }
     
     // @Test
@@ -273,6 +304,52 @@ public class InterpreterVisitorTest {
     {
         IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
         Ingredient ingredient = new Ingredient("ingredient",ingredientTypeHandler,"mushroom", new Scope());
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void toolActionisnotToolAction()
+    {
+        final fannieParserParser.ToolActionDeclarationContext toolactionctx = mock(fannieParserParser.ToolActionDeclarationContext.class);
+        ToolAction fakeToolAction = createToolAction(toolactionctx);
+
+        IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
+        Ingredient ingredient = new Ingredient("ingredient",ingredientTypeHandler,"mushroom", new Scope());
+
+        assertEquals(fakeToolAction, ingredient);
+    }
+
+    @Test
+    public void stepInReturnsList()
+    {
+        final fannieParserParser.StepInContext stepinctx = mock(fannieParserParser.StepInContext.class);
+        final Ingredient mockIngredient = mock(Ingredient.class);
+
+        ArrayList<Ingredient> ingredientList = new ArrayList<Ingredient>();
+
+        assertEquals("Did not return ingredientList!",interpreterVisitor.visitStepIn(stepinctx).getClass(), ingredientList.getClass());
+
+    }
+
+    @Test
+    public void toolActionDeclarationListReturnsList()
+    {
+        final fannieParserParser.ToolActionDeclarationsListContext toolActionDeclarationListctx = mock(fannieParserParser.ToolActionDeclarationsListContext.class);
+
+        List<ToolAction> toolActionList = new ArrayList<ToolAction>();
+
+        assertEquals("Did not return toolActionList!",toolActionList.getClass(), interpreterVisitor.visitToolActionDeclarationsList(toolActionDeclarationListctx).getClass());
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void ingredientIdentifierDoesNotReturnOldIngredient()
+    {
+        final fannieParserParser.IngredientIdentifierContext ingredientIdentifierctx = mock(fannieParserParser.IngredientIdentifierContext.class);
+
+        IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
+        Ingredient oldIngredient = new Ingredient("Potato", ingredientTypeHandler, "ingredient", new Scope());
+
+
+        assertEquals(interpreterVisitor.visitIngredientIdentifier(ingredientIdentifierctx), oldIngredient.getClass());
     }
    
 }
