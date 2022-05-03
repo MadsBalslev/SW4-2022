@@ -1,13 +1,9 @@
-import java.security.cert.CertPathBuilderException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.TerminalNode;
-
+import Handlers.IngredientTypeHandler;
+import fannieTypes.HasBeenServed;
 import fannieTypes.Ingredient;
-import fannieTypes.IngredientType;
 import fannieTypes.Tool;
 import fannieTypes.ToolAction;
 import fannieTypes.steps.*;
@@ -16,6 +12,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
 
     List<Tool> toolsList = new ArrayList<Tool>();
     List<String> recipesList = new ArrayList<String>();
+    IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
     Scope scope = new Scope();
     List<ToolAction> toolActionsList = new ArrayList<ToolAction>();
     
@@ -23,9 +20,6 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     {
         System.out.println("Visiting fannie");
         visitChildren(context);
-       /* if (recipesList != null) {
-            throw new RuntimeException("Not all recipes are served");
-        } */
         for (Tool tool : toolsList) {
             System.out.println(tool.toolIdentifier + " " + tool.toolTypeIdentifier);
             for (ToolAction toolAction : tool.toolActionDeclarationsList) {
@@ -44,16 +38,20 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         scope.stringPrinter(scope.getSymbolTable(), "Tool");
         System.out.println("INGREDIENSER: ");
         scope.stringPrinter(scope.getSymbolTable(), "Ingredient");
-        if(IsIngredientslistEmpty(scope) == false)
+        if(scope.isIngredientListEmpty() == false)
         {
             throw new RuntimeException("Not all ingredients are served");
         }
         if (scope.hasToolsBeenUsed() == false) {
             throw new RuntimeException("Not all tools are used");
         }
+        if (scope.isProcListEmpty() == false) {
+            throw new RuntimeException("Not all procedures are stopped");
+        }
         scope = oldScope;
         return null;
     }
+    
     @Override public Void visitSubRecipe(fannieParserParser.SubRecipeContext context) 
     { 
         Scope oldScope = scope;
@@ -63,8 +61,10 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         System.out.println("in subrecipe");
         scope.stringPrinter(scope.getSymbolTable(), "Tool");
         scope = oldScope;
+        
         return null;
     }
+    
     @Override public Void visitRecipeIdentifier(fannieParserParser.RecipeIdentifierContext context) 
     {   
         recipesList.add(context.getText());
@@ -72,208 +72,215 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         visitChildren(context);
         return null;
     }
+    
     @Override public Void visitRecipeBody(fannieParserParser.RecipeBodyContext context) 
     {
         System.out.println("Visiting recipebody");
         visitChildren(context); 
         return null;
     }
+    
     @Override public Void visitIngredientsList(fannieParserParser.IngredientsListContext context) 
     {   
+        HasBeenServed hasServed = new HasBeenServed(scope);
+        scope.append("hasServed", hasServed);
         System.out.println("Visiting ingredientslist");
-        for(int i = 0; i < context.ingredientDeclaration().size(); i++) {
-            Ingredient ingredient = visitIngredientDeclaration(context.ingredientDeclaration(i));
-            scope.append(ingredient.identifier, ingredient);
-        }
-        visitChildren(context); 
+        visitChildren(context);
         return null;
     }
+    
     @Override public Void visitToolsList(fannieParserParser.ToolsListContext context) 
     {
         System.out.println("Visiting toolslist");
-        for (int i = 0; i < context.toolDeclaration().size(); i++) {
-            Tool tool = visitToolDeclaration(context.toolDeclaration(i));
-            scope.append(tool.toolIdentifier, tool);
-        }
-        //visitChildren(context);
+        visitChildren(context);
         return null;
     }
+    
     @Override public Void visitStepsList(fannieParserParser.StepsListContext context) 
     { 
         System.out.println("Visiting stepslist");
         visitChildren(context);
         return null;
     }
-
+    
     @Override public Ingredient visitIngredientDeclaration(fannieParserParser.IngredientDeclarationContext context) 
-    { 
-        for (int i = 0; i < context.getChildCount(); i++) {
-        
-            if (context.getChild(i) instanceof fannieParserParser.DeterministicIngredientDeclarationContext) {
-                return visitDeterministicIngredientDeclaration((fannieParserParser.DeterministicIngredientDeclarationContext) context.getChild(i));
-            }
-            else if (context.getChild(i) instanceof fannieParserParser.RecipeIngredientDeclarationContext) {
-                return visitRecipeIngredientDeclaration((fannieParserParser.RecipeIngredientDeclarationContext) context.getChild(i));
-            }
-            else if (context.getChild(i) instanceof fannieParserParser.NondeterministicIngredientDeclarationContext) {
-                return visitNondeterministicIngredientDeclaration((fannieParserParser.NondeterministicIngredientDeclarationContext) context.getChild(i));
-            }
-        }
-       // visitChildren(context);
-        return visitDeterministicIngredientDeclaration(context.deterministicIngredientDeclaration());
+    {
+        Ingredient ingredient = (Ingredient)visitChildren(context);
+        return ingredient;
     }
-
-    @Override public Tool visitToolDeclaration(fannieParserParser.ToolDeclarationContext context) 
+    
+    @Override public Void visitToolDeclaration(fannieParserParser.ToolDeclarationContext context) 
     { 
-        Tool tool = new Tool();
-        tool.toolIdentifier = context.toolIdentifier().getText();
-        tool.toolTypeIdentifier = context.toolTypeIdentifier().getText();
-        tool.toolActionDeclarationsList = visitToolActionDeclarationsList(context.toolActionDeclarationsList());
+        String toolIdentifier = context.toolIdentifier().getText();
+        String toolTypeIdentifier = context.toolTypeIdentifier().getText();
+        List<ToolAction> toolActionDeclarationsList = visitToolActionDeclarationsList(context.toolActionDeclarationsList());
+        Tool tool = new Tool(toolIdentifier, toolTypeIdentifier, toolActionDeclarationsList, scope);
         for (ToolAction toolAction : tool.toolActionDeclarationsList) {
             toolAction.toolIdentifier = tool.toolIdentifier;
         }
-        // visitChildren(context);
-        return tool;
+        scope.append(tool.toolIdentifier, tool);
+        return null;
     }
+    
     @Override public Void visitStepDeclaration(fannieParserParser.StepDeclarationContext context) 
     { 
         visitChildren(context);
         return null;
     }
-    @Override public Void visitIngredientIdentifier(fannieParserParser.IngredientIdentifierContext context) 
+    
+    public Ingredient visitIngredientIdentifier(fannieParserParser.IngredientIdentifierContext context) 
     {   
-        return null;
+        Ingredient oldIngredient = (Ingredient)scope.retrieve(context.getText());
+        return oldIngredient;
     }
+    
     @Override public Void visitToolIdentifier(fannieParserParser.ToolIdentifierContext context) 
     { 
         visitChildren(context);
         return null;
     }
-    @Override public Ingredient visitDeterministicIngredientDeclaration(fannieParserParser.DeterministicIngredientDeclarationContext context) 
+    
+    @Override public Void visitDeterministicIngredientDeclaration(fannieParserParser.DeterministicIngredientDeclarationContext context) 
     { 
-        Ingredient ingredient = new Ingredient();
-        ingredient.identifier = context.ingredientIdentifier().getText();
-        ingredient.type = new IngredientType(context.ingredientTypeIdentifier().getText());
-       // visitChildren(context);
-        return ingredient;
+        String identifier = context.ingredientIdentifier().getText();
+        String ingredientType = context.ingredientTypeIdentifier().getText();
+        Ingredient ingredient = new Ingredient(identifier, ingredientTypeHandler, ingredientType, scope);
+        scope.append(ingredient.identifier, ingredient);
+        return null;
     }
     // pt fungerer nondeterministic som en deterministic der tager første ingrediens ind
-    @Override public Ingredient visitNondeterministicIngredientDeclaration(fannieParserParser.NondeterministicIngredientDeclarationContext context) 
+    
+    @Override public Void visitNondeterministicIngredientDeclaration(fannieParserParser.NondeterministicIngredientDeclarationContext context) 
     { 
+        //Not implemented
         visitChildren(context);
-        return visitDeterministicIngredientDeclaration((fannieParserParser.DeterministicIngredientDeclarationContext) context.getChild(0));
+        return null;
     }
-    @Override public Ingredient visitRecipeIngredientDeclaration(fannieParserParser.RecipeIngredientDeclarationContext context) 
-    { 
-        Ingredient ingredient = new Ingredient();
-        ingredient.identifier = context.recipeIdentifier().getText();
-        ingredient.type = new IngredientType (context.RECIPE().getText());
-        visitChildren(context);
-        return ingredient;
+    
+    @Override public Void visitRecipeIngredientDeclaration(fannieParserParser.RecipeIngredientDeclarationContext context) 
+    {   
+        //Not implemented
+        return null;
     }
+    
     @Override public Void visitIngredientTypeDeclaration(fannieParserParser.IngredientTypeDeclarationContext context) 
     { 
         visitChildren(context);
         return null;
     }
+    
     @Override public Void visitAmountDeclaration(fannieParserParser.AmountDeclarationContext context) 
     { 
         visitChildren(context);
         return null;
     }
+    
     @Override public Void visitProcIdentifier(fannieParserParser.ProcIdentifierContext context) 
     { 
         visitChildren(context);
         return null;
     }
+    
     @Override public Void visitToolActionIdentifier(fannieParserParser.ToolActionIdentifierContext context) 
     { 
         visitChildren(context);
         return null;
     }
+    
     @Override public Void visitToolTypeIdentifier(fannieParserParser.ToolTypeIdentifierContext context) 
     { 
         visitChildren(context);
         return null;
     }
+    
     @Override public Void visitIngredientTypeIdentifier(fannieParserParser.IngredientTypeIdentifierContext context) 
     { 
         visitChildren(context);
         return null;
     }
+    
     @Override public ArrayList<ToolAction> visitToolActionDeclarationsList(fannieParserParser.ToolActionDeclarationsListContext context) 
     { 
         List<ToolAction> toolActionList = new ArrayList<ToolAction>();
         for (int i = 0; i < context.getChildCount(); i++) {
             if (context.getChild(i) instanceof fannieParserParser.ToolActionDeclarationContext) {
-                    toolActionList.add(visitToolActionDeclaration((fannieParserParser.ToolActionDeclarationContext) context.getChild(i)));
+                toolActionList.add(visitToolActionDeclaration((fannieParserParser.ToolActionDeclarationContext) context.getChild(i)));
                 }
             }
+        
         return (ArrayList<ToolAction>) toolActionList;
     }
+    
     @Override public ToolAction visitToolActionDeclaration(fannieParserParser.ToolActionDeclarationContext context) 
-    { 
+    {
         ToolAction toolAction = createToolAction(context);
         
        // visitChildren(context);
         return toolAction;
     }
+    
     @Override public Void visitServeStepDeclaration(fannieParserParser.ServeStepDeclarationContext context) 
-    { 
-        scope.Remove(context.stepIn().getText());
+    {
+        HasBeenServed hasBeenServed = (HasBeenServed)scope.retrieve("hasServed");
+        if (hasBeenServed.isServed) {
+            throw new RuntimeException("Recipe already has served");
+        }
+        hasBeenServed.isServed = true;
+        scope.append("hasServed", hasBeenServed);
         visitChildren(context);
+        scope.stringPrinter(scope.getSymbolTable(), "Ingredient");
+        scope.Remove(context.stepIn().getText());
         return null;
     }
+    
     @Override public Void visitDoStepDeclaration(fannieParserParser.DoStepDeclarationContext context) 
     { 
         String toolIdentifier = context.toolIdentifier().getText();
         String toolActionIdentifier = context.toolActionIdentifier().getText();
-        if (context.stepIn().getChild(0) instanceof fannieParserParser.IngredientIdentifierContext)
-        {
-            Object oldIngredients = context.stepIn().getChild(0).getText();
-            new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, oldIngredients);
-        }
-        else if (context.stepIn().getChild(0) instanceof fannieParserParser.ContentInContext)
-        {
-            Object oldIngredients = context.stepIn().contentIn().getText();
-            new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, oldIngredients);
-        }
-        else if (context.stepIn().getChild(0) instanceof fannieParserParser.IngredientCollectionContext)
-        {
-            Object oldIngredients = context.stepIn().ingredientCollection().getText();
-            new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, oldIngredients);
-        }
+        
+        new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, visitStepIn(context.stepIn()), ingredientTypeHandler);
         return null;
     }
+    
     @Override public Void visitContinousDoStepStartDeclaration(fannieParserParser.ContinousDoStepStartDeclarationContext context) 
     { 
-        visitChildren(context);
+        String toolIdentifier = context.toolIdentifier().getText();
+        String toolActionIdentifier = context.toolActionIdentifier().getText();
+        String procIdentifier = context.procIdentifier().getText();
+        new ContinousDoStepDeclaration(toolIdentifier, toolActionIdentifier, procIdentifier, scope, visitStepIn(context.stepIn()), ingredientTypeHandler);
         return null;
     }
+    
     @Override public Void visitContinousDoStepStopDeclaration(fannieParserParser.ContinousDoStepStopDeclarationContext context) 
+    {
+        visitChildren(context);
+        String procIdentifier = context.procIdentifier().getText();
+        try {
+            scope.Remove(procIdentifier);
+        } catch (Exception e) {
+            throw new RuntimeException("Proc: " + procIdentifier + " has not been declared");
+        }
+        return null;
+    }
+    
+    @Override public List<Ingredient> visitStepIn(fannieParserParser.StepInContext context) 
+    {
+        visitChildren(context);
+        ArrayList<Ingredient> ingredientList = new ArrayList<Ingredient>();
+        for (int i = 0; i < context.getChildCount(); i++)
+        {
+            ingredientList.add((Ingredient)scope.retrieve(context.getChild(i).getText()));
+        }
+        return ingredientList;
+    }
+    
+    @Override public Void visitStepOut(fannieParserParser.StepOutContext context) 
     {
         visitChildren(context);
         return null;
     }
-
-    @Override public Void visitStepOut(fannieParserParser.StepOutContext context) 
-    { 
-        visitChildren(context);
-        return null;
-    }
-
-    @Override public String visitContentIn(fannieParserParser.ContentInContext context) 
-    { 
-        visitChildren(context);
-        return context.getText();
-    }
-
-    @Override public Void visitIngredientCollection(fannieParserParser.IngredientCollectionContext context) 
-    { 
-        visitChildren(context);
-        return null;
-    }
     
+    //this is not good, should probably be associated to the tool class, but this works for now
     public ToolAction createToolAction(fannieParserParser.ToolActionDeclarationContext context) {
         ToolAction toolAction = new ToolAction();
         if (context.getChild(0) instanceof TerminalNode)
@@ -295,39 +302,9 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
             toolAction.transformedIngredientTypeIdentifier = context.ingredientTypeIdentifier(1).getText();
             toolAction.toolActionIdentifier = context.toolActionIdentifier().getText();
         }
+        
         return toolAction;
     }
 
-    public Step createStep(fannieParserParser.StepDeclarationContext context) 
-    {
-        Step step;
-        if (context.getChild(0) instanceof fannieParserParser.ServeStepDeclarationContext)
-        {
-            step = new ServeStepDeclaration();
-        }
-        else if (context.getChild(0) instanceof fannieParserParser.ContinousDoStepStartDeclarationContext)
-        {
-            step = null;
-        }
-        else if (context.getChild(0) instanceof fannieParserParser.ContinousDoStepStopDeclarationContext)
-        {
-            step = null;
-        }
-        else 
-        {
-            step = null;
-            return null;
-        }
-
-        return step;
-    }
-    public boolean IsIngredientslistEmpty(Scope scope)
-    {
-        if (scope.getTypeAmount(scope.getSymbolTable(), "fannieTypes.Ingredient") != 0 )
-        {
-            System.out.println("Ingredients list is not empty");
-            return false;
-        }
-        return true;
-    }
+    
 }

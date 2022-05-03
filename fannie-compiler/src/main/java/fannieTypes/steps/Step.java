@@ -1,5 +1,5 @@
 package fannieTypes.steps;
 
-public abstract class Step {
+public class Step {
     
 }

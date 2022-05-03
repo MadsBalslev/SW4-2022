@@ -5,12 +5,13 @@ import java.util.Map;
 
 import fannieTypes.Ingredient;
 import fannieTypes.Tool;
+import fannieTypes.BaseFannieType;
 
 import java.util.ArrayList;
 
 public class Scope {
     private Scope parent;
-    private HashMap<String, Object> symbolTable;
+    private HashMap<String, BaseFannieType> symbolTable;
     
     private boolean isGlobalScope() {
         return parent == null;
@@ -36,11 +37,11 @@ public class Scope {
         this.parent = parent;
         return this;
     }
-    public void append(String key, Object value)
+    public void append(String key, BaseFannieType value)
     {
         symbolTable.put(key, value);
     }
-    public void appendGlobal(String key, Object value)
+    public void appendGlobal(String key, BaseFannieType value)
     {
         if (isGlobalScope()) {
             symbolTable.put(key, value);
@@ -60,36 +61,40 @@ public class Scope {
         throw new RuntimeException("Undefined variable: " + name);
     }
     //Prints all the objects of the type given, for example ingredients
-    public void stringPrinter(HashMap<String, Object> symbolTable, String type)
+    public void stringPrinter(HashMap<String, BaseFannieType> symbolTable, String type)
     {
-        for (Map.Entry<String, Object> entry : symbolTable.entrySet()) {
-            if (entry.getValue().getClass().getName().equals("fannieTypes."+type)) {
+        for (Map.Entry<String, BaseFannieType> entry : symbolTable.entrySet()) {
+            if (entry.getValue().getClass().getName().equals("fannieTypes." + type)) {
                 System.out.println(entry.getKey() + ": " + entry.getValue().toString());
             }
-        }
+        }   
     }
-    public int getTypeAmount(HashMap<String, Object> symbolTable, String type)
+    public int getTypeAmount(HashMap<String, BaseFannieType> symbolTable, String type)
     {
         int amount = 0;
-        for (Map.Entry<String, Object> entry : symbolTable.entrySet()) {
+        for (Map.Entry<String, BaseFannieType> entry : symbolTable.entrySet()) {
             if (entry.getValue().getClass().getName().equals(type)) {
                 amount++;
             }
         }
         return amount;
     }
-    public HashMap<String, Object> getSymbolTable()
+    public HashMap<String, BaseFannieType> getSymbolTable()
     {
         return symbolTable;
     }
     public void Remove (String key)
     {
+        if (symbolTable.containsKey((key)))
+        {
         symbolTable.remove(key);
+        }
+        else throw new RuntimeException("Key not found");
     }
     public List<Ingredient> GetIngredients()
     {
         List<Ingredient> ingredients = new ArrayList<Ingredient>();
-        for (Map.Entry<String, Object> entry : symbolTable.entrySet()) {
+        for (Map.Entry<String, BaseFannieType> entry : symbolTable.entrySet()) {
             if (entry.getValue().getClass().getName().equals("Ingredient")) {
                 ingredients.add((Ingredient)entry.getValue());
             }
@@ -99,7 +104,7 @@ public class Scope {
     public List<Tool> GetTools()
     {
         List<Tool> tools = new ArrayList<Tool>();
-        for (Map.Entry<String, Object> entry : symbolTable.entrySet()) {
+        for (Map.Entry<String, BaseFannieType> entry : symbolTable.entrySet()) {
             if (entry.getValue().getClass().getName().equals("Tool")) {
                 tools.add((Tool)entry.getValue());
             }
@@ -108,7 +113,7 @@ public class Scope {
     }
     public Boolean hasToolsBeenUsed()
     {
-        for (Map.Entry<String, Object> entry : symbolTable.entrySet()) {
+        for (Map.Entry<String, BaseFannieType> entry : symbolTable.entrySet()) {
             if (entry.getValue().getClass().getName().equals("Tool")) {
                 if (((Tool)entry.getValue()).getHasToolBeenUsed() == false) {
                     return false;
@@ -116,5 +121,23 @@ public class Scope {
             }
         }
         return true;
+    }
+
+    public Boolean isIngredientListEmpty()
+    {
+        if(getTypeAmount(symbolTable, "fannieTypes.Ingredient") == 0)
+        {
+            return true;
+        }
+        else return false;
+    }
+
+    public Boolean isProcListEmpty()
+    {
+        if(getTypeAmount(symbolTable, "fannieTypes.ProcIdentifier") == 0)
+        {
+            return true;
+        }
+        else return false;
     }
 }

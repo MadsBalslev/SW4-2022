@@ -18,12 +18,12 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 public class InterpreterVisitorTest {
-    InterpreterVisitor interpreterVisitor;
+      InterpreterVisitor interpreterVisitor;
 
-    @Before
-    public void init() throws IOException {
-        interpreterVisitor = new InterpreterVisitor();
-    }
+      @Before
+      public void init() throws IOException {
+         interpreterVisitor = new InterpreterVisitor();
+      }
 
     @Test(expected = RuntimeException.class)
     public void ingredientListMissingFromRecipeTest() throws IOException {

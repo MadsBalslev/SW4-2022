@@ -1,29 +1,20 @@
+import java.io.InputStream;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
-
-
-import java.io.FileInputStream;
-import java.io.InputStream;
-public class App 
-{
-    public static void main( String[] args ) throws Exception
-    {
+public class App {
+    public static void main(String[] args) throws Exception {
         InterpreterVisitor interpreterVisitor = new InterpreterVisitor();
-        String inputFile = null;
-        if(args.length>0) inputFile = args[0];
-        InputStream is = System.in;
-        if (inputFile != null) is = new FileInputStream(inputFile);
-        ANTLRInputStream input = new ANTLRInputStream(is);
+        InputStream fileContent = ReadFile.read(args[0]);
+        CharStream input = CharStreams.fromStream(fileContent);
         fannieParserLexer lexer = new fannieParserLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         fannieParserParser parser = new fannieParserParser(tokens);
+
         ParseTree tree = parser.fannie();
-        try {
-            interpreterVisitor.visit(tree);
-        } catch (Exception e) {
-            System.err.println(e);
-        }
+        interpreterVisitor.visit(tree);
+
+        
         //System.out.println(tree.toStringTree(parser));
 
         CodeGeneratorVisitor cgv = new CodeGeneratorVisitor();
