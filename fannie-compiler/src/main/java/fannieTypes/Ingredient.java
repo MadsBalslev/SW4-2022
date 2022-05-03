@@ -46,8 +46,6 @@ public class Ingredient extends BaseFannieType {
         System.out.println(this.getClass().getName() + ": " + identifier);
         this.identifier = identifier;
         this.ingredientType = ingredientType;
-        scope.append(this.identifier, this);
-        //if (type.Identifier == parentIngredient.type.Identifier)
     }
 
     public Ingredient(String Identifier, IngredientTypeHandler ingredientTypeHandler,String ingredientTypeIdentifier, Scope scope)
@@ -55,7 +53,6 @@ public class Ingredient extends BaseFannieType {
         super(Identifier, "Ingredient");
         this.identifier = Identifier;
         this.ingredientType = ingredientTypeHandler.AssignIngredientType(this, ingredientTypeIdentifier);
-        scope.append(this.identifier, this);
     }
     public Boolean isType(String type)
     {

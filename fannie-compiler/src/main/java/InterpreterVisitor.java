@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
+
+import com.itextpdf.tool.xml.exceptions.NotImplementedException;
+
 import org.antlr.v4.runtime.tree.TerminalNode;
 import Handlers.IngredientTypeHandler;
 import fannieTypes.HasBeenServed;
@@ -14,30 +17,41 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     List<String> recipesList = new ArrayList<String>();
     IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
     Scope scope = new Scope();
-    List<ToolAction> toolActionsList = new ArrayList<ToolAction>();
     
     @Override public Void visitFannie(fannieParserParser.FannieContext context) 
     {
+        //debug code
         System.out.println("Visiting fannie");
+        //debug code
         visitChildren(context);
+
+        //debug code
         for (Tool tool : toolsList) {
             System.out.println(tool.toolIdentifier + " " + tool.toolTypeIdentifier);
             for (ToolAction toolAction : tool.toolActionDeclarationsList) {
                 System.out.println("Action " + toolAction.toolActionIdentifier + " Ingredient Type " + toolAction.ingredientTypeIdentifier + " Becomes " + toolAction.transformedIngredientTypeIdentifier);
             }
         }
+        //debug code
+
         return null;
     }
     
     @Override public Void visitMainRecipe(fannieParserParser.MainRecipeContext context) 
     {
+        //debug code
         System.out.println("Visiting mainrecipe");
+        //debug code
         Scope oldScope = scope;
         scope = oldScope.createScope();
         visitChildren(context);
+
+        //debug code
         scope.stringPrinter(scope.getSymbolTable(), "Tool");
         System.out.println("INGREDIENSER: ");
         scope.stringPrinter(scope.getSymbolTable(), "Ingredient");
+        //debug code
+        
         if(scope.isIngredientListEmpty() == false)
         {
             throw new RuntimeException("Not all ingredients are served");
@@ -54,28 +68,30 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     
     @Override public Void visitSubRecipe(fannieParserParser.SubRecipeContext context) 
     { 
-        Scope oldScope = scope;
-        scope = oldScope.createScope();
-        System.out.println("Visiting subrecipe");
-        visitChildren(context);
-        System.out.println("in subrecipe");
-        scope.stringPrinter(scope.getSymbolTable(), "Tool");
-        scope = oldScope;
-        
-        return null;
+        throw new NotImplementedException();
+        // Scope oldScope = scope;
+        // scope = oldScope.createScope();
+        // System.out.println("Visiting subrecipe");
+        // visitChildren(context);
+        // System.out.println("in subrecipe");
+        // scope.stringPrinter(scope.getSymbolTable(), "Tool");
+        // scope = oldScope;
     }
     
     @Override public Void visitRecipeIdentifier(fannieParserParser.RecipeIdentifierContext context) 
     {   
         recipesList.add(context.getText());
+        //debug code
         System.out.println("Visiting recipeIdentifier");
-        visitChildren(context);
+        //debug code
         return null;
     }
     
     @Override public Void visitRecipeBody(fannieParserParser.RecipeBodyContext context) 
     {
+        //debug code
         System.out.println("Visiting recipebody");
+        //debug code
         visitChildren(context); 
         return null;
     }
@@ -84,21 +100,27 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     {   
         HasBeenServed hasServed = new HasBeenServed(scope);
         scope.append("hasServed", hasServed);
+        //debug code
         System.out.println("Visiting ingredientslist");
+        //debug code
         visitChildren(context);
         return null;
     }
     
     @Override public Void visitToolsList(fannieParserParser.ToolsListContext context) 
     {
+        //debug code
         System.out.println("Visiting toolslist");
+        //debug code
         visitChildren(context);
         return null;
     }
     
     @Override public Void visitStepsList(fannieParserParser.StepsListContext context) 
-    { 
+    {
+        //debug code
         System.out.println("Visiting stepslist");
+        //debug code
         visitChildren(context);
         return null;
     }
@@ -228,7 +250,9 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         hasBeenServed.isServed = true;
         scope.append("hasServed", hasBeenServed);
         visitChildren(context);
+        //debug code
         scope.stringPrinter(scope.getSymbolTable(), "Ingredient");
+        //debug code
         scope.Remove(context.stepIn().getText());
         return null;
     }

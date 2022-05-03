@@ -59,6 +59,7 @@ public class Tool extends BaseFannieType{
                 //System.out.println("using tool action " + toolAction.toolActionIdentifier + " on " + ingredient.identifier +" creating " + newIngredient.ingredientType);
                 scope.Remove(ingredient.identifier);
                 Ingredient newIngredient = new Ingredient(ingredientIdentifier, ingredientType, scope);
+                scope.append(newIngredient.identifier, newIngredient);
                 System.out.println("Added " + ingredientIdentifier + " to scope");
                 this.hasToolBeenUsed = true;
             }
@@ -70,6 +71,7 @@ public class Tool extends BaseFannieType{
                 //System.out.println("using tool action " + toolAction.toolActionIdentifier + " on " + ingredient.identifier +" creating " + newIngredient.ingredientType);
                 scope.Remove(ingredient.identifier);
                 Ingredient newIngredient = new Ingredient(ingredientIdentifier, ingredientType, scope);
+                scope.append(newIngredient.identifier, newIngredient);
                 System.out.println("Added " + ingredientIdentifier + " to scope");
                 this.hasToolBeenUsed = true;
             }

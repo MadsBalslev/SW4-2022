@@ -1,13 +1,9 @@
 package scope;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import fannieTypes.Ingredient;
 import fannieTypes.Tool;
 import fannieTypes.BaseFannieType;
 
-import java.util.ArrayList;
 
 public class Scope {
     private Scope parent;
@@ -16,40 +12,42 @@ public class Scope {
     private boolean isGlobalScope() {
         return parent == null;
     }
+
     public Scope parentScope() {
         return parent;
     }
+    
     public Scope() {
         this.parent = null;
         this.symbolTable = new HashMap<>();
     }
+    
     Scope(Scope parent)
     {
         this.parent = parent;
         this.symbolTable = new HashMap<>();
     }
+    
     public Scope createScope() {
         Scope scope = new Scope();
         scope.setParent(this);
         return scope;
     }
+    
     public Scope setParent(Scope parent) {
         this.parent = parent;
         return this;
     }
+    
     public void append(String key, BaseFannieType value)
     {
+        if(symbolTable.get(key)!= null)
+        {
+            throw new IllegalArgumentException("Symbol already exists");
+        }
         symbolTable.put(key, value);
     }
-    public void appendGlobal(String key, BaseFannieType value)
-    {
-        if (isGlobalScope()) {
-            symbolTable.put(key, value);
-        }
-        else {
-            parent.appendGlobal(key, value);
-        }
-    }
+    
     public Object retrieve(Object name)
     {
         if (symbolTable.containsKey(name)) {
@@ -61,6 +59,7 @@ public class Scope {
         throw new RuntimeException("Undefined variable: " + name);
     }
     //Prints all the objects of the type given, for example ingredients
+    //debug code
     public void stringPrinter(HashMap<String, BaseFannieType> symbolTable, String type)
     {
         for (Map.Entry<String, BaseFannieType> entry : symbolTable.entrySet()) {
@@ -69,6 +68,8 @@ public class Scope {
             }
         }   
     }
+    //debug code
+    
     public int getTypeAmount(HashMap<String, BaseFannieType> symbolTable, String type)
     {
         int amount = 0;
@@ -79,10 +80,12 @@ public class Scope {
         }
         return amount;
     }
+    
     public HashMap<String, BaseFannieType> getSymbolTable()
     {
         return symbolTable;
     }
+    
     public void Remove (String key)
     {
         if (symbolTable.containsKey((key)))
@@ -91,26 +94,7 @@ public class Scope {
         }
         else throw new RuntimeException("Key not found");
     }
-    public List<Ingredient> GetIngredients()
-    {
-        List<Ingredient> ingredients = new ArrayList<Ingredient>();
-        for (Map.Entry<String, BaseFannieType> entry : symbolTable.entrySet()) {
-            if (entry.getValue().getClass().getName().equals("Ingredient")) {
-                ingredients.add((Ingredient)entry.getValue());
-            }
-        }
-        return ingredients;
-    }
-    public List<Tool> GetTools()
-    {
-        List<Tool> tools = new ArrayList<Tool>();
-        for (Map.Entry<String, BaseFannieType> entry : symbolTable.entrySet()) {
-            if (entry.getValue().getClass().getName().equals("Tool")) {
-                tools.add((Tool)entry.getValue());
-            }
-        }
-        return tools;
-    }
+   
     public Boolean hasToolsBeenUsed()
     {
         for (Map.Entry<String, BaseFannieType> entry : symbolTable.entrySet()) {
