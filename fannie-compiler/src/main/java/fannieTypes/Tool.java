@@ -17,18 +17,14 @@ public class Tool extends BaseFannieType{
         this.toolActionDeclarationsList = toolActionList;
         
     }
+
     public ToolAction getToolAction(String toolActionIdentifier) throws Exception
     {
         if(toolActionDeclarationsList.containsKey(toolActionIdentifier))
-        {
             return toolActionDeclarationsList.get(toolActionIdentifier);
-        }
         else
-        {
-            throw new Exception("ToolAction not found");
-        }
+            throw new RuntimeException("ToolAction not found");
     }
-    
     
     public void useToolAction(ToolAction toolAction, Ingredient ingredient, Scope scope, IngredientTypeHandler ingredientTypeHandler)
     {

@@ -3,8 +3,6 @@ import fannieTypes.Ingredient;
 import Handlers.IngredientTypeHandler;
 
 
-
-
 public class NormalToolAction extends ToolAction {
     public NormalToolAction(String input, String output, String ToolAction)
     {

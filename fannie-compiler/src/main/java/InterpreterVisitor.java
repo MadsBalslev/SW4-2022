@@ -118,14 +118,23 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     {
         String toolIdentifier = context.toolIdentifier().getText();
         String toolTypeIdentifier = context.toolTypeIdentifier().getText();
-        HashMap<String, ToolAction> toolActionsList = new HashMap<String, ToolAction>();
+        HashMap<String, ToolAction> superToolActionsList = new HashMap<String, ToolAction>();
         
         if (scope.symbolTable.containsKey(toolTypeIdentifier))
         {
             Tool superTool = (Tool)scope.retrieve(toolTypeIdentifier);
-            toolActionsList.putAll(superTool.getToolActionDeclarationsList());
+            superToolActionsList.putAll(superTool.getToolActionDeclarationsList());
         }
+        HashMap<String, ToolAction> toolActionsList = new HashMap<String, ToolAction>();
         toolActionsList.putAll(visitToolActionDeclarationsList(context.toolActionDeclarationsList()));
+        for (String key : superToolActionsList.keySet())
+        {
+            if (toolActionsList.containsKey(key))
+            {
+                throw new RuntimeException("Toolaction has already been declared");
+            }
+        }
+        toolActionsList.putAll(superToolActionsList);
         Tool tool = new Tool(toolIdentifier, toolTypeIdentifier, toolActionsList);
         scope.append(tool.toolIdentifier, tool);
         
@@ -212,7 +221,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         HashMap <String, ToolAction> toolActionDeclarationsList = new HashMap<String, ToolAction>();
         for (fannieParserParser.ToolActionDeclarationContext toolActionDeclarationContext : context.toolActionDeclaration())
         {
-            if (context.getChild(0) instanceof TerminalNode)
+            if (toolActionDeclarationContext.getChild(0) instanceof TerminalNode)
             {
                 toolActionDeclarationsList.put("contain", visitToolActionDeclaration(toolActionDeclarationContext));
             }
