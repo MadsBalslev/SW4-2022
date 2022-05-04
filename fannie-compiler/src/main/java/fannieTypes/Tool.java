@@ -53,42 +53,6 @@ public class Tool extends BaseFannieType{
              scope.Remove(ingredient.identifier);
              scope.append(newIngredient.identifier, newIngredient);
         }
-        
-
-        // if (ingredient.isType(toolAction.input))
-        // {
-        //     //newIngredient is used since it appends to the symboltable when created
-        //     if (toolAction.output.equals("content in")){
-        //         ingredientIdentifier = "content in" + toolAction.toolIdentifier;
-        //         ingredientType =  ingredientTypeHandler.AssignIngredientType(ingredient, "content in");
-        //         //debug code
-        //         //System.out.println("using tool action " + toolAction.toolActionIdentifier + " on " + ingredient.identifier +" creating " + newIngredient.ingredientType);
-        //         //debug code
-        //         scope.Remove(ingredient.identifier);
-        //         Ingredient newIngredient = new Ingredient(ingredientIdentifier, ingredientType);
-        //         scope.append(newIngredient.identifier, newIngredient);
-        //         //debug code
-        //         System.out.println("Added " + ingredientIdentifier + " to scope");
-        //         //debug code
-        //         this.hasToolBeenUsed = true;
-        //     }
-        //     else
-        //     { 
-        //         //newIngredient is used since it appends to the symboltable when created
-        //         ingredientIdentifier = ingredient.identifier;
-        //         ingredientType = ingredientTypeHandler.AssignIngredientType(ingredient, toolAction.transformedIngredientTypeIdentifier);
-        //         //System.out.println("using tool action " + toolAction.toolActionIdentifier + " on " + ingredient.identifier +" creating " + newIngredient.ingredientType);
-        //         scope.Remove(ingredient.identifier);
-        //         Ingredient newIngredient = new Ingredient(ingredientIdentifier, ingredientType);
-        //         scope.append(newIngredient.identifier, newIngredient);
-        //         //debug code
-        //         System.out.println("Added " + ingredientIdentifier + " to scope");
-        //         //debug code
-        //         this.hasToolBeenUsed = true;
-        //     }
-            //debug code
-            //System.out.println("Removed " + ingredient.identifier + " from scope");
-            //debug code
     }
 
     public Boolean getHasToolBeenUsed()

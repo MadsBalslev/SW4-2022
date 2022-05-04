@@ -210,14 +210,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
                 toolActionList.add(visitToolActionDeclaration((fannieParserParser.ToolActionDeclarationContext) context.getChild(i)));
                 }
             }
-        for (ToolAction toolAction : toolActionList)
-        {  
-           if (toolAction instanceof ContainToolActionDeclaration)
-           {
-                ContainToolActionDeclaration containToolActionDeclaration = (ContainToolActionDeclaration) toolAction;
-                
-           } 
-        }
+        
         
         return (ArrayList<ToolAction>) toolActionList;
     }
@@ -316,29 +309,4 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         return null;
     }
     
-    //this is not good, should probably be associated to the tool class, but this works for now
-    // public ToolAction createToolAction(fannieParserParser.ToolActionDeclarationContext context) {
-    //     ToolAction toolAction = new ToolAction();
-    //     if (context.getChild(0) instanceof TerminalNode)
-    //     {
-    //         toolAction.ingredientTypeIdentifier = context.ingredientTypeIdentifier(0).getText();
-    //         toolAction.transformedIngredientTypeIdentifier = "content in";
-    //         toolAction.toolActionIdentifier = "contain";
-    //     }
-    //     /* we have to check if the first ingredienttype identifier is  contentin,
-    //     since it changes whether ingredienttypeidentifier(0) is the original or transformed ingredient */
-    //     else if (context.getChild(2) instanceof fannieParserParser.ContentInContext) {
-    //         toolAction.ingredientTypeIdentifier = context.contentIn().CONTENT_IN().getText();
-    //         toolAction.transformedIngredientTypeIdentifier= context.ingredientTypeIdentifier(0).getText();
-    //         toolAction.toolActionIdentifier = context.toolActionIdentifier().getText();
-    //     } 
-    //     else if (context.getChild(2) instanceof fannieParserParser.IngredientTypeIdentifierContext)
-    //     {
-    //         toolAction.ingredientTypeIdentifier = context.ingredientTypeIdentifier(0).getText();
-    //         toolAction.transformedIngredientTypeIdentifier = context.ingredientTypeIdentifier(1).getText();
-    //         toolAction.toolActionIdentifier = context.toolActionIdentifier().getText();
-    //     }
-        
-    //     return toolAction;
-    // }
 }
