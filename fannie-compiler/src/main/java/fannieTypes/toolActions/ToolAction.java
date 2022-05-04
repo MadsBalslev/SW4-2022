@@ -23,4 +23,6 @@ public abstract class ToolAction {
             throw new IllegalArgumentException();
         }
     }
+
+    public abstract Ingredient useToolAction(Ingredient ingredient, IngredientTypeHandler ingredientTypeHandler, String toolIdentifier);
 }

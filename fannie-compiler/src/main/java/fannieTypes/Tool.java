@@ -39,10 +39,21 @@ public class Tool extends BaseFannieType{
     
     public void useToolAction(ToolAction toolAction, Ingredient ingredient, Scope scope, IngredientTypeHandler ingredientTypeHandler)
     {
-        Ingredient newIngredient = toolAction.useToolAction(ingredient, ingredientTypeHandler);
-        scope.Remove(ingredient.identifier);
-        scope.append(newIngredient.identifier, newIngredient);
-        this.hasToolBeenUsed = true;
+        if (toolAction instanceof ContainToolActionDeclaration)
+        {
+             Ingredient newIngredient = toolAction.useToolAction(ingredient, ingredientTypeHandler, this.identifier);
+             this.hasToolBeenUsed = true;
+             scope.Remove(ingredient.identifier);
+             scope.append(newIngredient.identifier, newIngredient);
+        }
+        else
+        {
+            Ingredient newIngredient = toolAction.useToolAction(ingredient, ingredientTypeHandler);
+            this.hasToolBeenUsed = true;
+             scope.Remove(ingredient.identifier);
+             scope.append(newIngredient.identifier, newIngredient);
+        }
+        
 
         // if (ingredient.isType(toolAction.input))
         // {

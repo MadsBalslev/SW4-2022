@@ -203,25 +203,33 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     
     @Override public ArrayList<ToolAction> visitToolActionDeclarationsList(fannieParserParser.ToolActionDeclarationsListContext context) 
     { 
+        
         List<ToolAction> toolActionList = new ArrayList<ToolAction>();
         for (int i = 0; i < context.getChildCount(); i++) {
             if (context.getChild(i) instanceof fannieParserParser.ToolActionDeclarationContext) {
                 toolActionList.add(visitToolActionDeclaration((fannieParserParser.ToolActionDeclarationContext) context.getChild(i)));
                 }
             }
+        for (ToolAction toolAction : toolActionList)
+        {  
+           if (toolAction instanceof ContainToolActionDeclaration)
+           {
+                ContainToolActionDeclaration containToolActionDeclaration = (ContainToolActionDeclaration) toolAction;
+                
+           } 
+        }
         
         return (ArrayList<ToolAction>) toolActionList;
     }
     
     @Override public ToolAction visitToolActionDeclaration(fannieParserParser.ToolActionDeclarationContext context) 
     {
-        //ToolAction toolAction = createToolAction(context);
-        if (context.CONTAIN()!= null) 
-        {
-            ContainToolActionDeclaration contain = new ContainToolActionDeclaration(context.ingredientTypeIdentifier(0).getText());
+        if (context.getChild(0) instanceof TerminalNode) {
+            String ingredientTypeIdentifier = context.ingredientTypeIdentifier(0).getText();
+            ContainToolActionDeclaration contain = new ContainToolActionDeclaration(ingredientTypeIdentifier);
             return contain;
         }
-        else if (context.getChild(2) instanceof fannieParserParser.IngredientTypeIdentifierContext)
+        else if (context.getChild(2) instanceof fannieParserParser.ContentInContext)
         {
             String input = context.contentIn().CONTENT_IN().getText();
             String output= context.ingredientTypeIdentifier(0).getText();
@@ -243,8 +251,6 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         }
         
     }
-        
-
     
     @Override public Void visitServeStepDeclaration(fannieParserParser.ServeStepDeclarationContext context) 
     {

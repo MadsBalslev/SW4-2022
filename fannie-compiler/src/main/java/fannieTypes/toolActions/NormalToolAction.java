@@ -1,4 +1,6 @@
 package fannieTypes.toolActions;
+import fannieTypes.Ingredient;
+import Handlers.IngredientTypeHandler;
 
 
 
@@ -10,4 +12,10 @@ public class NormalToolAction extends ToolAction {
         this.output = output;
         this.toolActionIdentifier = ToolAction;
     }
+    @Override 
+    public Ingredient useToolAction(Ingredient ingredient, IngredientTypeHandler ingredientTypeHandler, String toolIdentifier)
+    {
+        throw new IllegalArgumentException();
+    }
+
 }
