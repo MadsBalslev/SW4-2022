@@ -1,23 +1,21 @@
 main recipe Pasta{
 
     ingredients{
-        ingredient Pasta (100g, 25 whole),
-        ingredient Salt (to-taste),
-        ingredient Water (1l)
+        ingredient Pasta (100g),
+        liquid Water (1l),
+        spice Salt (10g)
     },
 
     tools{
         tool Pot[contain : ingredient],
         tool Stove[Heat : content in Pot => ingredient],
-        tool Knife[Slice : ingredient => SlicedIngredient],
         tool Sifter[contain : ingredient, Sift : content in Sifter => ingredient]
     },
     
     steps{
-        Knife do Slice Pasta,
         Pot do contain Water,
 
-        START Proc1 Stove do Heat "<h1>Bring water to boil.</h1>" content in Pot,
+        START Proc1 Stove do Heat "bring to boil" content in Pot,
         
         Pot do contain Pasta,
         Pot do contain Salt,

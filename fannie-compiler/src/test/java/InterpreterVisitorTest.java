@@ -42,6 +42,21 @@ public class InterpreterVisitorTest {
         final T mock = mock(nodeType);
         when(mock.accept(interpreterVisitor)).thenReturn(visitResult);
         return mock;
+      @Before
+      public void init() throws IOException {
+         interpreterVisitor = new InterpreterVisitor();
+      }
+
+    @Test(expected = RuntimeException.class)
+    public void ingredientListMissingFromRecipeTest() throws IOException {
+        CharStream input = CharStreams.fromStream(RecipeTestStrings.ingredientListMissingFromRecipeTest());
+
+        fannieParserLexer lexer = new fannieParserLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        fannieParserParser parser = new fannieParserParser(tokens);
+        ParseTree tree = parser.fannie();
+
+        interpreterVisitor.visit(tree);
     }
 
     public ToolAction createToolAction(fannieParserParser.ToolActionDeclarationContext context) {

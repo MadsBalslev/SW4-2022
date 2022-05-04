@@ -13,6 +13,10 @@ public class App {
 
         ParseTree tree = parser.fannie();
         interpreterVisitor.visit(tree);
+
+        
+        //System.out.println(tree.toStringTree(parser));
+
         CodeGeneratorVisitor cgv = new CodeGeneratorVisitor();
         cgv.visit(tree);
         
