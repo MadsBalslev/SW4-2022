@@ -31,6 +31,7 @@ import static org.testng.Assert.*;
 
 import fannieTypes.Ingredient;
 import fannieTypes.*;
+import fannieTypes.toolActions.ToolAction;
 import scope.Scope;
 // import Handlers.IngredientTypeHandler;
 
@@ -61,7 +62,7 @@ public class InterpreterVisitorTest {
     }
 
     public ToolAction createToolAction(fannieParserParser.ToolActionDeclarationContext context) {
-        ToolAction toolAction = new ToolAction();
+        NormalToolAction toolAction = new NormalToolAction();
         if (context.getChild(0) instanceof TerminalNode)
         {
             toolAction.ingredientTypeIdentifier = context.ingredientTypeIdentifier(0).getText();
@@ -174,8 +175,10 @@ public class InterpreterVisitorTest {
     {
         fannieParserParser.IngredientDeclarationContext ingredientDeclarationctx = mock(fannieParserParser.IngredientDeclarationContext.class);
 
+
+
         IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
-        Ingredient ingredient = new Ingredient("ingredient", ingredientTypeHandler, "onion", new Scope());
+        Ingredient = new Ingredient("");
 
         when(interpreterVisitor.visitIngredientDeclaration(ingredientDeclarationctx)).thenReturn(ingredient);
     }
@@ -264,7 +267,7 @@ public class InterpreterVisitorTest {
     public void ingredientTypeAssignedCorrectly()
     {
         IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
-        Ingredient ingredient = new Ingredient("ingredient",ingredientTypeHandler,"liquid", new Scope());
+        Ingredient ingredient = new Ingredient("ingredient",ingredientTypeHandler,"liquid");
 
         assertEquals(ingredient.ingredientType.Identifier, "liquid");
     }
@@ -284,7 +287,7 @@ public class InterpreterVisitorTest {
         ToolAction fakeToolAction = createToolAction(toolactionctx);
 
         IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
-        Ingredient ingredient = new Ingredient("ingredient",ingredientTypeHandler,"mushroom", new Scope());
+        Ingredient ingredient = new Ingredient("ingredient",ingredientTypeHandler,"mushroom");
 
         assertEquals("ToolAction is not equal to type Ingredient!",ingredient, fakeToolAction);
     }
@@ -317,7 +320,7 @@ public class InterpreterVisitorTest {
         final fannieParserParser.IngredientIdentifierContext ingredientIdentifierctx = mock(fannieParserParser.IngredientIdentifierContext.class);
 
         IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
-        Ingredient oldIngredient = new Ingredient("Potato", ingredientTypeHandler, "ingredient", new Scope());
+        Ingredient oldIngredient = new Ingredient("Potato", ingredientTypeHandler, "ingredient");
 
 
         assertEquals(interpreterVisitor.visitIngredientIdentifier(ingredientIdentifierctx), oldIngredient.getClass());
@@ -338,14 +341,14 @@ public class InterpreterVisitorTest {
     public void canCreateIngredient()
     {
         IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
-        Ingredient ingredient = new Ingredient("soap", ingredientTypeHandler, "ingredient", new Scope());
+        Ingredient ingredient = new Ingredient("soap", ingredientTypeHandler, "ingredient");
     }
    
     @Test(expected = RuntimeException.class)
     public void cannotCreateIngredientDueToType()
     {
         IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
-        Ingredient ingredient = new Ingredient("soap", ingredientTypeHandler, "non-existent type", new Scope());
+        Ingredient ingredient = new Ingredient("soap", ingredientTypeHandler, "non-existent type");
     }
 
     @Test
@@ -368,7 +371,7 @@ public class InterpreterVisitorTest {
     public void canCreateTool()
     {
         List<ToolAction> toolActionList = new ArrayList<ToolAction>();
-        Tool tool = new Tool("Knife", "knife", toolActionList, new Scope());
+        Tool tool = new Tool("Knife", "knife", toolActionList);
     }
 
     @Test
@@ -527,3 +530,23 @@ public class InterpreterVisitorTest {
 }
 
 // =^w^= <---- meow cat
+
+//     ______
+//   (((((    \
+//    ); \\\\|)|
+//   <   ||||||/
+//    >  ///////
+//    `--| abac
+//    ___/     \___
+// (    ~        ~   )
+// \  `              /
+// | \             / |
+// | -\           /  /
+// (__ |     |   |- ,
+//     |     |   |
+//     /          \
+//    /     `,     \
+//   |       )      )
+//   |      _/_   _ /
+//    \      |      |
+//     |     |      ,
