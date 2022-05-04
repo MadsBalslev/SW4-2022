@@ -58,6 +58,9 @@ public class Scope {
         }
         throw new RuntimeException("Undefined variable: " + name);
     }
+
+
+
     //Prints all the objects of the type given, for example ingredients
     //debug code
     public void stringPrinter(HashMap<String, BaseFannieType> symbolTable, String type)

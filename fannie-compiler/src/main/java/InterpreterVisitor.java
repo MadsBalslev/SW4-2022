@@ -169,7 +169,12 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     
     @Override public Void visitIngredientTypeDeclaration(fannieParserParser.IngredientTypeDeclarationContext context) 
     { 
-        throw new NotImplementedException();
+        String superTypeIdentifier = visitIngredientTypeIdentifier(context.ingredientTypeIdentifier(0));
+        String subTypeIdentifier = visitIngredientTypeIdentifier(context.ingredientTypeIdentifier(1));
+        ingredientTypeHandler.CreateIngredientType(superTypeIdentifier, subTypeIdentifier);
+
+        
+        return null;
     }
     
     @Override public Void visitAmountDeclaration(fannieParserParser.AmountDeclarationContext context) 
