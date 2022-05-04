@@ -2,6 +2,7 @@ package fannieTypes.steps;
 import java.util.List;
 
 import fannieTypes.*;
+import fannieTypes.toolActions.*;
 import scope.Scope;
 import Handlers.IngredientTypeHandler;
 public class DoStepDeclaration extends Step {

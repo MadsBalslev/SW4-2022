@@ -221,15 +221,32 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         if (context.CONTAIN()!= null) 
         {
             ContainToolActionDeclaration contain = new ContainToolActionDeclaration(context.ingredientTypeIdentifier(0).getText());
+            return contain;
         }
         else if (context.getChild(2) instanceof fannieParserParser.IngredientTypeIdentifierContext)
         {
-
+            String input = context.contentIn().CONTENT_IN().getText();
+            String output= context.ingredientTypeIdentifier(0).getText();
+            String toolActionIdentifier = context.toolActionIdentifier().getText();
+            ContentInToolAction contentInToolAction = new ContentInToolAction(input, output, toolActionIdentifier);
+            return contentInToolAction;
+        } 
+        else if (context.getChild(2) instanceof fannieParserParser.IngredientTypeIdentifierContext)
+        {
+            String input = context.ingredientTypeIdentifier(0).getText();
+            String output = context.ingredientTypeIdentifier(1).getText();
+            String toolActionIdentifier = context.toolActionIdentifier().getText();
+            NormalToolAction normalToolAction = new NormalToolAction(input, output, toolActionIdentifier);
+            return normalToolAction;
+        }
+        else
+        {
+            throw new RuntimeException();
         }
         
-       // visitChildren(context)
-        return toolAction;
     }
+        
+
     
     @Override public Void visitServeStepDeclaration(fannieParserParser.ServeStepDeclarationContext context) 
     {

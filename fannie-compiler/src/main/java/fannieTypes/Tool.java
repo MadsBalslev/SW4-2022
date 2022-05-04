@@ -48,10 +48,10 @@ public class Tool extends BaseFannieType{
     {
         IngredientType ingredientType;
         String ingredientIdentifier;
-        if (ingredient.isType(toolAction.ingredientTypeIdentifier))
+        if (ingredient.isType(toolAction.input))
         {
             //newIngredient is used since it appends to the symboltable when created
-            if (toolAction.transformedIngredientTypeIdentifier.equals("content in")){
+            if (toolAction.output.equals("content in")){
                 ingredientIdentifier = "content in" + toolAction.toolIdentifier;
                 ingredientType =  ingredientTypeHandler.AssignIngredientType(ingredient, "content in");
                 //debug code
@@ -85,7 +85,7 @@ public class Tool extends BaseFannieType{
         }
         else
         {
-            throw new RuntimeException("Ingredient type mismatch " + toolAction.ingredientTypeIdentifier + " " + ingredient.ingredientType.Identifier);
+            throw new RuntimeException("Ingredient type mismatch " + toolAction.input + " " + ingredient.ingredientType.Identifier);
         }
     }
 
