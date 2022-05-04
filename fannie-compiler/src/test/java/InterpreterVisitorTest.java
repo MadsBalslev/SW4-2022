@@ -85,32 +85,6 @@ public class InterpreterVisitorTest {
         return toolAction;
     }
 
-
-
-    // @Test(expected = RuntimeException.class)
-    // public void ingredientListMissingFromRecipeTest() throws IOException {
-    //     CharStream input = CharStreams.fromStream(RecipeTestStrings.ingredientListMissingFromRecipeTest());
-
-    //     fannieParserLexer lexer = new fannieParserLexer(input);
-    //     CommonTokenStream tokens = new CommonTokenStream(lexer);
-    //     fannieParserParser parser = new fannieParserParser(tokens);
-    //     ParseTree tree = parser.fannie();
-
-    //     interpreterVisitor.visit(tree);
-    // }
-
-    // @Test(expected = RuntimeException.class)
-    // public void ingredientNotDeclaredButUsedTest() throws IOException {
-    //     CharStream input = CharStreams.fromStream(RecipeTestStrings.ingredientListMissingFromRecipeTest());
-
-    //     fannieParserLexer lexer = new fannieParserLexer(input);
-    //     CommonTokenStream tokens = new CommonTokenStream(lexer);
-    //     fannieParserParser parser = new fannieParserParser(tokens);
-    //     ParseTree tree = parser.fannie();
-
-    //     interpreterVisitor.visit(tree);
-    // }
-
     @Test(expected = RuntimeException.class)
     public void mainRecipeKeywordMissingTest() throws IOException {
         CharStream input = CharStreams.fromStream(RecipeTestStrings.mainRecipeKeywordMissingTest());
@@ -485,45 +459,71 @@ public class InterpreterVisitorTest {
         List<ToolAction> toolActionList = new ArrayList<>();
         Tool knife = new Tool("Knife", "knife", toolActionList, scope);
 
-        // ToolAction toolAction = new ToolAction();
-        // toolAction.toolActionIdentifier = "slice";
-        // toolAction.toolIdentifier = "Knife";
-        // toolAction.transformedIngredientTypeIdentifier = "liquid";
-        // toolAction.ingredientTypeIdentifier = "ingredient";
-
-        // IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
-        // Ingredient ingredient = new Ingredient("soap", ingredientTypeHandler, "ingredient", scope);
-
-
-        // knife.useToolAction(toolAction, ingredient, scope, ingredientTypeHandler);
-
         knife.getHasToolBeenUsed();
     }
 
-    @Test(expected = RuntimeException.class)
-    public void cannotGetHasToolBeenUsedValue()
+    @Test
+    public void canCreateIngredientTypeHandler()
     {
-        Scope scope = new Scope();
-        Scope wrongScope = new Scope();
+        IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
+    }
 
-        List<ToolAction> toolActionList = new ArrayList<ToolAction>();
-        Tool knife = new Tool("Knife", "knife", toolActionList, scope);
+    @Test
+    public void canCreateDefaultIngredientTypes()
+    {
+            ArrayList<IngredientType> defaultIngredientTypes = new ArrayList<IngredientType>();
+            IngredientType ingredient = new IngredientType("ingredient", null);
+            IngredientType spice = new IngredientType("spice", ingredient);
+            IngredientType liquid = new IngredientType("liquid", ingredient);
+            IngredientType vegetable = new IngredientType("vegetable", ingredient);
+            IngredientType fruit = new IngredientType("fruit", ingredient);
+            IngredientType meat = new IngredientType("meat", ingredient);
+            IngredientType dry = new IngredientType("dry", ingredient);
+            IngredientType nut = new IngredientType("nut", ingredient);
+            IngredientType contentIn = new IngredientType("content in", ingredient);
+            defaultIngredientTypes.add(ingredient);
+            defaultIngredientTypes.add(spice);
+            defaultIngredientTypes.add(liquid);
+            defaultIngredientTypes.add(vegetable);
+            defaultIngredientTypes.add(fruit);
+            defaultIngredientTypes.add(meat);
+            defaultIngredientTypes.add(dry);
+            defaultIngredientTypes.add(nut);
+            defaultIngredientTypes.add(contentIn);
+    }
 
-        // ToolAction toolAction = new ToolAction();
-        // toolAction.toolActionIdentifier = "slice";
-        // toolAction.toolIdentifier = "Knife";
-        // toolAction.transformedIngredientTypeIdentifier = "liquid";
-        // toolAction.ingredientTypeIdentifier = "ingredient";
-
-        // IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
-        // Ingredient ingredient = new Ingredient("soap", ingredientTypeHandler, "ingredient", scope);
-
-
-        // knife.useToolAction(toolAction, ingredient, wrongScope, ingredientTypeHandler);
-
-        knife.getHasToolBeenUsed();
+    @Test
+    public void canCreateIngredientType()
+    {
+        final IngredientType ingredientTypeParent = mock(IngredientType.class);
+        IngredientType ingredientType = new IngredientType("ingredient", ingredientTypeParent);
     }
 
 
-    
+    @Test
+    public void canAssignIngredientType()
+    {
+        IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
+
+        Ingredient ingredient = new Ingredient("soap", ingredientTypeHandler, "liquid", new Scope());
+
+        ingredient.ingredientType = ingredientTypeHandler.AssignIngredientType(ingredient, "ingredient");
+
+        assertEquals("Ingredient was not assigned correctly!","ingredient", ingredient.ingredientType.toString());
+    }
+
+    // Test should give a RunTimeException, but gives a Nullpointer (which is a RunTimeException) maybe bugged code in interpreter ?XD
+    @Test(expected = RuntimeException.class)
+    public void cannotAssignandFindIngredientType()
+    {
+        IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
+
+        final Ingredient ingredient = mock(Ingredient.class);
+
+        ingredient.ingredientType = ingredientTypeHandler.AssignIngredientType(ingredient, "fart");
+    }
+
+
 }
+
+// =^w^= <---- meow cat

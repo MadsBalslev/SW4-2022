@@ -55,6 +55,13 @@ public class CodeGeneratorVisitor extends fannieParserBaseVisitor<Void> {
         return null;
     }
 
+    public Void visitToolsList(fannieParserParser.ToolsListContext ctx) {
+        markdownFormat.append("\n### Tools" + "\n");
+
+        visitChildren(ctx);
+        return null;
+    }
+
     public Void visitIngredientsList(fannieParserParser.IngredientsListContext ctx) {
         markdownFormat.append("### Ingredients" + "\n");
 
