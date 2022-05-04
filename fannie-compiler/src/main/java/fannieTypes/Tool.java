@@ -28,65 +28,56 @@ public class Tool extends BaseFannieType{
     }
     public ToolAction getToolAction(String toolActionIdentifier) throws Exception
     {
-        ToolAction toolAction = new ToolAction();
-        Boolean actionFound = false;
         for (ToolAction toolActionDeclaration : toolActionDeclarationsList) {
-            if (toolActionDeclaration.toolActionIdentifier.equals(toolActionIdentifier)) {
-                toolAction = toolActionDeclaration;
-                actionFound = true;
+            if (toolActionDeclaration.toolActionIdentifier.contains(toolActionIdentifier)) {
+                return toolActionDeclaration;
             }
         }
-        if (actionFound == false) {
-            throw new Exception("ToolAction not found");
-        }
-
-        return toolAction;
+        throw new RuntimeException("ToolAction not found");
     }
     
     
     public void useToolAction(ToolAction toolAction, Ingredient ingredient, Scope scope, IngredientTypeHandler ingredientTypeHandler)
     {
-        IngredientType ingredientType;
-        String ingredientIdentifier;
-        if (ingredient.isType(toolAction.input))
-        {
-            //newIngredient is used since it appends to the symboltable when created
-            if (toolAction.output.equals("content in")){
-                ingredientIdentifier = "content in" + toolAction.toolIdentifier;
-                ingredientType =  ingredientTypeHandler.AssignIngredientType(ingredient, "content in");
-                //debug code
-                //System.out.println("using tool action " + toolAction.toolActionIdentifier + " on " + ingredient.identifier +" creating " + newIngredient.ingredientType);
-                //debug code
-                scope.Remove(ingredient.identifier);
-                Ingredient newIngredient = new Ingredient(ingredientIdentifier, ingredientType);
-                scope.append(newIngredient.identifier, newIngredient);
-                //debug code
-                System.out.println("Added " + ingredientIdentifier + " to scope");
-                //debug code
-                this.hasToolBeenUsed = true;
-            }
-            else
-            { 
-                //newIngredient is used since it appends to the symboltable when created
-                ingredientIdentifier = ingredient.identifier;
-                ingredientType = ingredientTypeHandler.AssignIngredientType(ingredient, toolAction.transformedIngredientTypeIdentifier);
-                //System.out.println("using tool action " + toolAction.toolActionIdentifier + " on " + ingredient.identifier +" creating " + newIngredient.ingredientType);
-                scope.Remove(ingredient.identifier);
-                Ingredient newIngredient = new Ingredient(ingredientIdentifier, ingredientType);
-                scope.append(newIngredient.identifier, newIngredient);
-                //debug code
-                System.out.println("Added " + ingredientIdentifier + " to scope");
-                //debug code
-                this.hasToolBeenUsed = true;
-            }
+        Ingredient newIngredient = toolAction.useToolAction(ingredient, ingredientTypeHandler);
+        scope.Remove(ingredient.identifier);
+        scope.append(newIngredient.identifier, newIngredient);
+        this.hasToolBeenUsed = true;
+
+        // if (ingredient.isType(toolAction.input))
+        // {
+        //     //newIngredient is used since it appends to the symboltable when created
+        //     if (toolAction.output.equals("content in")){
+        //         ingredientIdentifier = "content in" + toolAction.toolIdentifier;
+        //         ingredientType =  ingredientTypeHandler.AssignIngredientType(ingredient, "content in");
+        //         //debug code
+        //         //System.out.println("using tool action " + toolAction.toolActionIdentifier + " on " + ingredient.identifier +" creating " + newIngredient.ingredientType);
+        //         //debug code
+        //         scope.Remove(ingredient.identifier);
+        //         Ingredient newIngredient = new Ingredient(ingredientIdentifier, ingredientType);
+        //         scope.append(newIngredient.identifier, newIngredient);
+        //         //debug code
+        //         System.out.println("Added " + ingredientIdentifier + " to scope");
+        //         //debug code
+        //         this.hasToolBeenUsed = true;
+        //     }
+        //     else
+        //     { 
+        //         //newIngredient is used since it appends to the symboltable when created
+        //         ingredientIdentifier = ingredient.identifier;
+        //         ingredientType = ingredientTypeHandler.AssignIngredientType(ingredient, toolAction.transformedIngredientTypeIdentifier);
+        //         //System.out.println("using tool action " + toolAction.toolActionIdentifier + " on " + ingredient.identifier +" creating " + newIngredient.ingredientType);
+        //         scope.Remove(ingredient.identifier);
+        //         Ingredient newIngredient = new Ingredient(ingredientIdentifier, ingredientType);
+        //         scope.append(newIngredient.identifier, newIngredient);
+        //         //debug code
+        //         System.out.println("Added " + ingredientIdentifier + " to scope");
+        //         //debug code
+        //         this.hasToolBeenUsed = true;
+        //     }
             //debug code
             //System.out.println("Removed " + ingredient.identifier + " from scope");
             //debug code
-        }
-        else
-        {
-            throw new RuntimeException("Ingredient type mismatch " + toolAction.input + " " + ingredient.ingredientType.Identifier);
-        }
     }
 
     public Boolean getHasToolBeenUsed()

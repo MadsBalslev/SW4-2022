@@ -1,7 +1,5 @@
 package fannieTypes.toolActions;
 
-import fannieTypes.Ingredient;
-import Handlers.IngredientTypeHandler;
 
 public class ContainToolActionDeclaration extends ToolAction {
     

@@ -126,9 +126,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         String toolTypeIdentifier = context.toolTypeIdentifier().getText();
         List<ToolAction> toolActionDeclarationsList = visitToolActionDeclarationsList(context.toolActionDeclarationsList());
         Tool tool = new Tool(toolIdentifier, toolTypeIdentifier, toolActionDeclarationsList);
-        for (ToolAction toolAction : tool.toolActionDeclarationsList) {
-            toolAction.toolIdentifier = tool.toolIdentifier;
-        }
+        
         scope.append(tool.toolIdentifier, tool);
         return null;
     }
