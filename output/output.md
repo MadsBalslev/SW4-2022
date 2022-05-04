@@ -6,6 +6,7 @@
 - Pot
 - Stove
 - Sifter
+- ShakerPot
 ### Steps
 1. Put Water in Pot
 2. With Stove Heat the content in Pot bring to boil

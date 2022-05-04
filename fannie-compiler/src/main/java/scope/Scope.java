@@ -7,7 +7,7 @@ import fannieTypes.BaseFannieType;
 
 public class Scope {
     private Scope parent;
-    private HashMap<String, BaseFannieType> symbolTable;
+    public HashMap<String, BaseFannieType> symbolTable;
     
     private boolean isGlobalScope() {
         return parent == null;

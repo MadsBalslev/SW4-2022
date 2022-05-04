@@ -1,11 +1,7 @@
 package Handlers;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import fannieTypes.*;
-import java.util.List;
-
-import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 
 public class IngredientTypeHandler {
     private HashMap<String, IngredientType> ingredientTypes;
@@ -65,28 +61,6 @@ public class IngredientTypeHandler {
             return ingredientTypes.get(ingredientTypeIdentifier);
         }
         else
-        {
             throw new IllegalArgumentException(ingredientTypeIdentifier + " is not a type");
-        }
-    //     for (IngredientType ingredientType : ingredientTypes)
-    //     {
-    //         if (ingredientType.identifier.equals(ingredientTypeIdentifier))
-    //         {
-    //             //System.out.println("Found ingredient type: " + ingredientType.toString());
-    //             newIngredientType = ingredientType;
-    //             break;
-    //         }
-    //         else if (ingredient.identifier.equals(ingredientTypeIdentifier))
-    //         {
-    //             newIngredientType = new IngredientType(ingredientTypeIdentifier, ingredient.ingredientType);
-    //             ingredientTypes.add(newIngredientType);
-    //             break;
-                
-    //         }
-    //     }
-    //     if (newIngredientType != null)
-    //         return newIngredientType;
-    //     else
-    //         throw new RuntimeException("Ingredient type not found: " + ingredientTypeIdentifier);
     }
 }

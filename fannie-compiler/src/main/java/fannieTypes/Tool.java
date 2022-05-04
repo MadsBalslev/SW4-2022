@@ -1,24 +1,15 @@
 package fannieTypes;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import Handlers.IngredientTypeHandler;
 import fannieTypes.toolActions.*;
 import scope.Scope;
 public class Tool extends BaseFannieType{
     public String toolTypeIdentifier;
     public String toolIdentifier;
-    public List<ToolAction> toolActionDeclarationsList = new ArrayList<ToolAction>();
+    private HashMap<String, ToolAction> toolActionDeclarationsList = new HashMap<String, ToolAction>();
     public Boolean hasToolBeenUsed = false;
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(toolIdentifier + ": " + toolTypeIdentifier + "\n Toolactions \n");
-        for (ToolAction toolAction : toolActionDeclarationsList) {
-            sb.append(toolAction.toString() + "\n");
-        }
-
-        return sb.toString();
-    }
-    public Tool(String toolIdentifier, String toolTypeIdentifier,List<ToolAction> toolActionList)
+    
+    public Tool(String toolIdentifier, String toolTypeIdentifier,HashMap<String, ToolAction> toolActionList)
     {
         super(toolIdentifier, "Tool");
         this.toolIdentifier = toolIdentifier;
@@ -28,12 +19,14 @@ public class Tool extends BaseFannieType{
     }
     public ToolAction getToolAction(String toolActionIdentifier) throws Exception
     {
-        for (ToolAction toolActionDeclaration : toolActionDeclarationsList) {
-            if (toolActionDeclaration.toolActionIdentifier.contains(toolActionIdentifier)) {
-                return toolActionDeclaration;
-            }
+        if(toolActionDeclarationsList.containsKey(toolActionIdentifier))
+        {
+            return toolActionDeclarationsList.get(toolActionIdentifier);
         }
-        throw new RuntimeException("ToolAction not found");
+        else
+        {
+            throw new Exception("ToolAction not found");
+        }
     }
     
     
@@ -58,5 +51,10 @@ public class Tool extends BaseFannieType{
     public Boolean getHasToolBeenUsed()
     {
         return this.hasToolBeenUsed;
+    }
+
+    public HashMap<String, ToolAction> getToolActionDeclarationsList()
+    {
+        return this.toolActionDeclarationsList;
     }
 }

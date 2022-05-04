@@ -3,13 +3,15 @@ main recipe Pasta{
     ingredients{
         ingredient Pasta (100g),
         liquid Water (1l),
-        spice Salt (10g)
-        },
+        spice Salt (10g),
+        liquid Milk(1l)
+    },
 
     tools{
         tool Pot[contain : ingredient],
         tool Stove[Heat : content in Pot => ingredient],
-        tool Sifter[contain : ingredient, Sift : content in Sifter => ingredient]
+        tool Sifter[contain : ingredient, Sift : content in Sifter => ingredient],
+        Pot ShakerPot[Shake : liquid => liquid]
     },
     
     steps{
@@ -19,6 +21,7 @@ main recipe Pasta{
         
         Pot do contain Pasta,
         Pot do contain Salt,
+        ShakerPot do contain Milk,
 
         STOP Proc1 when "boil pasta for 6-10 minutes",
 

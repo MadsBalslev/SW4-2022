@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 
 import com.itextpdf.tool.xml.exceptions.NotImplementedException;
 
@@ -59,13 +60,6 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     @Override public Void visitSubRecipe(fannieParserParser.SubRecipeContext context) 
     { 
         throw new NotImplementedException();
-        // Scope oldScope = scope;
-        // scope = oldScope.createScope();
-        // System.out.println("Visiting subrecipe");
-        // visitChildren(context);
-        // System.out.println("in subrecipe");
-        // scope.stringPrinter(scope.getSymbolTable(), "Tool");
-        // scope = oldScope;
     }
     
     @Override public Void visitRecipeIdentifier(fannieParserParser.RecipeIdentifierContext context) 
@@ -124,10 +118,17 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     {
         String toolIdentifier = context.toolIdentifier().getText();
         String toolTypeIdentifier = context.toolTypeIdentifier().getText();
-        List<ToolAction> toolActionDeclarationsList = visitToolActionDeclarationsList(context.toolActionDeclarationsList());
-        Tool tool = new Tool(toolIdentifier, toolTypeIdentifier, toolActionDeclarationsList);
+        HashMap<String, ToolAction> toolActionsList = new HashMap<String, ToolAction>();
         
+        if (scope.symbolTable.containsKey(toolTypeIdentifier))
+        {
+            Tool superTool = (Tool)scope.retrieve(toolTypeIdentifier);
+            toolActionsList.putAll(superTool.getToolActionDeclarationsList());
+        }
+        toolActionsList.putAll(visitToolActionDeclarationsList(context.toolActionDeclarationsList()));
+        Tool tool = new Tool(toolIdentifier, toolTypeIdentifier, toolActionsList);
         scope.append(tool.toolIdentifier, tool);
+        
         return null;
     }
     
@@ -206,18 +207,22 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         return context.getText();
     }
     
-    @Override public ArrayList<ToolAction> visitToolActionDeclarationsList(fannieParserParser.ToolActionDeclarationsListContext context) 
-    { 
-        
-        List<ToolAction> toolActionList = new ArrayList<ToolAction>();
-        for (int i = 0; i < context.getChildCount(); i++) {
-            if (context.getChild(i) instanceof fannieParserParser.ToolActionDeclarationContext) {
-                toolActionList.add(visitToolActionDeclaration((fannieParserParser.ToolActionDeclarationContext) context.getChild(i)));
-                }
+    @Override public HashMap<String,ToolAction> visitToolActionDeclarationsList(fannieParserParser.ToolActionDeclarationsListContext context) 
+    {
+        HashMap <String, ToolAction> toolActionDeclarationsList = new HashMap<String, ToolAction>();
+        for (fannieParserParser.ToolActionDeclarationContext toolActionDeclarationContext : context.toolActionDeclaration())
+        {
+            if (context.getChild(0) instanceof TerminalNode)
+            {
+                toolActionDeclarationsList.put("contain", visitToolActionDeclaration(toolActionDeclarationContext));
             }
-        
-        
-        return (ArrayList<ToolAction>) toolActionList;
+            else
+            {
+                String identifier = visitToolActionDeclaration(toolActionDeclarationContext).toolActionIdentifier;
+                toolActionDeclarationsList.put(identifier, visitToolActionDeclaration(toolActionDeclarationContext));
+            }
+        }
+        return toolActionDeclarationsList;
     }
     
     @Override public ToolAction visitToolActionDeclaration(fannieParserParser.ToolActionDeclarationContext context) 
