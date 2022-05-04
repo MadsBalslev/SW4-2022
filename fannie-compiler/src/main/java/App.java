@@ -15,9 +15,9 @@ public class App {
         interpreterVisitor.visit(tree);
         
 
-        
+        //debug code
         //System.out.println(tree.toStringTree(parser));
-
+        //debug code
         CodeGeneratorVisitor cgv = new CodeGeneratorVisitor();
         cgv.visit(tree);
         

@@ -5,6 +5,5 @@ public class HasBeenServed extends BaseFannieType {
     public HasBeenServed(Scope scope) {
         super("HasbeenServed", "HasBeenServed");
         this.isServed = false;
-        scope.append(this.identifier, this);
     }
 }
