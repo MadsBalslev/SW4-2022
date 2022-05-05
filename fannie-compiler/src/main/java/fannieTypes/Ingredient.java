@@ -1,7 +1,6 @@
 package fannieTypes;
 
 import Handlers.IngredientTypeHandler;
-import scope.Scope;
 
 public class Ingredient extends BaseFannieType {
     public String identifier;

@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 
 import com.itextpdf.tool.xml.exceptions.NotImplementedException;
 
@@ -59,13 +60,6 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     @Override public Void visitSubRecipe(fannieParserParser.SubRecipeContext context) 
     { 
         throw new NotImplementedException();
-        // Scope oldScope = scope;
-        // scope = oldScope.createScope();
-        // System.out.println("Visiting subrecipe");
-        // visitChildren(context);
-        // System.out.println("in subrecipe");
-        // scope.stringPrinter(scope.getSymbolTable(), "Tool");
-        // scope = oldScope;
     }
     
     @Override public Void visitRecipeIdentifier(fannieParserParser.RecipeIdentifierContext context) 
@@ -124,12 +118,26 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     {
         String toolIdentifier = context.toolIdentifier().getText();
         String toolTypeIdentifier = context.toolTypeIdentifier().getText();
-        List<ToolAction> toolActionDeclarationsList = visitToolActionDeclarationsList(context.toolActionDeclarationsList());
-        Tool tool = new Tool(toolIdentifier, toolTypeIdentifier, toolActionDeclarationsList);
-        for (ToolAction toolAction : tool.toolActionDeclarationsList) {
-            toolAction.toolIdentifier = tool.toolIdentifier;
+        HashMap<String, ToolAction> superToolActionsList = new HashMap<String, ToolAction>();
+        
+        if (scope.symbolTable.containsKey(toolTypeIdentifier))
+        {
+            Tool superTool = (Tool)scope.retrieve(toolTypeIdentifier);
+            superToolActionsList.putAll(superTool.getToolActionDeclarationsList());
         }
+        HashMap<String, ToolAction> toolActionsList = new HashMap<String, ToolAction>();
+        toolActionsList.putAll(visitToolActionDeclarationsList(context.toolActionDeclarationsList()));
+        for (String key : superToolActionsList.keySet())
+        {
+            if (toolActionsList.containsKey(key))
+            {
+                throw new RuntimeException("Toolaction has already been declared");
+            }
+        }
+        toolActionsList.putAll(superToolActionsList);
+        Tool tool = new Tool(toolIdentifier, toolTypeIdentifier, toolActionsList);
         scope.append(tool.toolIdentifier, tool);
+        
         return null;
     }
     
@@ -171,7 +179,12 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     
     @Override public Void visitIngredientTypeDeclaration(fannieParserParser.IngredientTypeDeclarationContext context) 
     { 
-        throw new NotImplementedException();
+        String superTypeIdentifier = visitIngredientTypeIdentifier(context.ingredientTypeIdentifier(0));
+        String subTypeIdentifier = visitIngredientTypeIdentifier(context.ingredientTypeIdentifier(1));
+        ingredientTypeHandler.CreateIngredientType(superTypeIdentifier, subTypeIdentifier);
+
+        
+        return null;
     }
     
     @Override public Void visitAmountDeclaration(fannieParserParser.AmountDeclarationContext context) 
@@ -203,27 +216,32 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         return context.getText();
     }
     
-    @Override public ArrayList<ToolAction> visitToolActionDeclarationsList(fannieParserParser.ToolActionDeclarationsListContext context) 
-    { 
-        List<ToolAction> toolActionList = new ArrayList<ToolAction>();
-        for (int i = 0; i < context.getChildCount(); i++) {
-            if (context.getChild(i) instanceof fannieParserParser.ToolActionDeclarationContext) {
-                toolActionList.add(visitToolActionDeclaration((fannieParserParser.ToolActionDeclarationContext) context.getChild(i)));
-                }
+    @Override public HashMap<String,ToolAction> visitToolActionDeclarationsList(fannieParserParser.ToolActionDeclarationsListContext context) 
+    {
+        HashMap <String, ToolAction> toolActionDeclarationsList = new HashMap<String, ToolAction>();
+        for (fannieParserParser.ToolActionDeclarationContext toolActionDeclarationContext : context.toolActionDeclaration())
+        {
+            if (toolActionDeclarationContext.getChild(0) instanceof TerminalNode)
+            {
+                toolActionDeclarationsList.put("contain", visitToolActionDeclaration(toolActionDeclarationContext));
             }
-        
-        return (ArrayList<ToolAction>) toolActionList;
+            else
+            {
+                String identifier = visitToolActionDeclaration(toolActionDeclarationContext).toolActionIdentifier;
+                toolActionDeclarationsList.put(identifier, visitToolActionDeclaration(toolActionDeclarationContext));
+            }
+        }
+        return toolActionDeclarationsList;
     }
     
     @Override public ToolAction visitToolActionDeclaration(fannieParserParser.ToolActionDeclarationContext context) 
     {
-        //ToolAction toolAction = createToolAction(context);
-        if (context.CONTAIN()!= null) 
-        {
-            ContainToolActionDeclaration contain = new ContainToolActionDeclaration(context.ingredientTypeIdentifier(0).getText());
+        if (context.getChild(0) instanceof TerminalNode) {
+            String ingredientTypeIdentifier = context.ingredientTypeIdentifier(0).getText();
+            ContainToolActionDeclaration contain = new ContainToolActionDeclaration(ingredientTypeIdentifier);
             return contain;
         }
-        else if (context.getChild(2) instanceof fannieParserParser.IngredientTypeIdentifierContext)
+        else if (context.getChild(2) instanceof fannieParserParser.ContentInContext)
         {
             String input = context.contentIn().CONTENT_IN().getText();
             String output= context.ingredientTypeIdentifier(0).getText();
@@ -245,8 +263,6 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         }
         
     }
-        
-
     
     @Override public Void visitServeStepDeclaration(fannieParserParser.ServeStepDeclarationContext context) 
     {
@@ -312,29 +328,4 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         return null;
     }
     
-    //this is not good, should probably be associated to the tool class, but this works for now
-    // public ToolAction createToolAction(fannieParserParser.ToolActionDeclarationContext context) {
-    //     ToolAction toolAction = new ToolAction();
-    //     if (context.getChild(0) instanceof TerminalNode)
-    //     {
-    //         toolAction.ingredientTypeIdentifier = context.ingredientTypeIdentifier(0).getText();
-    //         toolAction.transformedIngredientTypeIdentifier = "content in";
-    //         toolAction.toolActionIdentifier = "contain";
-    //     }
-    //     /* we have to check if the first ingredienttype identifier is  contentin,
-    //     since it changes whether ingredienttypeidentifier(0) is the original or transformed ingredient */
-    //     else if (context.getChild(2) instanceof fannieParserParser.ContentInContext) {
-    //         toolAction.ingredientTypeIdentifier = context.contentIn().CONTENT_IN().getText();
-    //         toolAction.transformedIngredientTypeIdentifier= context.ingredientTypeIdentifier(0).getText();
-    //         toolAction.toolActionIdentifier = context.toolActionIdentifier().getText();
-    //     } 
-    //     else if (context.getChild(2) instanceof fannieParserParser.IngredientTypeIdentifierContext)
-    //     {
-    //         toolAction.ingredientTypeIdentifier = context.ingredientTypeIdentifier(0).getText();
-    //         toolAction.transformedIngredientTypeIdentifier = context.ingredientTypeIdentifier(1).getText();
-    //         toolAction.toolActionIdentifier = context.toolActionIdentifier().getText();
-    //     }
-        
-    //     return toolAction;
-    // }
 }
