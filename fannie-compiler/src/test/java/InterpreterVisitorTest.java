@@ -297,12 +297,6 @@ public class InterpreterVisitorTest {
     }
 
     @Test
-    public void canCreateTool() {
-        HashMap<String, ToolAction> toolActionList = new HashMap<String, ToolAction>();
-        Tool tool = new Tool("Knife", "knife", toolActionList);
-    }
-
-    @Test
     public void useToolActionUsesTool() {
         Scope scope = new Scope();
 
@@ -398,12 +392,11 @@ public class InterpreterVisitorTest {
         Scope scope = new Scope();
         IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
         Ingredient gulerod = new Ingredient("gulerod", ingredientTypeHandler, "ingredient");
-        Ingredient kartoffel = new Ingredient(gulerod.identifier, ingredientTypeHandler, "ingredient");
+        Ingredient kartoffel = new Ingredient("gulerod", ingredientTypeHandler, "ingredient");
         scope.append("gulerod", gulerod);
-        scope.Remove(gulerod.identifier);
-        scope.overwrite("kartoffel", kartoffel);
-        scope.retrieve(kartoffel.identifier);
-        assertEquals("kartoffel", kartoffel.identifier);
+        scope.overwrite("gulerod", kartoffel);
+        kartoffel = (Ingredient) scope.retrieve("gulerod");
+        assertEquals("gulerod", kartoffel.identifier);
     }
 
     @Test
