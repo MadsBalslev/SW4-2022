@@ -95,6 +95,10 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         //debug code
         System.out.println("Visiting toolslist");
         //debug code
+        if(scope.isIngredientListEmpty() == true)
+        {
+            throw new RuntimeException("No ingredients in the recipe");
+        }
         visitChildren(context);
         return null;
     }

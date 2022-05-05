@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,39 +18,41 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.RuleContext;
 import org.junit.Before;
-// import org.junit.Rule;
+import org.junit.Rule;
 import org.junit.Test;
-// import org.junit.rules.TemporaryFolder;
+import org.junit.rules.TemporaryFolder;
 
 import Handlers.IngredientTypeHandler;
-// import fannieParserParser.IngredientIdentifierContext;
-// import fannieParserParser.ToolDeclarationContext;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.testng.Assert.*;
 
 import fannieTypes.Ingredient;
+import fannieTypes.steps.DoStepDeclaration;
 import fannieTypes.*;
+import fannieTypes.toolActions.ContainToolActionDeclaration;
+import fannieTypes.toolActions.NormalToolAction;
 import fannieTypes.toolActions.ToolAction;
 import scope.Scope;
-// import Handlers.IngredientTypeHandler;
-
+import Handlers.IngredientTypeHandler;
 
 public class InterpreterVisitorTest {
-        InterpreterVisitor interpreterVisitor;
+    InterpreterVisitor interpreterVisitor;
 
     private <T extends RuleContext> T mockForVisitorResult(final Class<T> nodeType, final String visitResult) {
         final T mock = mock(nodeType);
         when(mock.accept(interpreterVisitor)).thenReturn(visitResult);
         return mock;
     }
-      @Before
-      public void init() throws IOException {
-         interpreterVisitor = new InterpreterVisitor();
-      }
 
-    @Test(expected = RuntimeException.class)
+    @Before
+    public void init() throws IOException {
+        interpreterVisitor = new InterpreterVisitor();
+    }
+
+    @Test(expected = Exception.class) // This test should NOT fail.
     public void ingredientListMissingFromRecipeTest() throws IOException {
         CharStream input = CharStreams.fromStream(RecipeTestStrings.ingredientListMissingFromRecipeTest());
 
@@ -61,32 +64,20 @@ public class InterpreterVisitorTest {
         interpreterVisitor.visit(tree);
     }
 
-    // public ToolAction createToolAction(fannieParserParser.ToolActionDeclarationContext context) {
-    //     NormalToolAction toolAction = new NormalToolAction();
-    //     if (context.getChild(0) instanceof TerminalNode)
-    //     {
-    //         toolAction.ingredientTypeIdentifier = context.ingredientTypeIdentifier(0).getText();
-    //         toolAction.transformedIngredientTypeIdentifier = "content in";
-    //         toolAction.toolActionIdentifier = "contain";
-    //     }
-    //     /* we have to check if the first ingredienttype identifier is  contentin,
-    //     since it changes whether ingredienttypeidentifier(0) is the original or transformed ingredient */
-    //     else if (context.getChild(2) instanceof fannieParserParser.ContentInContext) {
-    //         toolAction.ingredientTypeIdentifier = context.contentIn().CONTENT_IN().getText();
-    //         toolAction.transformedIngredientTypeIdentifier= context.ingredientTypeIdentifier(0).getText();
-    //         toolAction.toolActionIdentifier = context.toolActionIdentifier().getText();
-    //     } 
-    //     else if (context.getChild(2) instanceof fannieParserParser.IngredientTypeIdentifierContext)
-    //     {
-    //         toolAction.ingredientTypeIdentifier = context.ingredientTypeIdentifier(0).getText();
-    //         toolAction.transformedIngredientTypeIdentifier = context.ingredientTypeIdentifier(1).getText();
-    //         toolAction.toolActionIdentifier = context.toolActionIdentifier().getText();
-    //     }
-        
-    //     return toolAction;
-    // }
+    // This test should NOT fail.
+    @Test(expected = RuntimeException.class)
+    public void ingredientNotDeclaredButUsedTest() throws IOException {
+        CharStream input = CharStreams.fromStream(RecipeTestStrings.ingredientNotDeclaredButUsedTest());
 
-    @Test(expected = Exception.class)
+        fannieParserLexer lexer = new fannieParserLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        fannieParserParser parser = new fannieParserParser(tokens);
+        ParseTree tree = parser.fannie();
+
+        interpreterVisitor.visit(tree);
+    }
+
+    @Test(expected = RuntimeException.class) // This test should fail (OR NOT?).
     public void mainRecipeKeywordMissingTest() throws IOException {
         CharStream input = CharStreams.fromStream(RecipeTestStrings.mainRecipeKeywordMissingTest());
 
@@ -169,142 +160,119 @@ public class InterpreterVisitorTest {
 
         interpreterVisitor.visit(tree);
     }
-  
+
     @Test(expected = RuntimeException.class)
     public void ToolAndIngredientSameIdentifierTest() throws IOException {
         CharStream input = CharStreams.fromStream(RecipeTestStrings.ToolAndIngredientSameIdentifierTest());
 
+        fannieParserLexer lexer = new fannieParserLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        fannieParserParser parser = new fannieParserParser(tokens);
+        ParseTree tree = parser.fannie();
+
+        interpreterVisitor.visit(tree);
     }
-    
+
     @Test
-    public void scopeRetrievesFromParentSymbolTable () throws Exception
-    {
+    public void scopeRetrievesFromParentSymbolTable() throws Exception {
         Scope scope = new Scope();
         Scope parentScope = new Scope();
         ProcIdentifier procIdentifier = new ProcIdentifier("Test");
         parentScope.append("Test", procIdentifier);
         scope.setParent(parentScope);
-                
-        ProcIdentifier actual = (ProcIdentifier)scope.retrieve("Test");
+
+        ProcIdentifier actual = (ProcIdentifier) scope.retrieve("Test");
         assertEquals(actual, procIdentifier);
     }
+
     @Test(expected = RuntimeException.class)
-    public void cannotRetrieveFromSymboltable() throws Exception
-    {
+    public void cannotRetrieveFromSymboltable() throws Exception {
         Scope scope = new Scope();
         scope.retrieve("Test");
     }
-    
+
     @Test
-    public void isDefaultIngredient()
-    {
-        IngredientType ingredientType = new IngredientType("ingredient", null);
-        Boolean actual = ingredientType.isDefaultType("ingredient");
-        assertEquals(true, actual);
-    }
-    @Test
-    public void isNotDefaultIngredient()
-    {
-        IngredientType ingredientType = new IngredientType("Ingredient", null);
-        Boolean actual = ingredientType.isDefaultType("Ingredient");
-        assertEquals(actual, false);
-    }
-    @Test
-    public void hasBeenServedFalse()
-    {
+    public void hasBeenServedFalse() {
         HasBeenServed hasServed = new HasBeenServed(new Scope());
         assertEquals(hasServed.isServed, false);
     }
+
     @Test
-    public void hasBeenServedTrue()
-    {
+    public void hasBeenServedTrue() {
         final HasBeenServed hasBeenServed = new HasBeenServed(new Scope());
         hasBeenServed.isServed = true;
-        final  HasBeenServed mock = mock(HasBeenServed.class);
+        final HasBeenServed mock = mock(HasBeenServed.class);
         mock.isServed = true;
         assertEquals(mock.isServed, hasBeenServed.isServed);
     }
 
     @Test
-    public void ingredientIsType()
-    {
+    public void ingredientIsType() {
         IngredientType ingredientType = new IngredientType("vegetable", null);
         Ingredient ingredient = new Ingredient("ingredient", ingredientType);
         Boolean actual = ingredient.isType("vegetable");
-        
+
         final Ingredient mock = mock(Ingredient.class);
         when(mock.isType("vegetable")).thenReturn(true);
         assertEquals(mock.isType("vegetable"), actual);
     }
 
-    @Test 
-    public void ingredientIsNotType()
-    {
+    @Test
+    public void ingredientIsNotType() {
         IngredientType ingredientType = new IngredientType("vegetable", null);
         Ingredient ingredient = new Ingredient("ingredient", ingredientType);
         Boolean actual = ingredient.isType("fruit");
-        
+
         final Ingredient mock = mock(Ingredient.class);
         when(mock.isType("fruit")).thenReturn(false);
 
         assertEquals(mock.isType("fruit"), actual);
     }
 
-    @Test 
-    public void ingredientTypeAssignedCorrectly()
-    {
-        IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
-        Ingredient ingredient = new Ingredient("ingredient",ingredientTypeHandler,"liquid");
-
-        assertEquals(ingredient.ingredientType.Identifier, "liquid");
-    }
     @Test
-    public void ingredientTypeAssignedIncorrectly()
-    {
+    public void ingredientTypeAssignedCorrectly() {
         IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
-        Ingredient ingredient = new Ingredient("soap",ingredientTypeHandler,"ingredient");
+        Ingredient ingredient = new Ingredient("ingredient", ingredientTypeHandler, "liquid");
 
-        assertEquals("The ingredient is not assigned to the correct ingredient type!",ingredient.typeIdentifier, "liquid");
+        assertEquals(ingredient.ingredientType.identifier, "liquid");
     }
 
-    // @Test(expected = RuntimeException.class)
-    // public void toolActionisnotToolAction()
-    // {
-    //     final fannieParserParser.ToolActionDeclarationContext toolactionctx = mock(fannieParserParser.ToolActionDeclarationContext.class);
-    //     ToolAction fakeToolAction = createToolAction(toolactionctx);
+    @Test
+    public void ingredientTypeAssignedIncorrectly() {
+        IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
+        Ingredient ingredient = new Ingredient("soap", ingredientTypeHandler, "ingredient");
 
-    //     IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
-    //     Ingredient ingredient = new Ingredient("ingredient",ingredientTypeHandler,"mushroom");
-
-    //     assertEquals("ToolAction is not equal to type Ingredient!",ingredient, fakeToolAction);
-    // }
+        assertNotEquals("The ingredient is not assigned to the correct ingredient type!", ingredient.typeIdentifier,
+                "liquid");
+    }
 
     @Test
-    public void stepInReturnsList()
-    {
+    public void stepInReturnsList() {
         final fannieParserParser.StepInContext stepinctx = mock(fannieParserParser.StepInContext.class);
         final Ingredient mockIngredient = mock(Ingredient.class);
 
         ArrayList<Ingredient> ingredientList = new ArrayList<Ingredient>();
 
-        assertEquals("Did not return ingredientList!",interpreterVisitor.visitStepIn(stepinctx).getClass(), ingredientList.getClass());
-
+        assertEquals("Did not return ingredientList!", interpreterVisitor.visitStepIn(stepinctx).getClass(),
+                ingredientList.getClass());
     }
 
     @Test
-    public void toolActionDeclarationListReturnsList()
-    {
-        final fannieParserParser.ToolActionDeclarationsListContext toolActionDeclarationListctx = mock(fannieParserParser.ToolActionDeclarationsListContext.class);
+    public void toolActionDeclarationListReturnsList() {
+        final fannieParserParser.ToolActionDeclarationsListContext toolActionDeclarationListctx = mock(
+                fannieParserParser.ToolActionDeclarationsListContext.class);
 
-        List<ToolAction> toolActionList = new ArrayList<ToolAction>();
+        HashMap<String, ToolAction> toolActionList = new HashMap<String, ToolAction>();
 
-        assertEquals("Did not return toolActionList!",interpreterVisitor.visitToolActionDeclarationsList(toolActionDeclarationListctx).getClass(), toolActionList.getClass());
+        assertEquals("Did not return toolActionList!",
+                interpreterVisitor.visitToolActionDeclarationsList(toolActionDeclarationListctx).getClass(),
+                toolActionList.getClass());
     }
 
     @Test
-    public void ingredientIdentifierDoesReturnsContext()
-    {
-        final fannieParserParser.IngredientIdentifierContext ingredientIdentifierctx = mock(fannieParserParser.IngredientIdentifierContext.class);
+    public void ingredientIdentifierDoesReturnsContext() {
+        final fannieParserParser.IngredientIdentifierContext ingredientIdentifierctx = mock(
+                fannieParserParser.IngredientIdentifierContext.class);
 
         when(interpreterVisitor.visitIngredientIdentifier(ingredientIdentifierctx)).thenReturn("test");
 
@@ -312,208 +280,83 @@ public class InterpreterVisitorTest {
     }
 
     @Test
-    public void ingredientIdentifierDoesNotReturnsCorrectContext()
-    {
-        final fannieParserParser.IngredientIdentifierContext ingredientIdentifierctx = mock(fannieParserParser.IngredientIdentifierContext.class);
+    public void scopeCanAppendandRetrieveAnything() {
+        Scope scope = new Scope();
 
-        when(interpreterVisitor.visitIngredientIdentifier(ingredientIdentifierctx)).thenReturn("wrong text");
+        HashMap<String, ToolAction> toolActionList = new HashMap<String, ToolAction>();
+        Tool tool = new Tool("knife", "knife", toolActionList);
 
-        assertEquals("The returned context is not correct!","test", interpreterVisitor.visitIngredientIdentifier(ingredientIdentifierctx));
-    }
-
-    // @Test
-    // public void toolDeclarationAddedToScope()
-    // {
-    //     List<ToolAction> toolActionDeclarationsList = new ArrayList<ToolAction>();
-    //     Scope scope = new Scope();
-    //     Tool tool = new Tool("knife", "knife", toolActionDeclarationsList, scope);
-
-    //     scope.append(tool.toolIdentifier, tool);
-    //     assertEquals("Knife not added to scope!", tool, scope.retrieve(tool.toolTypeIdentifier));
-    // }
-
-    @Test
-    public void canCreateIngredient()
-    {
         IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
-        Ingredient ingredient = new Ingredient("soap", ingredientTypeHandler, "ingredient");
-    }
-   
-    @Test(expected = RuntimeException.class)
-    public void cannotCreateIngredientDueToType()
-    {
-        IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
-        Ingredient ingredient = new Ingredient("soap", ingredientTypeHandler, "non-existent type");
-    }
+        Ingredient ingredient = new Ingredient("Soap", ingredientTypeHandler, "ingredient");
 
-    @Test
-    public void procIdentiferReturnsValue()
-    {
-        ProcIdentifier procIdentifier = new ProcIdentifier("Value");
+        scope.append("knife", tool);
+        scope.append("Soap", ingredient);
 
-        assertEquals("Value", procIdentifier.getValue());
+        assertEquals("Knife not added to scope!", tool, scope.retrieve("knife"));
+        assertEquals("Soap not addded to scope!", ingredient, scope.retrieve("Soap"));
     }
 
     @Test
-    public void procIdentifierReturnsWrongValue()
-    {
-        ProcIdentifier procIdentifier = new ProcIdentifier("Value");
-
-        assertEquals("getValue is not equal to expected string!","fakeValue", procIdentifier.getValue());
-    }
-
-    @Test
-    public void canCreateTool()
-    {
-        List<ToolAction> toolActionList = new ArrayList<ToolAction>();
+    public void canCreateTool() {
+        HashMap<String, ToolAction> toolActionList = new HashMap<String, ToolAction>();
         Tool tool = new Tool("Knife", "knife", toolActionList);
     }
 
-    // @Test
-    // public void canCreateToolActionAndAssignValues()
-    // {
-    //     ToolAction toolAction = new ToolAction();
-    //     toolAction.toolActionIdentifier = "slice";
-    //     toolAction.toolIdentifier = "Knife";
-    //     toolAction.transformedIngredientTypeIdentifier = "sliced";
-    //     toolAction.ingredientTypeIdentifier = "ingredient";
-    // }
-
-    // @Test
-    // public void useToolActionUsesTool()
-    // {
-    //     Scope scope = new Scope();
-
-    //     List<ToolAction> toolActionList = new ArrayList<>();
-    //     Tool knife = new Tool("Knife", "knife", toolActionList);
-
-    //     ToolAction toolAction = new ToolAction();
-    //     toolAction.toolActionIdentifier = "slice";
-    //     toolAction.toolIdentifier = "Knife";
-    //     toolAction.transformedIngredientTypeIdentifier = "liquid";
-    //     toolAction.ingredientTypeIdentifier = "ingredient";
-
-    //     IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
-    //     Ingredient ingredient = new Ingredient("soap", ingredientTypeHandler, "ingredient");
-
-
-    //     knife.useToolAction(toolAction, ingredient, scope, ingredientTypeHandler);
-
-    //     assertEquals(knife.hasToolBeenUsed, true);
-    // }
-
-    // @Test(expected = RuntimeException.class)
-    // public void useToolActionTransformsToIngredientOutOfScope()
-    // {
-    //     Scope scope = new Scope();
-
-    //     List<ToolAction> toolActionList = new ArrayList<>();
-    //     Tool knife = new Tool("Knife", "knife", toolActionList);
-
-    //     ToolAction toolAction = new ToolAction();
-    //     toolAction.toolActionIdentifier = "slice";
-    //     toolAction.toolIdentifier = "Knife";
-    //     toolAction.transformedIngredientTypeIdentifier = "sliceddicer";
-    //     toolAction.ingredientTypeIdentifier = "ingredient";
-
-    //     IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
-    //     Ingredient ingredient = new Ingredient("soap", ingredientTypeHandler, "ingredient");
-
-
-    //     knife.useToolAction(toolAction, ingredient, scope, ingredientTypeHandler);
-
-    //     assertEquals(knife.hasToolBeenUsed, true);
-    // }
-
-    // @Test(expected = RuntimeException.class)
-    // public void useToolActionUsesWrongScope()
-    // {
-    //     Scope scope = new Scope();
-    //     Scope wrongScope = new Scope();
-
-    //     List<ToolAction> toolActionList = new ArrayList<>();
-    //     Tool knife = new Tool("Knife", "knife", toolActionList, scope);
-
-    //     ToolAction toolAction = new ToolAction();
-    //     toolAction.toolActionIdentifier = "slice";
-    //     toolAction.toolIdentifier = "Knife";
-    //     toolAction.transformedIngredientTypeIdentifier = "";
-    //     toolAction.ingredientTypeIdentifier = "ingredient";
-
-    //     IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
-    //     Ingredient ingredient = new Ingredient("soap", ingredientTypeHandler, "ingredient", scope);
-
-
-    //     knife.useToolAction(toolAction, ingredient, wrongScope, ingredientTypeHandler);
-
-    //     assertEquals(knife.hasToolBeenUsed, true);
-    // }
-
-    // @Test
-    // public void canGetHasToolBeenUsedValue()
-    // {
-    //     Scope scope = new Scope();
-
-    //     List<ToolAction> toolActionList = new ArrayList<>();
-    //     Tool knife = new Tool("Knife", "knife", toolActionList, scope);
-
-    //     knife.getHasToolBeenUsed();
-    // }
-
     @Test
-    public void canCreateIngredientTypeHandler()
-    {
+    public void useToolActionUsesTool() {
+        Scope scope = new Scope();
+
+        HashMap<String, ToolAction> toolActionList = new HashMap<String, ToolAction>();
+        Tool knife = new Tool("Knife", "knife", toolActionList);
+
+        final Scope mockScope = mock(Scope.class);
+        final Ingredient mockIngredient = mock(Ingredient.class);
+        when(mockScope.retrieve("soap")).thenReturn(mockIngredient);
+
+        NormalToolAction normalToolAction = new NormalToolAction("ingredient", "liquid", "slice");
+
         IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
+        Ingredient ingredient = new Ingredient("soap", ingredientTypeHandler, "ingredient");
+
+        scope.append("soap", ingredient);
+        knife.useToolAction(normalToolAction, ingredient, scope, ingredientTypeHandler);
+
+        assertEquals(knife.hasToolBeenUsed, true);
     }
 
     @Test
-    public void canCreateDefaultIngredientTypes()
-    {
-            ArrayList<IngredientType> defaultIngredientTypes = new ArrayList<IngredientType>();
-            IngredientType ingredient = new IngredientType("ingredient", null);
-            IngredientType spice = new IngredientType("spice", ingredient);
-            IngredientType liquid = new IngredientType("liquid", ingredient);
-            IngredientType vegetable = new IngredientType("vegetable", ingredient);
-            IngredientType fruit = new IngredientType("fruit", ingredient);
-            IngredientType meat = new IngredientType("meat", ingredient);
-            IngredientType dry = new IngredientType("dry", ingredient);
-            IngredientType nut = new IngredientType("nut", ingredient);
-            IngredientType contentIn = new IngredientType("content in", ingredient);
-            defaultIngredientTypes.add(ingredient);
-            defaultIngredientTypes.add(spice);
-            defaultIngredientTypes.add(liquid);
-            defaultIngredientTypes.add(vegetable);
-            defaultIngredientTypes.add(fruit);
-            defaultIngredientTypes.add(meat);
-            defaultIngredientTypes.add(dry);
-            defaultIngredientTypes.add(nut);
-            defaultIngredientTypes.add(contentIn);
+    public void isCorrectIngredientCreatedUseToolAction() {
+        ToolAction normalToolAction = new NormalToolAction("ingredient", "spice", "cut");
+        IngredientType ingredientType = new IngredientType("ingredient", null);
+
+        IngredientTypeHandler mockedIngredientTypeHandler = mock(IngredientTypeHandler.class);
+        Ingredient preTransformIngredient = new Ingredient("Spice Ingredient", ingredientType);
+        IngredientType expectedIngredientType = new IngredientType("spice", null);
+
+        when(mockedIngredientTypeHandler.AssignIngredientType(any(Ingredient.class), anyString()))
+                .thenReturn(expectedIngredientType);
+
+        Ingredient Expected = new Ingredient("Spice Ingredient", expectedIngredientType);
+        Ingredient Actual = normalToolAction.useToolAction(preTransformIngredient, mockedIngredientTypeHandler);
+
+        assertEquals(Expected.ingredientType, Actual.ingredientType);
     }
 
     @Test
-    public void canCreateIngredientType()
-    {
-        final IngredientType ingredientTypeParent = mock(IngredientType.class);
-        IngredientType ingredientType = new IngredientType("ingredient", ingredientTypeParent);
-    }
-
-
-    @Test
-    public void canAssignIngredientType()
-    {
+    public void canAssignIngredientType() {
         IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
 
         Ingredient ingredient = new Ingredient("soap", ingredientTypeHandler, "liquid");
 
         ingredient.ingredientType = ingredientTypeHandler.AssignIngredientType(ingredient, "ingredient");
 
-        assertEquals("Ingredient was not assigned correctly!","ingredient", ingredient.ingredientType.toString());
+        assertEquals("Ingredient was not assigned correctly!", "ingredient", ingredient.ingredientType.toString());
     }
 
-    // Test should give a RunTimeException, but gives a Nullpointer (which is a RunTimeException) maybe bugged code in interpreter ?XD
+    // Test should give a RunTimeException, but gives a Nullpointer (which is a
+    // RunTimeException) maybe bugged code in interpreter ?XD
     @Test(expected = RuntimeException.class)
-    public void cannotAssignandFindIngredientType()
-    {
+    public void cannotAssignandFindIngredientType() {
         IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
 
         final Ingredient ingredient = mock(Ingredient.class);
@@ -521,24 +364,92 @@ public class InterpreterVisitorTest {
         ingredient.ingredientType = ingredientTypeHandler.AssignIngredientType(ingredient, "fart");
     }
 
-    @Test
-    public void canCreateIngredientList()
-    {
-        List<Ingredient> ingredientList = new ArrayList<Ingredient>();
-    }
-    @Test
-    public void canCheckIsIngredientListEmpty()
-    {
-        
+    @Test(expected = RuntimeException.class)
+    public void cannotDeleteAlreadyDeletedKey() {
+        Scope scope = new Scope();
+        IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
+        Ingredient gulerod = new Ingredient("gulerod", ingredientTypeHandler, "ingredient");
+        scope.append("gulerod", gulerod);
+        scope.Remove("gulerod");
+        scope.Remove("gulerod");
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void cannotAppendAlreadyExistingKey() {
+        Scope scope = new Scope();
+        IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
+        Ingredient gulerod = new Ingredient("gulerod", ingredientTypeHandler, "ingredient");
+        scope.append("gulerod", gulerod);
+        scope.append("gulerod", gulerod);
+    }
 
+    @Test(expected = RuntimeException.class)
+    public void cannotRetrieveRemovedKey() {
+        Scope scope = new Scope();
+        IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
+        Ingredient gulerod = new Ingredient("gulerod", ingredientTypeHandler, "ingredient");
+        scope.append("gulerod", gulerod);
+        scope.Remove("gulerod");
+        scope.retrieve("gulerod");
+    }
+
+    @Test
+    public void doesOverwriteWork() {
+        Scope scope = new Scope();
+        IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
+        Ingredient gulerod = new Ingredient("gulerod", ingredientTypeHandler, "ingredient");
+        Ingredient kartoffel = new Ingredient(gulerod.identifier, ingredientTypeHandler, "ingredient");
+        scope.append("gulerod", gulerod);
+        scope.Remove(gulerod.identifier);
+        scope.overwrite("kartoffel", kartoffel);
+        scope.retrieve(kartoffel.identifier);
+        assertEquals("kartoffel", kartoffel.identifier);
+    }
+
+    @Test
+    public void DoStepDeclarationCanUseToolActionOnList() {
+        Scope scope = new Scope();
+        List<Ingredient> oldIngredients = new ArrayList<Ingredient>();
+        IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
+        HashMap<String, ToolAction> toolActionList = new HashMap<String, ToolAction>();
+
+        NormalToolAction normalToolAction = new NormalToolAction("ingredient", "liquid", "slice");
+        toolActionList.put(normalToolAction.toolActionIdentifier,normalToolAction);
+
+        Ingredient ingredient = new Ingredient("Soap", ingredientTypeHandler, "ingredient");
+        Tool tooltest = new Tool("knife", "knife", toolActionList);
+
+        scope.append("knife", tooltest);
+        scope.append("Soap", ingredient);
+        oldIngredients.add(ingredient);
+
+        new DoStepDeclaration(tooltest.toolIdentifier, normalToolAction.toolActionIdentifier, scope, oldIngredients, ingredientTypeHandler);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void keyMissingInStepDeclaration()
+    {
+        Scope scope = new Scope();
+        List<Ingredient> oldIngredients = new ArrayList<Ingredient>();
+        IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
+        HashMap<String, ToolAction> toolActionList = new HashMap<String, ToolAction>();
+
+        NormalToolAction normalToolAction = new NormalToolAction("ingredient", "liquid", "slice");
+        toolActionList.put(normalToolAction.toolActionIdentifier,normalToolAction);
+
+        Ingredient ingredient = new Ingredient("Soap", ingredientTypeHandler, "ingredient");
+        Tool tooltest = new Tool("knife", "knife", toolActionList);
+
+        scope.append("knife", tooltest);
+        oldIngredients.add(ingredient);
+
+        new DoStepDeclaration(tooltest.toolIdentifier, normalToolAction.toolActionIdentifier, scope, oldIngredients, ingredientTypeHandler);
+    }
 }
 
 // =^w^= <---- meow cat catnip with estrogen miaw miaw miaw
 
-
-// I will be happy =D
+// The voices...... they are telling me to do wrong test on purpose H4H4H4H4H4
 // ⠄⠉⠹⣾⣿⣛⣿⣿⣞⣿⣛⣺⣻⢾⣾⣿⣿⣿⣶⣶⣶⣄⡀⠄⠄⠄
 // ⠄⠄⠠⣿⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⣿⣿⣿⣿⣿⣿⣆⠄⠄
 // ⠄⠄⠘⠛⠛⠛⠛⠋⠿⣷⣿⣿⡿⣿⢿⠟⠟⠟⠻⠻⣿⣿⣿⣿⡀⠄

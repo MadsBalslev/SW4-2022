@@ -30,17 +30,17 @@ public class Tool extends BaseFannieType{
     {
         if (toolAction instanceof ContainToolActionDeclaration)
         {
-             Ingredient newIngredient = toolAction.useToolAction(ingredient, ingredientTypeHandler, this.identifier);
-             this.hasToolBeenUsed = true;
-             scope.Remove(ingredient.identifier);
-             scope.overwrite(newIngredient.identifier, newIngredient);
+            Ingredient newIngredient = toolAction.useToolAction(ingredient, ingredientTypeHandler, this.identifier);
+            this.hasToolBeenUsed = true;
+            scope.Remove(ingredient.identifier);
+            scope.overwrite(newIngredient.identifier, newIngredient);
         }
         else
         {
             Ingredient newIngredient = toolAction.useToolAction(ingredient, ingredientTypeHandler);
             this.hasToolBeenUsed = true;
-             scope.Remove(ingredient.identifier);
-             scope.append(newIngredient.identifier, newIngredient);
+            scope.Remove(ingredient.identifier);
+            scope.append(newIngredient.identifier, newIngredient);
         }
     }
 

@@ -65,10 +65,4 @@ public class Ingredient extends BaseFannieType {
         return false;
     }
 
-    // public Ingredient createIngredient(String identifier, IngredientType type, Scope scope)
-    // {
-    //     Ingredient ingredient = new Ingredient(identifier, type, scope);
-    //     scope.append(identifier, ingredient);
-    //     return ingredient;
-    // }
 }
