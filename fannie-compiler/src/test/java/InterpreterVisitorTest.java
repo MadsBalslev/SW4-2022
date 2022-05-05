@@ -145,6 +145,4 @@ public class InterpreterVisitorTest {
         interpreterVisitor.visit(tree);
     }
 
-    // Casper er wack. Skal vi kicke ham? [X] Ja [ ] Nej
-    // Skal vi lave en handleplan til ham? [ ] Ja [ ] Nej
 }
