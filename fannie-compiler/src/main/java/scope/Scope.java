@@ -39,15 +39,20 @@ public class Scope {
         return this;
     }
     
-    public void append(String key, BaseFannieType value)
+    public Void append(String key, BaseFannieType value)
     {
         if(symbolTable.get(key)!= null)
         {
             throw new IllegalArgumentException("Symbol already exists");
         }
         symbolTable.put(key, value);
+        return null;
     }
-    
+    public Void overwrite(String key, BaseFannieType value)
+    {
+        symbolTable.put(key, value);
+        return null;
+    }
     public Object retrieve(Object name)
     {
         if (symbolTable.containsKey(name)) {
