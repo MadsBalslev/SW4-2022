@@ -420,6 +420,26 @@ public class InterpreterVisitorTest {
     }
 
     @Test(expected = RuntimeException.class)
+    public void DoStepDeclarationThrowsWhenToolActionIngredientMismatch() {
+        Scope scope = new Scope();
+        List<Ingredient> oldIngredients = new ArrayList<Ingredient>();
+        IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
+        HashMap<String, ToolAction> toolActionList = new HashMap<String, ToolAction>();
+
+        NormalToolAction normalToolAction = new NormalToolAction("liquid", "liquid", "slice");
+        toolActionList.put(normalToolAction.toolActionIdentifier,normalToolAction);
+
+        Ingredient ingredient = new Ingredient("Soap", ingredientTypeHandler, "ingredient");
+        Tool tooltest = new Tool("knife", "knife", toolActionList);
+
+        scope.append("knife", tooltest);
+        scope.append("Soap", ingredient);
+        oldIngredients.add(ingredient);
+
+        new DoStepDeclaration(tooltest.toolIdentifier, normalToolAction.toolActionIdentifier, scope, oldIngredients, ingredientTypeHandler);
+    }
+
+    @Test(expected = RuntimeException.class)
     public void keyMissingInStepDeclaration()
     {
         Scope scope = new Scope();
