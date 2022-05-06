@@ -1,7 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.naming.Context;
+
 import java.util.HashMap;
 
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.itextpdf.tool.xml.exceptions.NotImplementedException;
 
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -40,7 +44,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         //debug code
         scope.stringPrinter(scope.getSymbolTable(), "Tool");
         System.out.println("INGREDIENSER: ");
-        scope.stringPrinter(scope.getSymbolTable(), "Ingredient");
+        scope.stringPrinter(scope.getSymbolTable(), "ingredient");
         //debug code
         
         if(scope.isIngredientListEmpty() == false)
@@ -279,7 +283,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         scope.append("hasServed", hasBeenServed);
         visitChildren(context);
         //debug code
-        scope.stringPrinter(scope.getSymbolTable(), "Ingredient");
+        scope.stringPrinter(scope.getSymbolTable(), "ingredient");
         //debug code
         scope.Remove(context.stepIn().getText());
         return null;
@@ -287,10 +291,56 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     
     @Override public Void visitDoStepDeclaration(fannieParserParser.DoStepDeclarationContext context) 
     { 
-        String toolIdentifier = context.toolIdentifier().getText();
-        String toolActionIdentifier = context.toolActionIdentifier().getText();
+        final String toolIdentifier = context.toolIdentifier().getText();
+        final String toolActionIdentifier = context.toolActionIdentifier().getText();
+        final List<Ingredient> inputIngredients = visitStepIn(context.stepIn());
+        final Tool tool = (Tool)scope.retrieve(context.toolIdentifier().getText());
+        ToolAction toolAction;
+        try {
+            toolAction = tool.getToolAction(toolActionIdentifier);
+        } catch (Exception e) {
+            throw new RuntimeException("Tool action is not an action of tool");
+        }
+
+        // if the doStep has an output
+        if (context.stepOut() != null) {
+            final List<String> outPutIngredientsIdentifiers = visitStepOut(context.stepOut());
+            // if tool action is contain or remove throw error
+            if (toolActionIdentifier == "contain" && toolActionIdentifier == "remove")
+                throw new RuntimeException("contain or remove action can not have output");
+            // if input contains content in throw runtime exception
+            for (Ingredient ingredient : inputIngredients) {
+                if (ingredient.isType("content in")) {
+                    throw new RuntimeException("step input can not be content in when the step has an output");
+                }
+            }
+            // remove actual input
+            for (Ingredient ingredient : inputIngredients) {
+                if (!ingredient.isType(toolAction.input))
+                    throw new RuntimeException("Mismatch between actual input:" + ingredient.ingredientType.identifier + " and expected input type: " + toolAction.input);
+                    
+                scope.Remove(ingredient.identifier);
+            }
+            // if actual output is not defined add output to scope
+            for (String outPutIdentifier : outPutIngredientsIdentifiers) {
+                Ingredient outPutIngredient = new Ingredient(outPutIdentifier, ingredientTypeHandler, toolAction.output);
+                scope.append(outPutIdentifier, outPutIngredient);
+            }
+        } else if (context.stepOut() ==  null) {
+            new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, visitStepIn(context.stepIn()), ingredientTypeHandler);
+        }
+        // if the doStep has no output
+            // if tool actions is contain execute contain
+            // else if tool actions is remove execute remove
+            // else
+                // if tool actial input type matches exprected input type
+                    // remove input from scope, add again to scope with new type
+    
+        // OLD BAD CODE
+        // String toolIdentifier = context.toolIdentifier().getText();
+        // String toolActionIdentifier = context.toolActionIdentifier().getText();
         
-        new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, visitStepIn(context.stepIn()), ingredientTypeHandler);
+        // new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, visitStepIn(context.stepIn()), ingredientTypeHandler);
         return null;
     }
     
@@ -317,19 +367,54 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     
     @Override public List<Ingredient> visitStepIn(fannieParserParser.StepInContext context) 
     {
-        visitChildren(context);
-        ArrayList<Ingredient> ingredientList = new ArrayList<Ingredient>();
-        for (int i = 0; i < context.getChildCount(); i++)
-        {
-            ingredientList.add((Ingredient)scope.retrieve(context.getChild(i).getText()));
-        }
-        return ingredientList;
+        List<Ingredient> ingredientList = new ArrayList<Ingredient>();
+
+        if (context.ingredientCollection() != null) {
+            List<String> ingredientStrings = visitIngredientCollection(context.ingredientCollection());
+            for (String string : ingredientStrings)
+                ingredientList.add((Ingredient)scope.retrieve(string));
+            return ingredientList;
+        } else if (context.ingredientIdentifier() != null) {
+            String string = visitIngredientIdentifier(context.ingredientIdentifier());
+            ingredientList.add((Ingredient)scope.retrieve(string));
+            return ingredientList;
+        } else if (context.contentIn() != null) {
+            Ingredient ingredient = visitContentIn(context.contentIn());
+            ingredientList.add((Ingredient)scope.retrieve(ingredient));
+            return ingredientList;
+        } else {
+            return null;
+        } 
     }
     
-    @Override public Void visitStepOut(fannieParserParser.StepOutContext context) 
+    @Override public List<String> visitStepOut(fannieParserParser.StepOutContext context) 
+    {
+        if (context.ingredientCollection() != null)
+           return visitIngredientCollection(context.ingredientCollection()); 
+        else if (context.ingredientIdentifier() != null) {
+            List<String> strings = new ArrayList<String>();
+            strings.add(visitIngredientIdentifier(context.ingredientIdentifier()));
+            return strings;
+        } else 
+            return null;
+    }
+    
+    public Ingredient visitContentIn(fannieParserParser.ContentInContext context) 
     {
         visitChildren(context);
-        return null;
+        System.out.println("ARE WE HERE");
+        scope.stringPrinter(scope.getSymbolTable(), "ingredient");
+        Ingredient ingredient = (Ingredient)scope.retrieve(context.getText());
+        return ingredient;
     }
     
+    public List<String> visitIngredientCollection(fannieParserParser.IngredientCollectionContext context) {
+        List<String> oldIngredients = new ArrayList<String>();
+            for (int i = 0; i < context.getChildCount(); i++) {
+                if (context.getChild(i) instanceof fannieParserParser.IngredientIdentifierContext) {
+                    oldIngredients.add(context.getChild(i).getText());
+                }
+            }
+        return oldIngredients;
+    }
 }
