@@ -1,18 +1,18 @@
 package Handlers;
-import java.util.ArrayList;
+import java.util.HashMap;
+
 import fannieTypes.*;
-import java.util.List;
 
 public class IngredientTypeHandler {
-    private List<IngredientType> ingredientTypes;
+    private HashMap<String, IngredientType> ingredientTypes;
     public IngredientTypeHandler() {
         this.ingredientTypes = createDefaultIngredientTypes();
     }
 
-    private ArrayList<IngredientType> createDefaultIngredientTypes()
+    private HashMap<String, IngredientType> createDefaultIngredientTypes()
     {
         //Det her kan nok gøres bedre lol
-        ArrayList<IngredientType> defaultIngredientTypes = new ArrayList<IngredientType>();
+        HashMap<String,IngredientType> defaultIngredientTypes = new HashMap<String, IngredientType>();
         IngredientType ingredient = new IngredientType("ingredient", null);
         IngredientType spice = new IngredientType("spice", ingredient);
         IngredientType liquid = new IngredientType("liquid", ingredient);
@@ -22,45 +22,45 @@ public class IngredientTypeHandler {
         IngredientType dry = new IngredientType("dry", ingredient);
         IngredientType nut = new IngredientType("nut", ingredient);
         IngredientType contentIn = new IngredientType("content in", ingredient);
-        defaultIngredientTypes.add(ingredient);
-        defaultIngredientTypes.add(spice);
-        defaultIngredientTypes.add(liquid);
-        defaultIngredientTypes.add(vegetable);
-        defaultIngredientTypes.add(fruit);
-        defaultIngredientTypes.add(meat);
-        defaultIngredientTypes.add(dry);
-        defaultIngredientTypes.add(nut);
-        defaultIngredientTypes.add(contentIn);
+        defaultIngredientTypes.put(ingredient.identifier, ingredient);
+        defaultIngredientTypes.put(spice.identifier, spice);
+        defaultIngredientTypes.put(liquid.identifier, liquid);
+        defaultIngredientTypes.put(vegetable.identifier, vegetable);
+        defaultIngredientTypes.put(fruit.identifier, fruit);
+        defaultIngredientTypes.put(meat.identifier, meat);
+        defaultIngredientTypes.put(dry.identifier, dry);
+        defaultIngredientTypes.put(nut.identifier, nut);
+        defaultIngredientTypes.put(contentIn.identifier, contentIn);
         return defaultIngredientTypes;
+    }
+
+    public void CreateIngredientType(String superTypeIdentifier, String subTypeIdentifier )
+    {
+        if (ingredientTypes.containsKey(superTypeIdentifier) && !ingredientTypes.containsKey(subTypeIdentifier))
+        {
+            IngredientType superType = ingredientTypes.get(superTypeIdentifier);
+            IngredientType ingredientType = new IngredientType(subTypeIdentifier, superType);
+            ingredientTypes.put(ingredientType.identifier, ingredientType);
+        }
+        else if (!ingredientTypes.containsKey(superTypeIdentifier))
+            throw new RuntimeException(superTypeIdentifier + " is not a type... yet");
+        else if (ingredientTypes.containsKey(subTypeIdentifier))
+            throw new IllegalArgumentException(subTypeIdentifier + " is already declared");
+        else
+            throw new RuntimeException(superTypeIdentifier + " " + subTypeIdentifier + " is somehow an illegal type declaration");
     }
 
     public IngredientType AssignIngredientType(Ingredient ingredient, String ingredientTypeIdentifier)
     {
+        //debug code
         System.out.println("Assigning ingredient type: " + ingredientTypeIdentifier + " to " + ingredient.identifier);
-        IngredientType newIngredientType = null;
-        for (IngredientType ingredientType : ingredientTypes)
+        //debug code
+        if (ingredientTypes.containsKey(ingredientTypeIdentifier))
         {
-            if (ingredientType.Identifier.equals(ingredientTypeIdentifier))
-            {
-                //System.out.println("Found ingredient type: " + ingredientType.toString());
-                newIngredientType = ingredientType;
-                break;
-            }
-            else if (ingredient.identifier.equals(ingredientTypeIdentifier))
-            {
-                newIngredientType = new IngredientType(ingredientTypeIdentifier, ingredient.ingredientType);
-                ingredientTypes.add(newIngredientType);
-                break;
-                
-            }
-        }
-        if (newIngredientType != null)
-        {
-            return newIngredientType;
+            ingredient.ingredientType = ingredientTypes.get(ingredientTypeIdentifier);
+            return ingredientTypes.get(ingredientTypeIdentifier);
         }
         else
-        {
-            throw new RuntimeException("Ingredient type not found: " + ingredientTypeIdentifier);
-        }
+            throw new IllegalArgumentException(ingredientTypeIdentifier + " is not a type");
     }
 }

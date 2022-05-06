@@ -1,15 +1,15 @@
 package fannieTypes;
 
 import Handlers.IngredientTypeHandler;
-import scope.Scope;
 
 public class Ingredient extends BaseFannieType {
     public String identifier;
     public IngredientType ingredientType;
+    //debug code
     public String toString() {
         return "Ingredient Identifier: " + identifier + " IngredientType: " + ingredientType.toString();
     }
-
+    //debug code
     public Boolean isDefaultIngredient(String type)
     {
         switch (type) {
@@ -40,22 +40,21 @@ public class Ingredient extends BaseFannieType {
         return false;
     }
 
-    public Ingredient(String identifier, IngredientType ingredientType, Scope scope)
+    public Ingredient(String identifier, IngredientType ingredientType)
     {
         super(identifier, "Ingredient");
+        //debug code
         System.out.println(this.getClass().getName() + ": " + identifier);
+        //debug code
         this.identifier = identifier;
         this.ingredientType = ingredientType;
-        scope.append(this.identifier, this);
-        //if (type.Identifier == parentIngredient.type.Identifier)
     }
 
-    public Ingredient(String Identifier, IngredientTypeHandler ingredientTypeHandler,String ingredientTypeIdentifier, Scope scope)
+    public Ingredient(String Identifier, IngredientTypeHandler ingredientTypeHandler,String ingredientTypeIdentifier)
     {
         super(Identifier, "Ingredient");
         this.identifier = Identifier;
         this.ingredientType = ingredientTypeHandler.AssignIngredientType(this, ingredientTypeIdentifier);
-        scope.append(this.identifier, this);
     }
     public Boolean isType(String type)
     {
@@ -66,10 +65,4 @@ public class Ingredient extends BaseFannieType {
         return false;
     }
 
-    // public Ingredient createIngredient(String identifier, IngredientType type, Scope scope)
-    // {
-    //     Ingredient ingredient = new Ingredient(identifier, type, scope);
-    //     scope.append(identifier, ingredient);
-    //     return ingredient;
-    // }
 }
