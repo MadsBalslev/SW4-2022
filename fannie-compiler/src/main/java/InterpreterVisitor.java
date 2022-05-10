@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
 import javax.naming.Context;
 
 import java.util.HashMap;
@@ -8,14 +9,19 @@ import java.util.HashMap;
 import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.itextpdf.tool.xml.exceptions.NotImplementedException;
 
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import Handlers.IngredientTypeHandler;
 import fannieTypes.HasBeenServed;
 import fannieTypes.Ingredient;
+import fannieTypes.ProcIdentifier;
 import fannieTypes.Tool;
 import fannieTypes.steps.*;
 import fannieTypes.toolActions.*;
 import scope.Scope;
+
 public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
 
     //test
@@ -289,6 +295,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         return null;
     }
     
+
     @Override public Void visitDoStepDeclaration(fannieParserParser.DoStepDeclarationContext context) 
     { 
         final String toolIdentifier = context.toolIdentifier().getText();
@@ -302,26 +309,20 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
             throw new RuntimeException("Tool action is not an action of tool");
         }
 
-        // if the doStep has an output
         if (context.stepOut() != null) {
             final List<String> outPutIngredientsIdentifiers = visitStepOut(context.stepOut());
-            // if tool action is contain or remove throw error
             if (toolActionIdentifier == "contain" && toolActionIdentifier == "remove")
                 throw new RuntimeException("contain or remove action can not have output");
-            // if input contains content in throw runtime exception
             for (Ingredient ingredient : inputIngredients) {
                 if (ingredient.isType("content in")) {
                     throw new RuntimeException("step input can not be content in when the step has an output");
                 }
             }
-            // remove actual input
             for (Ingredient ingredient : inputIngredients) {
                 if (!ingredient.isType(toolAction.input))
                     throw new RuntimeException("Mismatch between actual input:" + ingredient.ingredientType.identifier + " and expected input type: " + toolAction.input);
-                    
                 scope.Remove(ingredient.identifier);
             }
-            // if actual output is not defined add output to scope
             for (String outPutIdentifier : outPutIngredientsIdentifiers) {
                 Ingredient outPutIngredient = new Ingredient(outPutIdentifier, ingredientTypeHandler, toolAction.output);
                 scope.append(outPutIdentifier, outPutIngredient);
@@ -329,40 +330,79 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         } else if (context.stepOut() ==  null) {
             new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, visitStepIn(context.stepIn()), ingredientTypeHandler);
         }
-        // if the doStep has no output
-            // if tool actions is contain execute contain
-            // else if tool actions is remove execute remove
-            // else
-                // if tool actial input type matches exprected input type
-                    // remove input from scope, add again to scope with new type
-    
-        // OLD BAD CODE
-        // String toolIdentifier = context.toolIdentifier().getText();
-        // String toolActionIdentifier = context.toolActionIdentifier().getText();
-        
-        // new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, visitStepIn(context.stepIn()), ingredientTypeHandler);
         return null;
     }
-    
-    @Override public Void visitContinousDoStepStartDeclaration(fannieParserParser.ContinousDoStepStartDeclarationContext context) 
-    { 
+
+    // hides: the evaluation logic related to ContinousDoStepStartDeclarationContext
+    // input: ContinousDoStepStartDeclarationContext
+    // output: updated scope
+    // preconditions: the ContinousDoStepStartDeclarationContext should be correctly constructed
+    // postconditions: the procIdentifier has been mapped to the process in the scope
+    @Override public Scope visitContinousDoStepStartDeclaration(fannieParserParser.ContinousDoStepStartDeclarationContext context) {
+        // get information about step from cst
         String toolIdentifier = context.toolIdentifier().getText();
         String toolActionIdentifier = context.toolActionIdentifier().getText();
         String procIdentifier = context.procIdentifier().getText();
-        new ContinousDoStepDeclaration(toolIdentifier, toolActionIdentifier, procIdentifier, scope, visitStepIn(context.stepIn()), ingredientTypeHandler);
-        return null;
+        String stepIn = context.stepIn().getText();
+
+        // create the step that should be started
+        CharStream input = CharStreams.fromString(toolIdentifier + " do " + toolActionIdentifier + " " + stepIn);
+        fannieParserLexer lexer = new fannieParserLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        fannieParserParser parser = new fannieParserParser(tokens);
+        fannieParserParser.DoStepDeclarationContext doStepDeclarationContext = 
+            parser.doStepDeclaration();
+        
+        // if the step can not be evaluated at this time throw an exception.
+        if (!canEvaluateDoStepDeclaration(doStepDeclarationContext))
+            throw new RuntimeException("could not START step because step was not valid");
+
+        // map the proceesIdentifier to the step in the scope
+        scope.append(procIdentifier, new Procedure(procIdentifier, doStepDeclarationContext));
+        
+        return scope;
+    }
+
+    // hides: the logic behind chechking if a doStepDeclaration without a stepOut can be evaluated
+    // input: doStepDeclarationContext
+    // output: false if it can't be evaluated, else true
+    // precondition: doStepDeclarationContext should be properly constructed and have no stepOut
+    // postcondition: none
+    private boolean canEvaluateDoStepDeclaration(fannieParserParser.DoStepDeclarationContext doStepDeclarationContext) {
+        //TODO implement this.
+        return true;
     }
     
-    @Override public Void visitContinousDoStepStopDeclaration(fannieParserParser.ContinousDoStepStopDeclarationContext context) 
-    {
-        visitChildren(context);
-        String procIdentifier = context.procIdentifier().getText();
-        try {
-            scope.Remove(procIdentifier);
-        } catch (Exception e) {
-            throw new RuntimeException("Proc: " + procIdentifier + " has not been declared");
+    // hides: the logic behind evaluating a continousDoStepStopDeclaration
+    // input: ContinousDoStepStopDeclarationContext
+    // output: updated scope
+    // preconditions: the ContinousDoStepStartDeclarationContext should be correctly constructed
+    // postconditions: the procIdentifier has been unmapped to the process in the scope, and the doStep has been executed
+    @Override public Scope visitContinousDoStepStopDeclaration(fannieParserParser.ContinousDoStepStopDeclarationContext context) {
+        // get Procedure Identifier and look up the procedure identifier in the symbol table and get the procedure
+        String procedureIdentfier = context.procIdentifier().getText();
+        Procedure procedure = (Procedure)scope.retrieve(procedureIdentfier);
+
+        // if the stopDeclaration does not have an outStep: evaluate the step contained in the procedure as is
+        if (context.stepOut() == null) {
+            visitDoStepDeclaration(procedure.Step);
+        // else if the stopDeclaration does have an outStep: append the " => {outStep}" to the step contained in the procedure and evaluate it
+        } else {
+            String stepAsText = procedure.Step.getText();
+            stepAsText += " => " + context.stepOut().getText();
+
+            CharStream input = CharStreams.fromString(stepAsText);
+            fannieParserLexer lexer = new fannieParserLexer(input);
+            CommonTokenStream tokens = new CommonTokenStream(lexer);
+            fannieParserParser parser = new fannieParserParser(tokens);
+            fannieParserParser.DoStepDeclarationContext doStepDeclarationContext = 
+                parser.doStepDeclaration();
+            visitDoStepDeclaration(doStepDeclarationContext);
         }
-        return null;
+
+        // remove procedure from scope and return updated scope
+        scope.Remove(procedureIdentfier);
+        return scope;
     }
     
     @Override public List<Ingredient> visitStepIn(fannieParserParser.StepInContext context) 
