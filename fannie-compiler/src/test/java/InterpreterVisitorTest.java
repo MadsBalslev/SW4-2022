@@ -1,7 +1,6 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -467,6 +466,16 @@ public class InterpreterVisitorTest {
         assertEquals("Input is not equal!", normalToolAction.input, "ingredient");
         assertEquals("Output is not equal!",normalToolAction.output, "liquid");
         assertEquals("ToolAction is not equal!", normalToolAction.toolActionIdentifier, "heat");
+    }
+
+    @Test
+    public void canCorrectlyMakeContainToolActionDeclaration()
+    {
+        ContainToolActionDeclaration containToolActionDeclaration = new ContainToolActionDeclaration("ingredient");
+
+        assertEquals("Input is not equal!", containToolActionDeclaration.input, "ingredient");
+        assertEquals("Output is not equal!", containToolActionDeclaration.output, "content in");
+        assertEquals("ToolAction is not equal!",containToolActionDeclaration.toolActionIdentifier, "contain");
     }
 }
 
