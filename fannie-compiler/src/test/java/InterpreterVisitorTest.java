@@ -1,6 +1,7 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -437,6 +438,35 @@ public class InterpreterVisitorTest {
         oldIngredients.add(ingredient);
 
         new DoStepDeclaration(tooltest.toolIdentifier, normalToolAction.toolActionIdentifier, scope, oldIngredients, ingredientTypeHandler);
+    }
+
+    @Test
+    public void canCorrectlyMakeTool()
+    {
+        Tool tool = new Tool("nicerdicer", "knife", null);
+
+        assertEquals("Tool identifier is not equal!", tool.identifier, "nicerdicer");
+        assertEquals("Tool toolIdentifier is not equal!", tool.toolTypeIdentifier, "knife");
+    }
+
+    @Test
+    public void canCorrectlyMakeIngredientWithIdentifier()
+    {
+        final IngredientType ingType = mock(IngredientType.class);
+
+        Ingredient ing = new Ingredient("Water", ingType);
+
+        assertEquals("Ingredient identifier is not equal!", ing.identifier, "Water");
+    }
+
+    @Test
+    public void canCorrectlyMakeNormalToolAction()
+    {
+        NormalToolAction normalToolAction = new NormalToolAction("ingredient", "liquid", "heat");
+        
+        assertEquals("Input is not equal!", normalToolAction.input, "ingredient");
+        assertEquals("Output is not equal!",normalToolAction.output, "liquid");
+        assertEquals("ToolAction is not equal!", normalToolAction.toolActionIdentifier, "heat");
     }
 }
 
