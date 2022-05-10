@@ -52,6 +52,29 @@ public class InterpreterVisitorTest {
         interpreterVisitor = new InterpreterVisitor();
     }
 
+
+    @Test
+    public void visitContinousDoStepStartDeclaration_validStart_ScopeUpdated() {
+        InterpreterVisitor visitor = new InterpreterVisitor();
+        
+        fannieParserParser.ContinousDoStepStartDeclarationContext context =
+            mock(fannieParserParser.ContinousDoStepStartDeclarationContext.class);
+
+        when(context.toolIdentifier().getText()).thenReturn("Cook"); 
+        when(context.toolActionIdentifier().getText()).thenReturn("CookFood"); 
+        when(context.procIdentifier().getText()).thenReturn("Proc1"); 
+        when(context.stepIn().getText()).thenReturn("Food"); 
+
+        Ingredient food = mock(Ingredient.class);
+
+        when(food.identifier).thenReturn("Food");
+        when(food.typeIdentifier).thenReturn("ingredient");
+        when(food.ingredientType).thenReturn();
+
+
+        
+    }
+
     @Test(expected = Exception.class) // This test should NOT fail.
     public void ingredientListMissingFromRecipeTest() throws IOException {
         CharStream input = CharStreams.fromStream(RecipeTestStrings.ingredientListMissingFromRecipeTest());
