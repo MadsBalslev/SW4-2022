@@ -159,7 +159,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     }
     
     public String visitIngredientIdentifier(fannieParserParser.IngredientIdentifierContext context) 
-    {   
+    {  
         return context.getText();
     }
     
@@ -396,7 +396,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         // return canEvaluate
         return canEvaluate;
     }
-    // (￣^￣ )ゞ Thank you for your service.+1
+
     private boolean canEvaluateDoStepDeclarationWithoutStepOut_contentInTool(
             fannieParserParser.DoStepDeclarationContext doStep) {
         String toolActionIdentifier = doStep.toolActionIdentifier().getText();
@@ -409,11 +409,14 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
             return false;
         }
 
-        
-        Ingredient contentIn = (Ingredient)scope.retrieve("content in" + doStep.stepIn().contentIn().toolIdentifier()); 
 
+        Tool targetTool = 
+            (Tool)scope.retrieve(doStep.stepIn().contentIn().toolIdentifier().getText());
 
-        if (condition) {
+        Ingredient contentIn = (Ingredient)scope.retrieve(targetTool.identifier); 
+
+        toolAction 
+        if (targetTool.isType("")) {
             
         }
         
