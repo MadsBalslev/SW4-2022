@@ -56,10 +56,9 @@ public class Ingredient extends BaseFannieType {
         this.identifier = Identifier;
         this.ingredientType = ingredientTypeHandler.AssignIngredientType(this, ingredientTypeIdentifier);
     }
-    public Boolean isType(String type)
-    {
-        if (this.ingredientType.isType(type))
-        {
+
+    public Boolean isType(String type) {
+        if (this.ingredientType.isType(type)) {
             return true;
         }
         return false;
