@@ -8,14 +8,15 @@ public class Tool extends BaseFannieType{
     public String toolIdentifier;
     private HashMap<String, ToolAction> toolActionDeclarationsList = new HashMap<String, ToolAction>();
     public Boolean hasToolBeenUsed = false;
+    private Tool PrototypeTool;
     
-    public Tool(String toolIdentifier, String toolTypeIdentifier,HashMap<String, ToolAction> toolActionList)
+    public Tool(String toolIdentifier, String toolTypeIdentifier,HashMap<String, ToolAction> toolActionList, Tool prototypeTool)
     {
         super(toolIdentifier, "Tool");
         this.toolIdentifier = toolIdentifier;
         this.toolTypeIdentifier = toolTypeIdentifier;
         this.toolActionDeclarationsList = toolActionList;
-        
+        PrototypeTool = prototypeTool;
     }
 
     public ToolAction getToolAction(String toolActionIdentifier) throws Exception
@@ -52,5 +53,12 @@ public class Tool extends BaseFannieType{
     public HashMap<String, ToolAction> getToolActionDeclarationsList()
     {
         return this.toolActionDeclarationsList;
+    }
+
+    public Boolean isType(String type) {
+        if (this.PrototypeTool.isType(type)) {
+            return true;
+        }
+        return false;
     }
 }
