@@ -1,6 +1,7 @@
 lexer grammar fannieLexer;
 
 WS: (' ' | '\t' | '\n' | '\r')+ -> channel(HIDDEN);
+//COMMENT: '//' [^/n]+ '\n' -> channel(HIDDEN);
 
 MAIN: 'main';
 RECIPE: 'recipe';
@@ -56,5 +57,4 @@ ABSTRACT_UNIT:
 	| 'eight';
 TO_TASTE: 'to-taste';
 
-COMMENT: '/' '/' [^/n]+ '\n';
 
