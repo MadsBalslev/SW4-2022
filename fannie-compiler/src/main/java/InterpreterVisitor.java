@@ -354,7 +354,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
             parser.doStepDeclaration();
         
         // if the step can not be evaluated at this time throw an exception.
-        if (!canEvaluateDoStepDeclaration(doStepDeclarationContext))
+        if (!canEvaluateDoStepDeclarationWithoutStepOut(doStepDeclarationContext))
             throw new RuntimeException("could not START step because step was not valid");
 
         // map the proceesIdentifier to the step in the scope
@@ -368,11 +368,87 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     // output: false if it can't be evaluated, else true
     // precondition: doStepDeclarationContext should be properly constructed and have no stepOut
     // postcondition: none
-    private boolean canEvaluateDoStepDeclaration(fannieParserParser.DoStepDeclarationContext doStepDeclarationContext) {
-        //TODO implement this.
-        return true;
+    private boolean canEvaluateDoStepDeclarationWithoutStepOut(fannieParserParser.DoStepDeclarationContext doStep) {
+        // if the doStep has an outStep hit the user of this function over the head
+        if (doStep.stepOut() == null)
+            throw new IllegalArgumentException("you cleary didn't read the documentation for this function");
+
+        // set canEvaluate flag to false
+        boolean canEvaluate = false;
+
+        // if can evaluate as normal step declaration set canEvaluate true
+        if (canEvaluateDoStepDeclarationWithoutStepOut_normal(doStep))
+            canEvaluate = true;
+        // else if can evaluate as contain step declaration set canEvaluate true
+        else if (canEvaluateDoStepDeclarationWithoutStepOut_contain(doStep))
+            canEvaluate = true;
+        // else if can evaluate as remove step declaration set canEvaluate true
+        else if (canEvaluateDoStepDeclarationWithoutStepOut_remove(doStep))
+            canEvaluate = true;
+        // else if can evaluate as content in step declaration where the tool acts upon ingredient set canEvaluate true
+        else if (canEvaluateDoStepDeclarationWithoutStepOut_contentInIngr(doStep))
+            canEvaluate = true;
+        // else if can evaluate as content in step declaration where the tool acts upon content of tool set canEvaluate true
+        else if (canEvaluateDoStepDeclarationWithoutStepOut_contentInTool(doStep))
+            canEvaluate = true;
+
+        // return canEvaluate
+        return canEvaluate;
     }
-    
+
+    private boolean canEvaluateDoStepDeclarationWithoutStepOut_remove(
+            fannieParserParser.DoStepDeclarationContext doStep) {
+        final List<Ingredient> inputIngredients = visitStepIn(doStep.stepIn());
+        Tool tool = (Tool)scope.retrieve(doStep.toolIdentifier().getText());
+        ToolAction toolAction;
+        try {
+            toolAction = tool.getToolAction(doStep.toolActionIdentifier().getText());
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private boolean canEvaluateDoStepDeclarationWithoutStepOut_contain(
+            fannieParserParser.DoStepDeclarationContext doStep) {
+        final List<Ingredient> inputIngredients = visitStepIn(doStep.stepIn());
+
+        Tool tool = (Tool)scope.retrieve(doStep.toolIdentifier().getText());
+        ToolAction toolAction;
+        try {
+            toolAction = tool.getToolAction(doStep.toolActionIdentifier().getText());
+        } catch (Exception e) {
+            return false;
+        }
+
+        for (Ingredient ingredient : inputIngredients) {
+            if (!ingredient.isType(toolAction.input))
+                return false;
+        }
+
+
+        return doStep.toolActionIdentifier().getText() == "remove";
+    }
+
+    private boolean canEvaluateDoStepDeclarationWithoutStepOut_normal(
+            fannieParserParser.DoStepDeclarationContext doStep) {
+        final List<Ingredient> inputIngredients = visitStepIn(doStep.stepIn());
+        Tool tool = (Tool)scope.retrieve(doStep.toolIdentifier().getText());
+        ToolAction toolAction;
+        try {
+            toolAction = tool.getToolAction(doStep.toolActionIdentifier().getText());
+        } catch (Exception e) {
+            return false;
+        }
+
+        for (Ingredient ingredient : inputIngredients) {
+            if (!ingredient.isType(toolAction.input))
+                return false;
+        }
+
+        return doStep.toolActionIdentifier().getText() != "contain" 
+            && doStep.toolActionIdentifier().getText() != "remove";
+    }
+
     // hides: the logic behind evaluating a continousDoStepStopDeclaration
     // input: ContinousDoStepStopDeclarationContext
     // output: updated scope
