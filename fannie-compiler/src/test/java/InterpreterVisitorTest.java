@@ -245,8 +245,9 @@ public class InterpreterVisitorTest {
         assertNotEquals("The ingredient is not assigned to the correct ingredient type!", ingredient.ingredientType.identifier, "ingredient");
     }
 
-    // this is utterly fucking retarded.
+    // this is utterly fucking retarded...
     // too bad!
+    // "let's test core functionality of the language that we are programming in" :b
     @Test
     public void stepInReturnsList() {
         final fannieParserParser.StepInContext stepinctx = mock(fannieParserParser.StepInContext.class);
