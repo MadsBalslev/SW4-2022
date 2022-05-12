@@ -177,11 +177,11 @@ public class InterpreterVisitorTest {
     public void scopeRetrievesFromParentSymbolTable() throws Exception {
         Scope scope = new Scope();
         Scope parentScope = new Scope();
-        ProcIdentifier procIdentifier = new ProcIdentifier("Test");
+        String procIdentifier = "Test";
         parentScope.append("Test", procIdentifier);
         scope.setParent(parentScope);
 
-        ProcIdentifier actual = (ProcIdentifier) scope.retrieve("Test");
+        String actual = (String) scope.retrieve("Test");
         assertEquals(actual, procIdentifier);
     }
 
@@ -242,10 +242,11 @@ public class InterpreterVisitorTest {
         IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
         Ingredient ingredient = new Ingredient("soap", ingredientTypeHandler, "ingredient");
 
-        assertNotEquals("The ingredient is not assigned to the correct ingredient type!", ingredient.typeIdentifier,
-                "liquid");
+        assertNotEquals("The ingredient is not assigned to the correct ingredient type!", ingredient.ingredientType.identifier, "ingredient");
     }
 
+    // this is utterly fucking retarded.
+    // too bad!
     @Test
     public void stepInReturnsList() {
         final fannieParserParser.StepInContext stepinctx = mock(fannieParserParser.StepInContext.class);
@@ -436,7 +437,8 @@ public class InterpreterVisitorTest {
         scope.append("knife", tooltest);
         oldIngredients.add(ingredient);
 
-        new DoStepDeclaration(tooltest.toolIdentifier, normalToolAction.toolActionIdentifier, scope, oldIngredients, ingredientTypeHandler);
+        DoStepDeclaration doStep = new DoStepDeclaration(tooltest.toolIdentifier, normalToolAction.toolActionIdentifier, scope, oldIngredients, ingredientTypeHandler);
+        doStep.Execute();
     }
 
     @Test
@@ -444,7 +446,7 @@ public class InterpreterVisitorTest {
     {
         Tool tool = new Tool("nicerdicer", "knife", null);
 
-        assertEquals("Tool identifier is not equal!", tool.identifier, "nicerdicer");
+        assertEquals("Tool identifier is not equal!", tool.toolIdentifier, "nicerdicer");
         assertEquals("Tool toolIdentifier is not equal!", tool.toolTypeIdentifier, "knife");
     }
 
