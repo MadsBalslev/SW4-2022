@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.lang.model.util.ElementScanner14;
+
 import java.util.HashMap;
 
 import com.itextpdf.tool.xml.exceptions.NotImplementedException;
@@ -147,7 +150,20 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     
     @Override public Void visitStepDeclaration(fannieParserParser.StepDeclarationContext context) 
     { 
-        visitChildren(context);
+        List<ContinousDoStepDeclaration> continousDoStepDeclarations = new ArrayList<ContinousDoStepDeclaration>();
+        for (int i = 0; i < context.getChildCount(); i++) {
+            {
+                if (context.getChild(i) instanceof fannieParserParser.ContinousDoStepStartDeclarationContext)
+                {
+                    continousDoStepDeclarations.add((ContinousDoStepDeclaration)visit(context.getChild(i)));
+                }
+                else
+                {
+                    visit(context.getChild(i));
+                }
+                
+            }
+        }
         return null;
     }
     
@@ -299,20 +315,25 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         String toolIdentifier = context.toolIdentifier().getText();
         String toolActionIdentifier = context.toolActionIdentifier().getText();
         String procIdentifier = context.procIdentifier().getText();
-        new ContinousDoStepDeclaration(toolIdentifier, toolActionIdentifier, procIdentifier, scope, visitStepIn(context.stepIn()), ingredientTypeHandler);
-        return null;
+        ContinousDoStepDeclaration doStep = new ContinousDoStepDeclaration(toolIdentifier, toolActionIdentifier, procIdentifier, scope, visitStepIn(context.stepIn()));
+        if (doStep.isValid(ingredientTypeHandler))
+        {
+            scope.append(procIdentifier, doStep);
+            return null;
+        }
+        else
+        {
+            throw new RuntimeException(procIdentifier + "Is an invalid continous do step");
+        }
     }
     
     @Override public Void visitContinousDoStepStopDeclaration(fannieParserParser.ContinousDoStepStopDeclarationContext context) 
     {
-        visitChildren(context);
-        String procIdentifier = context.procIdentifier().getText();
-        try {
-            scope.Remove(procIdentifier);
-        } catch (Exception e) {
-            throw new RuntimeException("Proc: " + procIdentifier + " has not been declared");
-        }
+        
+        ContinousDoStepDeclaration doStep = (ContinousDoStepDeclaration)scope.retrieve(context.procIdentifier().getText());
+        doStep.ExecuteStep(ingredientTypeHandler);
         return null;
+
     }
     
     @Override public List<Ingredient> visitStepIn(fannieParserParser.StepInContext context) 

@@ -3,18 +3,23 @@ main recipe Pasta{
     ingredients{
         ingredient Pasta (100g),
         liquid Water (1l),
-        spice Salt (10g)
+        spice Salt (10g),
+        ingredient Test (to-taste)
     },
 
     tools{
         tool Pot[contain : ingredient],
         tool Stove[Heat : content in Pot => ingredient],
+        tool TestTool[Test : ingredient => liquid, Confirm : liquid => ingredient],
         tool Sifter[contain : ingredient, Sift : content in Sifter => ingredient]
     },
     
     steps{
         Pot do contain Water,
 
+        START Testproc TestTool do Test Test,
+        TestTool do Confirm Test,
+        STOP Testproc when "idk lol",
         START Proc1 Stove do Heat "bring to boil" content in Pot,
         
         Pot do contain Pasta,

@@ -14,7 +14,7 @@ public class DoStepDeclaration extends Step {
                 tool.useToolAction(toolAction, ingredient, scope, ingredientTypeHandler);
             }
             catch (Exception e) {
-                throw new RuntimeException(e.getMessage());
+                throw new RuntimeException("cannot use tool action " + toolActionIdentifier + " on ingredient " + ingredient.identifier);
             }
         }
     }
