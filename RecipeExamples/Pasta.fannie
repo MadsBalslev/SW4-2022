@@ -1,6 +1,4 @@
- // This ingredient could be optimized.
 main recipe Pasta{
-    // This ingredient could be optimized.
     ingredients{
         ingredient Pasta (100g),
         liquid Water (1l),
@@ -11,7 +9,7 @@ main recipe Pasta{
         tool Pot[contain : ingredient],
         tool Stove[Heat : content in Pot => ingredient],
         tool Sifter[contain : ingredient, Sift : content in Sifter => ingredient]
-    },  // This ingredient could be optimized.
+    },
     
     steps{
         Pot do contain Water,
@@ -28,6 +26,4 @@ main recipe Pasta{
 
         serve content in Sifter
     }
-     // This ingredient could be optimized XD.
 }
- // This ingredient could be optimized.
