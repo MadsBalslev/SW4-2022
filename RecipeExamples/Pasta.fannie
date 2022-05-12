@@ -1,5 +1,4 @@
 main recipe Pasta{
-
     ingredients{
         ingredient Pasta (100g),
         liquid Water (1l),
