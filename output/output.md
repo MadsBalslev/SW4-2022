@@ -1,19 +1,12 @@
 # Pasta
 ### Ingredients
-- Pasta (100g)
-- Water (1l)
-- Salt (10g)
+- Test (to-taste)
+- Test2 (to-taste)
 
 ### Tools
-- Pot
-- Stove
-- Sifter
+- Blender
 ### Steps
-1. Put Water in Pot
-2. With Stove Heat the content in Pot bring to boil
-3. Put Pasta in Pot
-4. Put Salt in Pot
-5. Stop when The pasta has boiled for 6-10 minutes or is al dente.
-6. Put content in Pot in Sifter
-7. Sift content in Sifter with Sifter
-8. serve the content in Sifter 
+1. With Blender Blend the Test
+2. Stop when 250 215 134 104 91 78
+3. Blend {ContinousBlendedTest,Test2} with Blender
+4. serve the OneThing 

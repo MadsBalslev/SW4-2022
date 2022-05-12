@@ -3,6 +3,7 @@ import java.util.HashMap;
 import Handlers.IngredientTypeHandler;
 import fannieTypes.toolActions.*;
 import scope.Scope;
+import java.util.List;
 public class Tool {
     public String toolTypeIdentifier;
     public String toolIdentifier;
@@ -42,6 +43,22 @@ public class Tool {
             scope.append(newIngredient.identifier, newIngredient);
         }
     }
+
+    public void useToolActionOut(ToolAction toolAction, Ingredient ingredient, Scope scope, IngredientTypeHandler ingredientTypeHandler)
+    {
+            // guard
+            if (toolAction.toolActionIdentifier == "contain" && toolAction.toolActionIdentifier == "remove")
+                throw new RuntimeException("contain or remove action can not have output");
+            // TODO this might be bad.
+            if (ingredient.isType("content in"))
+                throw new RuntimeException("step input can not be content in when the step has an output");
+            if (!ingredient.isType(toolAction.input))
+                throw new RuntimeException("Mismatch between actual input:" + ingredient.ingredientType.identifier + " and expected input type: " + toolAction.input);
+           scope.Remove(ingredient.identifier);
+    }
+   
+
+
 
     public Boolean getHasToolBeenUsed()
     {
