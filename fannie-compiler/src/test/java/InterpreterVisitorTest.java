@@ -438,6 +438,45 @@ public class InterpreterVisitorTest {
 
         new DoStepDeclaration(tooltest.toolIdentifier, normalToolAction.toolActionIdentifier, scope, oldIngredients, ingredientTypeHandler);
     }
+
+    @Test
+    public void canCorrectlyMakeTool()
+    {
+        Tool tool = new Tool("nicerdicer", "knife", null);
+
+        assertEquals("Tool identifier is not equal!", tool.identifier, "nicerdicer");
+        assertEquals("Tool toolIdentifier is not equal!", tool.toolTypeIdentifier, "knife");
+    }
+
+    @Test
+    public void canCorrectlyMakeIngredientWithIdentifier()
+    {
+        final IngredientType ingType = mock(IngredientType.class);
+
+        Ingredient ing = new Ingredient("Water", ingType);
+
+        assertEquals("Ingredient identifier is not equal!", ing.identifier, "Water");
+    }
+
+    @Test
+    public void canCorrectlyMakeNormalToolAction()
+    {
+        NormalToolAction normalToolAction = new NormalToolAction("ingredient", "liquid", "heat");
+        
+        assertEquals("Input is not equal!", normalToolAction.input, "ingredient");
+        assertEquals("Output is not equal!",normalToolAction.output, "liquid");
+        assertEquals("ToolAction is not equal!", normalToolAction.toolActionIdentifier, "heat");
+    }
+
+    @Test
+    public void canCorrectlyMakeContainToolActionDeclaration()
+    {
+        ContainToolActionDeclaration containToolActionDeclaration = new ContainToolActionDeclaration("ingredient");
+
+        assertEquals("Input is not equal!", containToolActionDeclaration.input, "ingredient");
+        assertEquals("Output is not equal!", containToolActionDeclaration.output, "content in");
+        assertEquals("ToolAction is not equal!",containToolActionDeclaration.toolActionIdentifier, "contain");
+    }
 }
 
 // =^w^= <---- meow cat catnip with estrogen miaw miaw miaw
