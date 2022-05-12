@@ -97,7 +97,7 @@ public class Scope {
         {
         symbolTable.remove(key);
         }
-        else throw new RuntimeException("Key not found");
+        else throw new RuntimeException("Key: " + key + " not found");
     }
    
     public Boolean hasToolsBeenUsed()

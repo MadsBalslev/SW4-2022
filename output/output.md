@@ -1,12 +1,11 @@
 # Pasta
 ### Ingredients
-- Test (to-taste)
-- Test2 (to-taste)
+- Water (to-taste)
 
 ### Tools
-- Blender
+- LiquidContainer
+- Spoon
 ### Steps
-1. With Blender Blend the Test
-2. Stop when 250 215 134 104 91 78
-3. Blend {ContinousBlendedTest,Test2} with Blender
-4. serve the OneThing 
+1. Put Water in LiquidContainer
+2. Stir content in LiquidContainer with Spoon
+3. serve the content in LiquidContainer 

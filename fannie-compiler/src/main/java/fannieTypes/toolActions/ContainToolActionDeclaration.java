@@ -20,7 +20,7 @@ public class ContainToolActionDeclaration extends ToolAction {
         }
         else
         {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(toolIdentifier + " can not contain " + ingredient.identifier);
         }
     }
 

@@ -1,18 +1,17 @@
 main recipe Pasta{
 
     ingredients{
-        ingredient Test (to-taste),
-        ingredient Test2 (to-taste)
+        liquid Water (to-taste)
     },
 
     tools{
-        tool Blender[Blend : ingredient => liquid]
+        tool LiquidContainer[contain : liquid],
+        tool Spoon[Stir: content in LiquidContainer => ingredient]
     },
     
     steps{
-        START Blending Blender do Blend Test,
-        STOP Blending => ContinousBlendedTest,
-        Blender do Blend {ContinousBlendedTest, Test2} => OneThing,
-        serve OneThing
+        LiquidContainer do contain Water,
+        Spoon do Stir content in LiquidContainer,
+        serve content in LiquidContainer
     }
 }

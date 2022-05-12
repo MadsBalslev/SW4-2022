@@ -150,7 +150,20 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     
     @Override public Void visitStepDeclaration(fannieParserParser.StepDeclarationContext context) 
     { 
-        visitChildren(context);
+        List<ContinousDoStepDeclaration> continousDoStepDeclarations = new ArrayList<ContinousDoStepDeclaration>();
+        for (int i = 0; i < context.getChildCount(); i++) {
+            {
+                if (context.getChild(i) instanceof fannieParserParser.ContinousDoStepStartDeclarationContext)
+                {
+                    continousDoStepDeclarations.add((ContinousDoStepDeclaration)visit(context.getChild(i)));
+                }
+                else
+                {
+                    visit(context.getChild(i));
+                }
+                
+            }
+        }
         return null;
     }
     
@@ -284,7 +297,12 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         //debug code
         scope.stringPrinter(scope.getSymbolTable(), "Ingredient");
         //debug code
-        scope.Remove(context.stepIn().getText());
+        
+        List<Ingredient> ingredients = visitStepIn(context.stepIn());
+        for (Ingredient ingredient : ingredients) {
+            scope.Remove(ingredient.identifier); 
+        }
+
         return null;
     }
     
