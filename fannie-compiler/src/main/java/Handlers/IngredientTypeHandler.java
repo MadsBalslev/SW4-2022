@@ -53,9 +53,6 @@ public class IngredientTypeHandler {
 
     public IngredientType AssignIngredientType(Ingredient ingredient, String ingredientTypeIdentifier)
     {
-        //debug code
-        System.out.println("Assigning ingredient type: " + ingredientTypeIdentifier + " to " + ingredient.identifier);
-        //debug code
         if (ingredientTypes.containsKey(ingredientTypeIdentifier))
         {
             ingredient.ingredientType = ingredientTypes.get(ingredientTypeIdentifier);

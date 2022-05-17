@@ -65,17 +65,6 @@ public class Scope {
         throw new CompilerException("Undefined variable: " + name);
     }
 
-    //Prints all the objects of the type given, for example ingredients
-    //debug code
-    public void stringPrinter(HashMap<String, Object> symbolTable, String type)
-    {
-        for (Map.Entry<String, Object> entry : symbolTable.entrySet()) {
-            if (entry.getValue().getClass().getName().equals("fannieTypes." + type)) {
-                System.out.println(entry.getKey() + ": " + entry.getValue().toString());
-            }
-        }   
-    }
-    //debug code
     
     public int getTypeAmount(HashMap<String, Object> symbolTable, String type)
     {

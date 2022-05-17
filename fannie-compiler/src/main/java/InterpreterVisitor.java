@@ -20,9 +20,6 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     
     @Override public Void visitFannie(fannieParserParser.FannieContext context) 
     {
-        //debug code
-        System.out.println("Visiting fannie");
-        //debug code
         visitChildren(context);
 
         return null;
@@ -30,18 +27,11 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     
     @Override public Void visitMainRecipe(fannieParserParser.MainRecipeContext context) 
     {
-        //debug code
-        System.out.println("Visiting mainrecipe");
-        //debug code
         Scope oldScope = scope;
         scope = oldScope.createScope();
         visitChildren(context);
 
-        //debug code
-        scope.stringPrinter(scope.getSymbolTable(), "Tool");
-        System.out.println("INGREDIENSER: ");
-        scope.stringPrinter(scope.getSymbolTable(), "Ingredient");
-        //debug code
+       
         
         if(scope.isIngredientListEmpty() == false)
         {
@@ -64,17 +54,11 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     
     @Override public Void visitRecipeIdentifier(fannieParserParser.RecipeIdentifierContext context) 
     {   
-        //debug code
-        System.out.println("Visiting recipeIdentifier");
-        //debug code
         return null;
     }
     
     @Override public Void visitRecipeBody(fannieParserParser.RecipeBodyContext context) 
     {
-        //debug code
-        System.out.println("Visiting recipebody");
-        //debug code
         visitChildren(context); 
         return null;
     }
@@ -83,18 +67,12 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     {
         HasBeenServed hasServed = new HasBeenServed(scope);
         scope.append("hasServed", hasServed);
-        //debug code
-        System.out.println("Visiting ingredientslist");
-        //debug code
         visitChildren(context);
         return null;
     }
     
     @Override public Void visitToolsList(fannieParserParser.ToolsListContext context) 
     {
-        //debug code
-        System.out.println("Visiting toolslist");
-        //debug code
         if(scope.isIngredientListEmpty() == true)
         {
             throw new CompilerException("No ingredients in the recipe");
@@ -105,9 +83,6 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     
     @Override public Void visitStepsList(fannieParserParser.StepsListContext context) 
     {
-        //debug code
-        System.out.println("Visiting stepslist");
-        //debug code
         visitChildren(context);
         return null;
     }
@@ -291,9 +266,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         scope.Remove("hasServed");
         scope.append("hasServed", hasBeenServed);
         visitChildren(context);
-        //debug code
-        scope.stringPrinter(scope.getSymbolTable(), "Ingredient");
-        //debug code
+        
         
         List<Ingredient> ingredients = visitStepIn(context.stepIn());
         for (Ingredient ingredient : ingredients) {
@@ -349,10 +322,8 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         
         ContinousDoStepDeclaration doStep = (ContinousDoStepDeclaration)scope.retrieve(context.procIdentifier().getText());
         if (context.stepOut() != null) {
-            System.out.println("i was callled bitch");
             doStep.ExecuteStep(ingredientTypeHandler, visitStepOut(context.stepOut()), scope);
         } else {
-            System.out.println("i was callled biatch");
             doStep.ExecuteStep(ingredientTypeHandler);
         }
         return null;
@@ -397,8 +368,6 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     public Ingredient visitContentIn(fannieParserParser.ContentInContext context) 
     {
         visitChildren(context);
-        System.out.println("ARE WE HERE");
-        scope.stringPrinter(scope.getSymbolTable(), "ingredient");
         Ingredient ingredient = (Ingredient)scope.retrieve(context.getText());
         return ingredient;
     }
