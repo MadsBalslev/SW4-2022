@@ -10,12 +10,12 @@ main recipe Pasta{
         tool Stove[Heat : content in Pot => ingredient],
         tool Sifter[contain : ingredient, Sift : content in Sifter => ingredient]
     },
-    
+
     steps{
         Pot do contain Water,
 
         START Proc1 Stove do Heat "bring to boil" content in Pot,
-        
+
         Pot do contain Pasta,
         Pot do contain Salt,
 

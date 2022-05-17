@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.lang.model.util.ElementScanner14;
+
 import java.util.HashMap;
 
 import com.itextpdf.tool.xml.exceptions.NotImplementedException;
@@ -147,7 +150,20 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     
     @Override public Void visitStepDeclaration(fannieParserParser.StepDeclarationContext context) 
     { 
-        visitChildren(context);
+        List<ContinousDoStepDeclaration> continousDoStepDeclarations = new ArrayList<ContinousDoStepDeclaration>();
+        for (int i = 0; i < context.getChildCount(); i++) {
+            {
+                if (context.getChild(i) instanceof fannieParserParser.ContinousDoStepStartDeclarationContext)
+                {
+                    continousDoStepDeclarations.add((ContinousDoStepDeclaration)visit(context.getChild(i)));
+                }
+                else
+                {
+                    visit(context.getChild(i));
+                }
+                
+            }
+        }
         return null;
     }
     
@@ -281,16 +297,36 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         //debug code
         scope.stringPrinter(scope.getSymbolTable(), "Ingredient");
         //debug code
-        scope.Remove(context.stepIn().getText());
+        
+        List<Ingredient> ingredients = visitStepIn(context.stepIn());
+        for (Ingredient ingredient : ingredients) {
+            scope.Remove(ingredient.identifier); 
+        }
+
         return null;
     }
     
     @Override public Void visitDoStepDeclaration(fannieParserParser.DoStepDeclarationContext context) 
     { 
-        String toolIdentifier = context.toolIdentifier().getText();
-        String toolActionIdentifier = context.toolActionIdentifier().getText();
-        
-        new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, visitStepIn(context.stepIn()), ingredientTypeHandler);
+        final String toolIdentifier = context.toolIdentifier().getText();
+        final String toolActionIdentifier = context.toolActionIdentifier().getText();
+        final List<Ingredient> inputIngredients = visitStepIn(context.stepIn());
+        final Tool tool = (Tool)scope.retrieve(context.toolIdentifier().getText());
+        ToolAction toolAction;
+        try {
+            toolAction = tool.getToolAction(toolActionIdentifier);
+        } catch (Exception e) {
+            throw new RuntimeException("Tool action is not an action of tool");
+        }
+
+        if (context.stepOut() != null) {
+            final List<String> outPutIngredientsIdentifiers = visitStepOut(context.stepOut());
+            DoStepDeclaration doStep = new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, inputIngredients, ingredientTypeHandler);
+            doStep.Execute(outPutIngredientsIdentifiers);
+        } else if (context.stepOut() ==  null) {
+            DoStepDeclaration doStep = new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, inputIngredients, ingredientTypeHandler);
+            doStep.Execute();
+        }
         return null;
     }
     
@@ -299,37 +335,85 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         String toolIdentifier = context.toolIdentifier().getText();
         String toolActionIdentifier = context.toolActionIdentifier().getText();
         String procIdentifier = context.procIdentifier().getText();
-        new ContinousDoStepDeclaration(toolIdentifier, toolActionIdentifier, procIdentifier, scope, visitStepIn(context.stepIn()), ingredientTypeHandler);
-        return null;
+        ContinousDoStepDeclaration doStep = new ContinousDoStepDeclaration(toolIdentifier, toolActionIdentifier, procIdentifier, scope, visitStepIn(context.stepIn()));
+        if (doStep.isValid(ingredientTypeHandler))
+        {
+            scope.append(procIdentifier, doStep);
+            return null;
+        }
+        else
+        {
+            throw new RuntimeException(procIdentifier + "Is an invalid continous do step");
+        }
     }
     
     @Override public Void visitContinousDoStepStopDeclaration(fannieParserParser.ContinousDoStepStopDeclarationContext context) 
     {
-        visitChildren(context);
-        String procIdentifier = context.procIdentifier().getText();
-        try {
-            scope.Remove(procIdentifier);
-        } catch (Exception e) {
-            throw new RuntimeException("Proc: " + procIdentifier + " has not been declared");
+        
+        ContinousDoStepDeclaration doStep = (ContinousDoStepDeclaration)scope.retrieve(context.procIdentifier().getText());
+        if (context.stepOut() != null) {
+            System.out.println("i was callled bitch");
+            doStep.ExecuteStep(ingredientTypeHandler, visitStepOut(context.stepOut()), scope);
+        } else {
+            System.out.println("i was callled biatch");
+            doStep.ExecuteStep(ingredientTypeHandler);
         }
         return null;
+
     }
     
     @Override public List<Ingredient> visitStepIn(fannieParserParser.StepInContext context) 
     {
-        visitChildren(context);
-        ArrayList<Ingredient> ingredientList = new ArrayList<Ingredient>();
-        for (int i = 0; i < context.getChildCount(); i++)
-        {
-            ingredientList.add((Ingredient)scope.retrieve(context.getChild(i).getText()));
-        }
-        return ingredientList;
+        List<Ingredient> ingredientList = new ArrayList<Ingredient>();
+
+        if (context.ingredientCollection() != null) {
+            List<String> ingredientStrings = visitIngredientCollection(context.ingredientCollection());
+            for (String string : ingredientStrings)
+                ingredientList.add((Ingredient)scope.retrieve(string));
+            return ingredientList;
+        } else if (context.ingredientIdentifier() != null) {
+            String string = visitIngredientIdentifier(context.ingredientIdentifier());
+            ingredientList.add((Ingredient)scope.retrieve(string));
+            return ingredientList;
+        } else if (context.contentIn() != null) {
+            Ingredient ingredient = visitContentIn(context.contentIn());
+            ingredientList.add((Ingredient)scope.retrieve(ingredient.identifier));
+            return ingredientList;
+        } else {
+            return null;
+        } 
     }
     
-    @Override public Void visitStepOut(fannieParserParser.StepOutContext context) 
+
+    @Override public List<String> visitStepOut(fannieParserParser.StepOutContext context) 
+    {
+        if (context.ingredientCollection() != null)
+           return visitIngredientCollection(context.ingredientCollection()); 
+        else if (context.ingredientIdentifier() != null) {
+            List<String> strings = new ArrayList<String>();
+            strings.add(visitIngredientIdentifier(context.ingredientIdentifier()));
+            return strings;
+        } else 
+            return null;
+    }
+    
+    public Ingredient visitContentIn(fannieParserParser.ContentInContext context) 
     {
         visitChildren(context);
-        return null;
+        System.out.println("ARE WE HERE");
+        scope.stringPrinter(scope.getSymbolTable(), "ingredient");
+        Ingredient ingredient = (Ingredient)scope.retrieve(context.getText());
+        return ingredient;
+    }
+    
+    public List<String> visitIngredientCollection(fannieParserParser.IngredientCollectionContext context) {
+        List<String> oldIngredients = new ArrayList<String>();
+            for (int i = 0; i < context.getChildCount(); i++) {
+                if (context.getChild(i) instanceof fannieParserParser.IngredientIdentifierContext) {
+                    oldIngredients.add(context.getChild(i).getText());
+                }
+            }
+        return oldIngredients;
     }
     
 }

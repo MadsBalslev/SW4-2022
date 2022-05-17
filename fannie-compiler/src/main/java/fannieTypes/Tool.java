@@ -3,7 +3,8 @@ import java.util.HashMap;
 import Handlers.IngredientTypeHandler;
 import fannieTypes.toolActions.*;
 import scope.Scope;
-public class Tool extends BaseFannieType{
+import java.util.List;
+public class Tool {
     public String toolTypeIdentifier;
     public String toolIdentifier;
     private HashMap<String, ToolAction> toolActionDeclarationsList = new HashMap<String, ToolAction>();
@@ -11,26 +12,25 @@ public class Tool extends BaseFannieType{
     
     public Tool(String toolIdentifier, String toolTypeIdentifier,HashMap<String, ToolAction> toolActionList)
     {
-        super(toolIdentifier, "Tool");
         this.toolIdentifier = toolIdentifier;
         this.toolTypeIdentifier = toolTypeIdentifier;
         this.toolActionDeclarationsList = toolActionList;
         
     }
 
-    public ToolAction getToolAction(String toolActionIdentifier) throws Exception
+    public ToolAction getToolAction(String toolActionIdentifier)
     {
         if(toolActionDeclarationsList.containsKey(toolActionIdentifier))
             return toolActionDeclarationsList.get(toolActionIdentifier);
         else
-            throw new RuntimeException("ToolAction not found");
+            throw new RuntimeException("ToolAction: " + toolActionIdentifier + " not found on tool " + toolIdentifier);
     }
     
     public void useToolAction(ToolAction toolAction, Ingredient ingredient, Scope scope, IngredientTypeHandler ingredientTypeHandler)
     {
         if (toolAction instanceof ContainToolActionDeclaration)
         {
-            Ingredient newIngredient = toolAction.useToolAction(ingredient, ingredientTypeHandler, this.identifier);
+            Ingredient newIngredient = toolAction.useToolAction(ingredient, ingredientTypeHandler, this.toolIdentifier);
             this.hasToolBeenUsed = true;
             scope.Remove(ingredient.identifier);
             scope.overwrite(newIngredient.identifier, newIngredient);
@@ -43,6 +43,22 @@ public class Tool extends BaseFannieType{
             scope.append(newIngredient.identifier, newIngredient);
         }
     }
+
+    public void useToolActionOut(ToolAction toolAction, Ingredient ingredient, Scope scope, IngredientTypeHandler ingredientTypeHandler)
+    {
+            // guard
+            if (toolAction.toolActionIdentifier == "contain" && toolAction.toolActionIdentifier == "remove")
+                throw new RuntimeException("contain or remove action can not have output");
+            // TODO this might be bad.
+            if (ingredient.isType("content in"))
+                throw new RuntimeException("step input can not be content in when the step has an output");
+            if (!ingredient.isType(toolAction.input))
+                throw new RuntimeException("Mismatch between actual input:" + ingredient.ingredientType.identifier + " and expected input type: " + toolAction.input);
+           scope.Remove(ingredient.identifier);
+    }
+   
+
+
 
     public Boolean getHasToolBeenUsed()
     {

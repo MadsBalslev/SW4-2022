@@ -20,7 +20,7 @@ public abstract class ToolAction {
         }
         else
         {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("cannot use tool action " + toolActionIdentifier + " on ingredient " + ingredient.identifier);
         }
     }
 

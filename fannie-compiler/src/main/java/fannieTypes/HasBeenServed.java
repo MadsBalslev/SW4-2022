@@ -1,9 +1,8 @@
 package fannieTypes;
 import scope.Scope;
-public class HasBeenServed extends BaseFannieType {
+public class HasBeenServed{
     public boolean isServed;
     public HasBeenServed(Scope scope) {
-        super("HasbeenServed", "HasBeenServed");
         this.isServed = false;
     }
 }

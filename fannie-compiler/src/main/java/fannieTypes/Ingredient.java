@@ -2,7 +2,7 @@ package fannieTypes;
 
 import Handlers.IngredientTypeHandler;
 
-public class Ingredient extends BaseFannieType {
+public class Ingredient{
     public String identifier;
     public IngredientType ingredientType;
     //debug code
@@ -42,7 +42,6 @@ public class Ingredient extends BaseFannieType {
 
     public Ingredient(String identifier, IngredientType ingredientType)
     {
-        super(identifier, "Ingredient");
         //debug code
         System.out.println(this.getClass().getName() + ": " + identifier);
         //debug code
@@ -52,7 +51,6 @@ public class Ingredient extends BaseFannieType {
 
     public Ingredient(String Identifier, IngredientTypeHandler ingredientTypeHandler,String ingredientTypeIdentifier)
     {
-        super(Identifier, "Ingredient");
         this.identifier = Identifier;
         this.ingredientType = ingredientTypeHandler.AssignIngredientType(this, ingredientTypeIdentifier);
     }
