@@ -326,7 +326,14 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
             return ingredientList;
         } else if (context.contentIn() != null) {
             Ingredient ingredient = visitContentIn(context.contentIn());
-            ingredientList.add((Ingredient)scope.retrieve(ingredient.identifier));
+            try
+            {
+                ingredientList.add((Ingredient)scope.retrieve(ingredient.identifier));
+            }
+            catch (Exception e)
+            {
+                throw new CompilerException("Ingredient: " + ingredient.identifier + " Is not declared");
+            }
             return ingredientList;
         } else {
             throw new CompilerException("Bad context in StepIn, this should never happen");
