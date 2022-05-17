@@ -3,7 +3,7 @@ import java.util.HashMap;
 import Handlers.IngredientTypeHandler;
 import fannieTypes.toolActions.*;
 import scope.Scope;
-import java.util.List;
+import Exceptions.*;
 public class Tool {
     public String toolTypeIdentifier;
     public String toolIdentifier;
@@ -23,7 +23,7 @@ public class Tool {
         if(toolActionDeclarationsList.containsKey(toolActionIdentifier))
             return toolActionDeclarationsList.get(toolActionIdentifier);
         else
-            throw new RuntimeException("ToolAction: " + toolActionIdentifier + " not found on tool " + toolIdentifier);
+            throw new CompilerException("ToolAction: " + toolActionIdentifier + " not found on tool " + toolIdentifier);
     }
     
     public void useToolAction(ToolAction toolAction, Ingredient ingredient, Scope scope, IngredientTypeHandler ingredientTypeHandler)
@@ -48,12 +48,12 @@ public class Tool {
     {
             // guard
             if (toolAction.toolActionIdentifier == "contain" && toolAction.toolActionIdentifier == "remove")
-                throw new RuntimeException("contain or remove action can not have output");
+                throw new CompilerException("contain or remove action can not have output");
             // TODO this might be bad.
             if (ingredient.isType("content in"))
-                throw new RuntimeException("step input can not be content in when the step has an output");
+                throw new CompilerException("step input can not be content in when the step has an output");
             if (!ingredient.isType(toolAction.input))
-                throw new RuntimeException("Mismatch between actual input:" + ingredient.ingredientType.identifier + " and expected input type: " + toolAction.input);
+                throw new CompilerException("Mismatch between actual input:" + ingredient.ingredientType.identifier + " and expected input type: " + toolAction.input);
            scope.Remove(ingredient.identifier);
     }
    

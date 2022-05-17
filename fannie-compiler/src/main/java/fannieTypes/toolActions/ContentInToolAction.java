@@ -1,6 +1,7 @@
 package fannieTypes.toolActions;
 import fannieTypes.Ingredient;
 import Handlers.IngredientTypeHandler;
+import Exceptions.*;
 
 
 public class ContentInToolAction extends ToolAction {
@@ -13,6 +14,6 @@ public class ContentInToolAction extends ToolAction {
     @Override 
     public Ingredient useToolAction(Ingredient ingredient, IngredientTypeHandler ingredientTypeHandler, String toolIdentifier)
     {
-        throw new IllegalArgumentException();
+        throw new CompilerException("ContentInToolAction is not valid");
     }
 }

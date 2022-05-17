@@ -1,5 +1,6 @@
 package fannieTypes.toolActions;
 import fannieTypes.Ingredient;
+import Exceptions.CompilerException;
 import Handlers.IngredientTypeHandler;
 
 public class ContainToolActionDeclaration extends ToolAction {
@@ -20,7 +21,7 @@ public class ContainToolActionDeclaration extends ToolAction {
         }
         else
         {
-            throw new IllegalArgumentException(toolIdentifier + " can not contain " + ingredient.identifier);
+            throw new CompilerException(toolIdentifier + " can not contain " + ingredient.identifier);
         }
     }
 

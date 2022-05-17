@@ -23,10 +23,4 @@ public class IngredientType {
             return false;
         }
     }
-    
-    public String toString()
-    {
-        return this.identifier;
-    }
-    //debug code
 }

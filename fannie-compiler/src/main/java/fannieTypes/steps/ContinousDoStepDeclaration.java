@@ -7,9 +7,10 @@ import java.util.List;
 public class ContinousDoStepDeclaration extends Step {
     Tool tool;
     ToolAction toolAction;
-    String procIdentifier;
+    public String procIdentifier;
     Scope scope;
     List<Ingredient> ingredients;
+
 
     public ContinousDoStepDeclaration(String toolIdentifier, String toolActionIdentifier,String procIdentifier, Scope scope, List<Ingredient> ingredients) {
         this.procIdentifier = procIdentifier;
@@ -19,9 +20,7 @@ public class ContinousDoStepDeclaration extends Step {
         this.ingredients = ingredients;
     }
     public void ExecuteStep(IngredientTypeHandler ingredientTypeHandler) {
-
         for (Ingredient ingredient : ingredients) {
-            
                 tool.useToolAction(toolAction, ingredient, scope, ingredientTypeHandler);
                 scope.Remove(procIdentifier);
         }

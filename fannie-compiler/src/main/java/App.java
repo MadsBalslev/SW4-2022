@@ -2,6 +2,8 @@ import java.io.InputStream;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
+import Exceptions.CompilerException;
+
 public class App {
     public static void main(String[] args) throws Exception {
         InterpreterVisitor interpreterVisitor = new InterpreterVisitor();
@@ -23,16 +25,16 @@ public class App {
 
 
         ParseTree tree = parser.fannie();
-        interpreterVisitor.visit(tree);
+        try {
+            interpreterVisitor.visit(tree);
+        } catch (CompilerException e) {
+            System.out.println("[ERROR] " + e.getMessage());
+        }
         
 
-        //debug code
-        //System.out.println(tree.toStringTree(parser));
-        //debug code
         CodeGeneratorVisitor cgv = new CodeGeneratorVisitor();
         cgv.visit(tree);
         
-        // System.out.println(cgv.markdownFormat);
         String HTML = FileConvert.MDToHTML(cgv.markdownFormat);
         try {
             FileConvert.HTMLToPDF(HTML);
