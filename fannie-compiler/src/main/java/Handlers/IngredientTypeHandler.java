@@ -62,6 +62,6 @@ public class IngredientTypeHandler {
             return ingredientTypes.get(ingredientTypeIdentifier);
         }
         else
-            throw new IllegalArgumentException(ingredientTypeIdentifier + " is not a type");
+            throw new CompilerException(ingredientTypeIdentifier + " is not a type");
     }
 }
