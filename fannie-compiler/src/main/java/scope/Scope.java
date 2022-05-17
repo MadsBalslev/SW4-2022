@@ -44,7 +44,7 @@ public class Scope {
     {
         if(symbolTable.get(key)!= null)
         {
-            throw new IllegalArgumentException("Symbol: " + key + " already exists");
+            throw new CompilerException("Symbol: " + key + " already exists");
         }
         symbolTable.put(key, value);
         return null;
@@ -62,7 +62,7 @@ public class Scope {
         else if (!isGlobalScope()) {
             return parent.retrieve(name);
         }
-        throw new RuntimeException("Undefined variable: " + name);
+        throw new CompilerException("Undefined variable: " + name);
     }
 
     //Prints all the objects of the type given, for example ingredients

@@ -23,7 +23,11 @@ public class App {
 
 
         ParseTree tree = parser.fannie();
-        interpreterVisitor.visit(tree);
+        try {
+            interpreterVisitor.visit(tree);
+        } catch (Exception e) {
+            System.out.println("[ERROR] " + e.getMessage());
+        }
         
 
         //debug code
