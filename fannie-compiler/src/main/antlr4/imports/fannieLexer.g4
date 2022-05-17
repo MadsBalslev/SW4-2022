@@ -56,5 +56,4 @@ ABSTRACT_UNIT:
 	| 'eight';
 TO_TASTE: 'to-taste';
 
-COMMENT: '/' '/' [^/n]+ '\n';
-
+COMMENT: '//' ~[\r\n]* -> channel(HIDDEN);
