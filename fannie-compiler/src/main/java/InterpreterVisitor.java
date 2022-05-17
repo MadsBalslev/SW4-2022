@@ -257,18 +257,10 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     }
     
     @Override public Void visitDoStepDeclaration(fannieParserParser.DoStepDeclarationContext context) 
-    { 
+    {
         final String toolIdentifier = context.toolIdentifier().getText();
         final String toolActionIdentifier = context.toolActionIdentifier().getText();
         final List<Ingredient> inputIngredients = visitStepIn(context.stepIn());
-        final Tool tool = (Tool)scope.retrieve(context.toolIdentifier().getText());
-        ToolAction toolAction;
-        try {
-            toolAction = tool.getToolAction(toolActionIdentifier);
-        } catch (Exception e) {
-            throw new CompilerException("Tool action is not an action of tool");
-        }
-
         if (context.stepOut() != null) {
             final List<String> outPutIngredientsIdentifiers = visitStepOut(context.stepOut());
             DoStepDeclaration doStep = new DoStepDeclaration(toolIdentifier, toolActionIdentifier, scope, inputIngredients, ingredientTypeHandler);
