@@ -11,7 +11,7 @@ import fannieTypes.Tool;
 import fannieTypes.steps.*;
 import fannieTypes.toolActions.*;
 import scope.Scope;
-import Exceptions.*;
+
 public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
 
     //test
@@ -21,7 +21,6 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     @Override public Void visitFannie(fannieParserParser.FannieContext context) 
     {
         visitChildren(context);
-
         return null;
     }
     
@@ -31,14 +30,16 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         scope = oldScope.createScope();
         visitChildren(context);
 
-       
-        
         if(scope.isIngredientListEmpty() == false)
         {
             throw new CompilerException("Not all ingredients are served");
         }
         if (scope.hasToolsBeenUsed() == false) {
             throw new CompilerException("Not all tools are used");
+        }
+        if(scope.isContinousDoStepStopped() == false)
+        {
+            throw new CompilerException("ContinousDoStep: " + scope.getProcIdentifier() + " is not stopped");
         }
         scope = oldScope;
         return null;
@@ -119,27 +120,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     
     @Override public Void visitStepDeclaration(fannieParserParser.StepDeclarationContext context) 
     { 
-        List<ContinousDoStepDeclaration> continousDoStepDeclarations = new ArrayList<ContinousDoStepDeclaration>();
-        for (int i = 0; i < context.getChildCount(); i++) {
-            {
-                if (context.getChild(i) instanceof fannieParserParser.ContinousDoStepStartDeclarationContext)
-                {
-                    continousDoStepDeclarations.add((ContinousDoStepDeclaration)visit(context.getChild(i)));
-                }
-                else
-                {
-                    visit(context.getChild(i));
-                }
-                
-            }
-            for (ContinousDoStepDeclaration doStep : continousDoStepDeclarations) {
-                if (doStep.hasBeenStopped() == false)
-                {
-                    throw new CompilerException("Continous do step: " + doStep.procIdentifier + " has not been stopped");
-                }
-            }
-
-        }
+       visitChildren(context);
         return null;
     }
     
@@ -178,8 +159,6 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         String superTypeIdentifier = visitIngredientTypeIdentifier(context.ingredientTypeIdentifier(0));
         String subTypeIdentifier = visitIngredientTypeIdentifier(context.ingredientTypeIdentifier(1));
         ingredientTypeHandler.CreateIngredientType(superTypeIdentifier, subTypeIdentifier);
-
-        
         return null;
     }
     
@@ -257,7 +236,6 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         {
             throw new CompilerException("Invalid type of tool action");
         }
-        
     }
     
     @Override public Void visitServeStepDeclaration(fannieParserParser.ServeStepDeclarationContext context) 
@@ -271,12 +249,10 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         scope.append("hasServed", hasBeenServed);
         visitChildren(context);
         
-        
         List<Ingredient> ingredients = visitStepIn(context.stepIn());
         for (Ingredient ingredient : ingredients) {
             scope.Remove(ingredient.identifier); 
         }
-
         return null;
     }
     
@@ -323,12 +299,17 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     
     @Override public Void visitContinousDoStepStopDeclaration(fannieParserParser.ContinousDoStepStopDeclarationContext context) 
     {
-        
-        ContinousDoStepDeclaration doStep = (ContinousDoStepDeclaration)scope.retrieve(context.procIdentifier().getText());
-        if (context.stepOut() != null) {
-            doStep.ExecuteStep(ingredientTypeHandler, visitStepOut(context.stepOut()), scope);
-        } else {
-            doStep.ExecuteStep(ingredientTypeHandler);
+        try {
+            
+            ContinousDoStepDeclaration doStep = (ContinousDoStepDeclaration)scope.retrieve(context.procIdentifier().getText());
+            if (context.stepOut() != null) {
+                doStep.ExecuteStep(ingredientTypeHandler, visitStepOut(context.stepOut()), scope);
+            } else {
+                doStep.ExecuteStep(ingredientTypeHandler);
+            }
+            
+        } catch (Exception e) {
+            throw new CompilerException("Procedure: " + context.procIdentifier().getText() + " Is either not a started or have already stopped");
         }
         return null;
 
@@ -385,5 +366,4 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
             }
         return oldIngredients;
     }
-    
 }

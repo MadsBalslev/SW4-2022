@@ -49,11 +49,13 @@ public class Scope {
         symbolTable.put(key, value);
         return null;
     }
+
     public Void overwrite(String key, Object value)
     {
         symbolTable.put(key, value);
         return null;
     }
+
     public Object retrieve(String name)
     {
         if (symbolTable.containsKey(name)) {
@@ -110,6 +112,25 @@ public class Scope {
             return true;
         }
         else return false;
+    }
+
+    public Boolean isContinousDoStepStopped()
+    {
+        if(getTypeAmount(symbolTable, "fannieTypes.steps.ContinousDoStepDeclaration") == 0)
+        {
+            return true;
+        }
+        else return false;
+    }
+
+    public String getProcIdentifier()
+    {
+        for (Map.Entry<String, Object> entry : symbolTable.entrySet()) {
+            if (entry.getValue().getClass().getName().equals("fannieTypes.steps.ContinousDoStepDeclaration")) {
+                return ((fannieTypes.steps.ContinousDoStepDeclaration)entry.getValue()).procIdentifier;
+            }
+        }
+        return null;
     }
 
 }
