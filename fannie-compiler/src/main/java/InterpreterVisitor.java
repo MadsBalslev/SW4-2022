@@ -391,6 +391,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
             strings.add(visitIngredientIdentifier(context.ingredientIdentifier()));
             return strings;
         } else 
+        // TODO should probably throw an exception in this case
             return null;
     }
     
