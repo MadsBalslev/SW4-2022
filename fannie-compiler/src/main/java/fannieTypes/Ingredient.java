@@ -5,11 +5,7 @@ import Handlers.IngredientTypeHandler;
 public class Ingredient{
     public String identifier;
     public IngredientType ingredientType;
-    //debug code
-    public String toString() {
-        return "Ingredient Identifier: " + identifier + " IngredientType: " + ingredientType.toString();
-    }
-    //debug code
+   
     public Boolean isDefaultIngredient(String type)
     {
         switch (type) {
@@ -42,9 +38,6 @@ public class Ingredient{
 
     public Ingredient(String identifier, IngredientType ingredientType)
     {
-        //debug code
-        System.out.println(this.getClass().getName() + ": " + identifier);
-        //debug code
         this.identifier = identifier;
         this.ingredientType = ingredientType;
     }

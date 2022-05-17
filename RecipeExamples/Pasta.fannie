@@ -18,7 +18,6 @@ main recipe Pasta{
         START Proc1 Stove do Heat "bring to boil" content in Pot,
 
         Pot do contain Pasta,
-        Pot do contain Salt,
 
         STOP Proc1 when "The pasta has boiled for 6-10 minutes or is al dente.",
 
