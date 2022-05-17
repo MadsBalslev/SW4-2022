@@ -39,8 +39,8 @@ public class App {
         } catch (Exception e) {
             System.out.println("Could not generate PDF");
         }
-        String basePath = "./output/";
-        WriteToFile.write(basePath + "output.html", HTML);
-        WriteToFile.write(basePath + "output.md", cgv.markdownFormat.toString());
+        // String basePath = "./output/";
+        WriteToFile.write("../output/output.html", HTML);
+        WriteToFile.write("../output/output.md", cgv.markdownFormat.toString());
     }
 }
