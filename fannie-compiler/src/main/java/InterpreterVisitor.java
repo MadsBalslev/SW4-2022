@@ -29,17 +29,14 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         Scope oldScope = scope;
         scope = oldScope.createScope();
         visitChildren(context);
-
-        if(scope.isIngredientListEmpty() == false)
+        if (scope.isIngredientListEmpty() == false)
         {
-            throw new CompilerException("Not all ingredients are served");
+            throw new CompilerException("Ingredient: " + scope.getIngredient() + " has not been used");
         }
-        if (scope.hasToolsBeenUsed() == false) {
-            throw new CompilerException("Not all tools are used");
-        }
-        if(scope.isContinousDoStepStopped() == false)
+        scope.toolsAreUsedExceptionThrower();
+        if (scope.isContinousDoStepStopped() == false)
         {
-            throw new CompilerException("ContinousDoStep: " + scope.getProcIdentifier() + " is not stopped");
+            throw new CompilerException("ContinousDoStep: " + scope.getProcIdentifier() + " has not been used");
         }
         scope = oldScope;
         return null;
@@ -325,7 +322,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
             ingredientList.add((Ingredient)scope.retrieve(ingredient.identifier));
             return ingredientList;
         } else {
-            return null;
+            throw new CompilerException("Bad context in StepIn, this should never happen");
         } 
     }
     
@@ -339,7 +336,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
             strings.add(visitIngredientIdentifier(context.ingredientIdentifier()));
             return strings;
         } else 
-            return null;
+            throw new CompilerException("Bad context in StepOut, this should never happen");
     }
     
     public Ingredient visitContentIn(fannieParserParser.ContentInContext context) 

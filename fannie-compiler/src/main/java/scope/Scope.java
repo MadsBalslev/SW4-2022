@@ -56,7 +56,7 @@ public class Scope {
         return null;
     }
 
-    public Object retrieve(String name)
+    public Object retrieve(String name) throws CompilerException
     {
         if (symbolTable.containsKey(name)) {
             return symbolTable.get(name);
@@ -93,16 +93,16 @@ public class Scope {
         else throw new CompilerException("Key: " + key + " not found");
     }
    
-    public Boolean hasToolsBeenUsed()
+    public Void toolsAreUsedExceptionThrower() throws CompilerException
     {
         for (Map.Entry<String, Object> entry : symbolTable.entrySet()) {
-            if (entry.getValue().getClass().getName().equals("Tool")) {
+            if (entry.getValue().getClass().getName().equals("fannieTypes.Tool")) {
                 if (((Tool)entry.getValue()).getHasToolBeenUsed() == false) {
-                    return false;
+                    throw new CompilerException("Tool: " + entry.getKey() + " has not been used");
                 }
             }
         }
-        return true;
+        return null;
     }
 
     public Boolean isIngredientListEmpty()
@@ -111,16 +111,17 @@ public class Scope {
         {
             return true;
         }
-        else return false;
+        return false;
     }
-
-    public Boolean isContinousDoStepStopped()
+    
+    // Checks if all ContinouDoSteps are stepped, if not. Throws an compiler excepton
+    public Boolean isContinousDoStepStopped() throws CompilerException
     {
         if(getTypeAmount(symbolTable, "fannieTypes.steps.ContinousDoStepDeclaration") == 0)
         {
             return true;
         }
-        else return false;
+        return false;
     }
 
     public String getProcIdentifier()
@@ -132,5 +133,15 @@ public class Scope {
         }
         return null;
     }
+    public String getIngredient()
+    {
+        for (Map.Entry<String, Object> entry : symbolTable.entrySet()) {
+            if (entry.getValue().getClass().getName().equals("fannieTypes.Ingredient")) {
+                return ((fannieTypes.Ingredient)entry.getValue()).identifier;
+            }
+        }
+        return null;
+    }
+
 
 }
