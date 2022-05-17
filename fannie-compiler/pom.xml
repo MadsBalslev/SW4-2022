@@ -144,11 +144,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.0.0</version>
         <configuration>
-        <archive> 
-          <manifest>
-            <mainClass>App</mainClass>
-          </manifest>
-        </archive>
+          <mainClass>App</mainClass>
         </configuration>
       </plugin>
       <plugin>
