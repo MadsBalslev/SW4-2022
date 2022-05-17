@@ -1,13 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.lang.model.util.ElementScanner14;
-
 import java.util.HashMap;
-
 import com.itextpdf.tool.xml.exceptions.NotImplementedException;
-
 import org.antlr.v4.runtime.tree.TerminalNode;
+import Exceptions.CompilerException;
 import Handlers.IngredientTypeHandler;
 import fannieTypes.HasBeenServed;
 import fannieTypes.Ingredient;
@@ -15,6 +11,7 @@ import fannieTypes.Tool;
 import fannieTypes.steps.*;
 import fannieTypes.toolActions.*;
 import scope.Scope;
+import Exceptions.*;
 public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
 
     //test
@@ -316,7 +313,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         try {
             toolAction = tool.getToolAction(toolActionIdentifier);
         } catch (Exception e) {
-            throw new RuntimeException("Tool action is not an action of tool");
+            throw new CompilerException("Tool action is not an action of tool");
         }
 
         if (context.stepOut() != null) {

@@ -18,14 +18,6 @@ public class DoStepDeclaration extends Step {
         this.ingredientTypeHandler = ingredientTypeHandler;
         this.scope = scope;
 
-        // for (Ingredient ingredient : oldIngredients) {
-        //     try { ToolAction toolAction = tool.getToolAction(toolActionIdentifier);
-        //         tool.useToolAction(toolAction, ingredient, scope, ingredientTypeHandler);
-        //     }
-        //     catch (Exception e) {
-        //         throw new RuntimeException("cannot use tool action " + toolActionIdentifier + " on ingredient " + ingredient.identifier);
-        //     }
-        // }
     }
 
     public Void Execute() {

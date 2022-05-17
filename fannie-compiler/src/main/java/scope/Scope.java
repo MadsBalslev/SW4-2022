@@ -1,6 +1,8 @@
 package scope;
 import java.util.HashMap;
 import java.util.Map;
+
+import Exceptions.CompilerException;
 import fannieTypes.Tool;
 
 
@@ -97,7 +99,7 @@ public class Scope {
         {
         symbolTable.remove(key);
         }
-        else throw new RuntimeException("Key: " + key + " not found");
+        else throw new CompilerException("Key: " + key + " not found");
     }
    
     public Boolean hasToolsBeenUsed()
