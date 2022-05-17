@@ -140,13 +140,16 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>3.0.0</version>
-        <configuration>
-          <mainClass>App</mainClass>
-        </configuration>
-      </plugin>
+  <groupId>org.codehaus.mojo</groupId>
+  <artifactId>exec-maven-plugin</artifactId>
+  <version>3.0.0</version>
+  <configuration>
+    <mainClass>App</mainClass>
+    <arguments>           
+      <argument>../RecipeExamples/Pasta.fannie</argument>
+    </arguments>
+  </configuration>
+</plugin>
       <plugin>
       <artifactId>maven-assembly-plugin</artifactId>
       <executions>
