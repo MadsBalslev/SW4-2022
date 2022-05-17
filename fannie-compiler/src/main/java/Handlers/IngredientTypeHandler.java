@@ -1,6 +1,7 @@
 package Handlers;
 import java.util.HashMap;
 
+import Exceptions.CompilerException;
 import fannieTypes.*;
 
 public class IngredientTypeHandler {
@@ -43,11 +44,11 @@ public class IngredientTypeHandler {
             ingredientTypes.put(ingredientType.identifier, ingredientType);
         }
         else if (!ingredientTypes.containsKey(superTypeIdentifier))
-            throw new RuntimeException(superTypeIdentifier + " is not a type... yet");
+            throw new CompilerException(superTypeIdentifier + " is not a type... yet");
         else if (ingredientTypes.containsKey(subTypeIdentifier))
-            throw new IllegalArgumentException(subTypeIdentifier + " is already declared");
+            throw new CompilerException(subTypeIdentifier + " is already declared");
         else
-            throw new RuntimeException(superTypeIdentifier + " " + subTypeIdentifier + " is somehow an illegal type declaration");
+            throw new CompilerException(superTypeIdentifier + " " + subTypeIdentifier + " is somehow an illegal type declaration");
     }
 
     public IngredientType AssignIngredientType(Ingredient ingredient, String ingredientTypeIdentifier)

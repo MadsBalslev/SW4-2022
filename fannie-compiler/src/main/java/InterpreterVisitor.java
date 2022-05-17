@@ -48,13 +48,13 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         
         if(scope.isIngredientListEmpty() == false)
         {
-            throw new RuntimeException("Not all ingredients are served");
+            throw new CompilerException("Not all ingredients are served");
         }
         if (scope.hasToolsBeenUsed() == false) {
-            throw new RuntimeException("Not all tools are used");
+            throw new CompilerException("Not all tools are used");
         }
         if (scope.isProcListEmpty() == false) {
-            throw new RuntimeException("Not all procedures are stopped");
+            throw new CompilerException("Not all procedures are stopped");
         }
         scope = oldScope;
         return null;
@@ -100,7 +100,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         //debug code
         if(scope.isIngredientListEmpty() == true)
         {
-            throw new RuntimeException("No ingredients in the recipe");
+            throw new CompilerException("No ingredients in the recipe");
         }
         visitChildren(context);
         return null;
@@ -138,7 +138,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         {
             if (toolActionsList.containsKey(key))
             {
-                throw new RuntimeException("Toolaction has already been declared");
+                throw new CompilerException("Toolaction: "+ key + " has already been declared");
             }
         }
         toolActionsList.putAll(superToolActionsList);
@@ -279,7 +279,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         }
         else
         {
-            throw new RuntimeException();
+            throw new CompilerException("Invalid type of tool action");
         }
         
     }
@@ -288,7 +288,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     {
         HasBeenServed hasBeenServed = (HasBeenServed)scope.retrieve("hasServed");
         if (hasBeenServed.isServed) {
-            throw new RuntimeException("Recipe already has served");
+            throw new CompilerException("Recipe has already been served");
         }
         hasBeenServed.isServed = true;
         scope.Remove("hasServed");
@@ -343,7 +343,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         }
         else
         {
-            throw new RuntimeException(procIdentifier + "Is an invalid continous do step");
+            throw new CompilerException(procIdentifier + "Is an invalid continous do step");
         }
     }
     
