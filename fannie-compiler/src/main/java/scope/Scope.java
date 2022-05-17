@@ -112,12 +112,4 @@ public class Scope {
         else return false;
     }
 
-    public Boolean isProcListEmpty()
-    {
-        if(getTypeAmount(symbolTable, "fannieTypes.ProcIdentifier") == 0)
-        {
-            return true;
-        }
-        else return false;
-    }
 }

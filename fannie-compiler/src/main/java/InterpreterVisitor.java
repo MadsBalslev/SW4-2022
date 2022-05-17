@@ -40,9 +40,6 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         if (scope.hasToolsBeenUsed() == false) {
             throw new CompilerException("Not all tools are used");
         }
-        if (scope.isProcListEmpty() == false) {
-            throw new CompilerException("Not all procedures are stopped");
-        }
         scope = oldScope;
         return null;
     }
@@ -135,6 +132,13 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
                 }
                 
             }
+            for (ContinousDoStepDeclaration doStep : continousDoStepDeclarations) {
+                if (doStep.hasBeenStopped() == false)
+                {
+                    throw new CompilerException("Continous do step: " + doStep.procIdentifier + " has not been stopped");
+                }
+            }
+
         }
         return null;
     }
@@ -300,7 +304,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         return null;
     }
     
-    @Override public Void visitContinousDoStepStartDeclaration(fannieParserParser.ContinousDoStepStartDeclarationContext context) 
+    @Override public ContinousDoStepDeclaration visitContinousDoStepStartDeclaration(fannieParserParser.ContinousDoStepStartDeclarationContext context) 
     { 
         String toolIdentifier = context.toolIdentifier().getText();
         String toolActionIdentifier = context.toolActionIdentifier().getText();
@@ -309,7 +313,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         if (doStep.isValid(ingredientTypeHandler))
         {
             scope.append(procIdentifier, doStep);
-            return null;
+            return doStep;
         }
         else
         {

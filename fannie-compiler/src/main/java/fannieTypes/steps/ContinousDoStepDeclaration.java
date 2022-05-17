@@ -4,12 +4,14 @@ import scope.Scope;
 import fannieTypes.toolActions.*;
 import Handlers.IngredientTypeHandler;
 import java.util.List;
+import Exceptions.*;
 public class ContinousDoStepDeclaration extends Step {
     Tool tool;
     ToolAction toolAction;
-    String procIdentifier;
+    public String procIdentifier;
     Scope scope;
     List<Ingredient> ingredients;
+    Boolean hasbeenStopped;
 
     public ContinousDoStepDeclaration(String toolIdentifier, String toolActionIdentifier,String procIdentifier, Scope scope, List<Ingredient> ingredients) {
         this.procIdentifier = procIdentifier;
@@ -17,6 +19,7 @@ public class ContinousDoStepDeclaration extends Step {
         this.tool = (Tool)scope.retrieve(toolIdentifier);
         this.toolAction = tool.getToolAction(toolActionIdentifier);
         this.ingredients = ingredients;
+        this.hasbeenStopped = false;
     }
     public void ExecuteStep(IngredientTypeHandler ingredientTypeHandler) {
 
@@ -24,6 +27,7 @@ public class ContinousDoStepDeclaration extends Step {
             
                 tool.useToolAction(toolAction, ingredient, scope, ingredientTypeHandler);
                 scope.Remove(procIdentifier);
+                this.hasbeenStopped = true;
         }
     }
 
@@ -35,6 +39,7 @@ public class ContinousDoStepDeclaration extends Step {
             Ingredient outPutIngredient = new Ingredient(string, ingredientTypeHandler, toolAction.output);
             scope.append(string, outPutIngredient);
             scope.Remove(procIdentifier);
+            this.hasbeenStopped = true;
         }
     }
 
@@ -50,6 +55,10 @@ public class ContinousDoStepDeclaration extends Step {
             }
         }
         return true;
+    }
+
+    public boolean hasBeenStopped() {
+        return this.hasbeenStopped;
     }
 
 }
