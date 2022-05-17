@@ -269,7 +269,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         return null;
     }
     
-    @Override public ContinousDoStepDeclaration visitContinousDoStepStartDeclaration(fannieParserParser.ContinousDoStepStartDeclarationContext context) 
+    @Override public Void visitContinousDoStepStartDeclaration(fannieParserParser.ContinousDoStepStartDeclarationContext context) 
     { 
         String toolIdentifier = context.toolIdentifier().getText();
         String toolActionIdentifier = context.toolActionIdentifier().getText();
@@ -278,7 +278,7 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         if (doStep.isValid(ingredientTypeHandler))
         {
             scope.append(procIdentifier, doStep);
-            return doStep;
+            return null;
         }
         else
         {
