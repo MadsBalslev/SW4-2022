@@ -44,17 +44,19 @@ public class Scope {
     {
         if(symbolTable.get(key)!= null)
         {
-            throw new IllegalArgumentException("Symbol: " + key + " already exists");
+            throw new CompilerException("Symbol: " + key + " already exists");
         }
         symbolTable.put(key, value);
         return null;
     }
+
     public Void overwrite(String key, Object value)
     {
         symbolTable.put(key, value);
         return null;
     }
-    public Object retrieve(String name)
+
+    public Object retrieve(String name) throws CompilerException
     {
         if (symbolTable.containsKey(name)) {
             return symbolTable.get(name);
@@ -62,20 +64,9 @@ public class Scope {
         else if (!isGlobalScope()) {
             return parent.retrieve(name);
         }
-        throw new RuntimeException("Undefined variable: " + name);
+        throw new CompilerException("Undefined variable: " + name);
     }
 
-    //Prints all the objects of the type given, for example ingredients
-    //debug code
-    public void stringPrinter(HashMap<String, Object> symbolTable, String type)
-    {
-        for (Map.Entry<String, Object> entry : symbolTable.entrySet()) {
-            if (entry.getValue().getClass().getName().equals("fannieTypes." + type)) {
-                System.out.println(entry.getKey() + ": " + entry.getValue().toString());
-            }
-        }   
-    }
-    //debug code
     
     public int getTypeAmount(HashMap<String, Object> symbolTable, String type)
     {
@@ -102,16 +93,16 @@ public class Scope {
         else throw new CompilerException("Key: " + key + " not found");
     }
    
-    public Boolean hasToolsBeenUsed()
+    public Void toolsAreUsedExceptionThrower() throws CompilerException
     {
         for (Map.Entry<String, Object> entry : symbolTable.entrySet()) {
-            if (entry.getValue().getClass().getName().equals("Tool")) {
+            if (entry.getValue().getClass().getName().equals("fannieTypes.Tool")) {
                 if (((Tool)entry.getValue()).getHasToolBeenUsed() == false) {
-                    return false;
+                    throw new CompilerException("Tool: " + entry.getKey() + " has not been used");
                 }
             }
         }
-        return true;
+        return null;
     }
 
     public Boolean isIngredientListEmpty()
@@ -120,15 +111,37 @@ public class Scope {
         {
             return true;
         }
-        else return false;
+        return false;
     }
-
-    public Boolean isProcListEmpty()
+    
+    // Checks if all ContinouDoSteps are stepped, if not. Throws an compiler excepton
+    public Boolean isContinousDoStepStopped() throws CompilerException
     {
-        if(getTypeAmount(symbolTable, "fannieTypes.ProcIdentifier") == 0)
+        if(getTypeAmount(symbolTable, "fannieTypes.steps.ContinousDoStepDeclaration") == 0)
         {
             return true;
         }
-        else return false;
+        return false;
     }
+
+    public String getProcIdentifier()
+    {
+        for (Map.Entry<String, Object> entry : symbolTable.entrySet()) {
+            if (entry.getValue().getClass().getName().equals("fannieTypes.steps.ContinousDoStepDeclaration")) {
+                return ((fannieTypes.steps.ContinousDoStepDeclaration)entry.getValue()).procIdentifier;
+            }
+        }
+        return null;
+    }
+    public String getIngredient()
+    {
+        for (Map.Entry<String, Object> entry : symbolTable.entrySet()) {
+            if (entry.getValue().getClass().getName().equals("fannieTypes.Ingredient")) {
+                return ((fannieTypes.Ingredient)entry.getValue()).identifier;
+            }
+        }
+        return null;
+    }
+
+
 }

@@ -1,15 +1,11 @@
 package fannieTypes.toolActions;
 import fannieTypes.Ingredient;
 import Handlers.IngredientTypeHandler;
+import Exceptions.*;
 public abstract class ToolAction {
     public String toolActionIdentifier;
     public String input;
     public String output;
-    //debug code
-    public String toString() {
-        return toolActionIdentifier + ": " + input + " -> " + output;
-    }
-    //debug code
     
     public Ingredient useToolAction(Ingredient ingredient, IngredientTypeHandler ingredientTypeHandler)
     {
@@ -20,7 +16,7 @@ public abstract class ToolAction {
         }
         else
         {
-            throw new IllegalArgumentException("cannot use tool action " + toolActionIdentifier + " on ingredient " + ingredient.identifier);
+            throw new CompilerException("cannot use tool action " + toolActionIdentifier + " on ingredient " + ingredient.identifier);
         }
     }
 
