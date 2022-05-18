@@ -54,12 +54,10 @@ public class Tool {
                 throw new CompilerException("step input can not be content in when the step has an output");
             if (!ingredient.isType(toolAction.input))
                 throw new CompilerException("Mismatch between actual input:" + ingredient.ingredientType.identifier + " and expected input type: " + toolAction.input);
-           scope.Remove(ingredient.identifier);
+            this.hasToolBeenUsed = true;
+            scope.Remove(ingredient.identifier);
     }
    
-
-
-
     public Boolean getHasToolBeenUsed()
     {
         return this.hasToolBeenUsed;
