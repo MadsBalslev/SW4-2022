@@ -13,8 +13,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
   </properties>
 
   <dependencies>
@@ -59,17 +59,17 @@
       <artifactId>poi-scratchpad</artifactId>
       <version>5.2.2</version>
     </dependency>
-            <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>4.5.1</version>
-            <scope>test</scope>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>4.5.1</version>
+      <scope>test</scope>
     </dependency>
-            <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>6.8.13</version>
-            <scope>test</scope>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>6.8.13</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -140,38 +140,38 @@
         </executions>
       </plugin>
       <plugin>
-  <groupId>org.codehaus.mojo</groupId>
-  <artifactId>exec-maven-plugin</artifactId>
-  <version>3.0.0</version>
-  <configuration>
-    <mainClass>App</mainClass>
-    <arguments>           
-      <argument>../RecipeExamples/Pasta.fannie</argument>
-    </arguments>
-  </configuration>
-</plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.0.0</version>
+        <configuration>
+          <mainClass>App</mainClass>
+          <arguments>
+            <argument>../RecipeExamples/Pasta.fannie</argument>
+          </arguments>
+        </configuration>
+      </plugin>
       <plugin>
-      <artifactId>maven-assembly-plugin</artifactId>
-      <executions>
-        <execution>
-          <phase>package</phase>
-          <goals>
-            <goal>single</goal>
-          </goals>
-        </execution>
-      </executions>
-      <configuration>
-        <archive>
-          <manifest>
-            <addClasspath>true</addClasspath>
-            <mainClass>App</mainClass>
-          </manifest>
-        </archive>
-        <descriptorRefs>
-          <descriptorRef>jar-with-dependencies</descriptorRef>
-        </descriptorRefs>
-      </configuration>
-     </plugin> 
-  </plugins>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <mainClass>App</mainClass>
+            </manifest>
+          </archive>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 </project>
