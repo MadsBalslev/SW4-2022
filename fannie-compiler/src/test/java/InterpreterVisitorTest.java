@@ -39,6 +39,7 @@ import fannieTypes.toolActions.ContainToolActionDeclaration;
 import fannieTypes.toolActions.ContentInToolAction;
 import fannieTypes.toolActions.NormalToolAction;
 import fannieTypes.toolActions.ToolAction;
+import net.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
 import scope.Scope;
 import Handlers.IngredientTypeHandler;
 
@@ -281,11 +282,10 @@ public class InterpreterVisitorTest {
         // assert
         Ingredient mockIngredient = mock(Ingredient.class);
         IngredientType ingredientType = interpreterVisitor.ingredientTypeHandler.AssignIngredientType(mockIngredient, "I0");
-        assertEquals("I0", ingredientType);
+        assertEquals("I0", ingredientType.identifier);
     }
 
     @Test
-    @Ignore
     public void visitIngredientTypeDeclaration_Duplicate_ThrowCompilerException() {
         // arrange
         fannieParserParser parser = createParser("ingredient I0");
@@ -325,12 +325,13 @@ public class InterpreterVisitorTest {
         assertTrue(actual instanceof ContainToolActionDeclaration);
         assertEquals("contain", actual.toolActionIdentifier);
         assertEquals("ingredient", actual.input);
-        assertEquals("ingredient", actual.output);
+        assertEquals("content in", actual.output);
     }
 
-    @Test void visitToolActionDeclaration_GoodContentInAction_ReturnContentInToolAction() {
+    @Test 
+    public void visitToolActionDeclaration_GoodContentInAction_ReturnContentInToolAction() {
         // arrange
-        fannieParserParser parser = createParser("Action: content in Tool1 => ingredient");
+        fannieParserParser parser = createParser("Action: content in Tool => ingredient");
         fannieParserParser.ToolActionDeclarationContext context = parser.toolActionDeclaration();
 
         // act
@@ -339,7 +340,7 @@ public class InterpreterVisitorTest {
         // assert
         assertTrue(actual instanceof ContentInToolAction);
         assertEquals("Action", actual.toolActionIdentifier);
-        assertEquals("content inTool1", actual.input);
+        assertEquals("content in", actual.input);
         assertEquals("ingredient", actual.output);
     }
     
@@ -353,17 +354,64 @@ public class InterpreterVisitorTest {
         ToolAction actual = interpreterVisitor.visitToolActionDeclaration(context);
 
         // assert
-        assertTrue(actual instanceof ContentInToolAction);
-        assertEquals("contain", actual.toolActionIdentifier);
-        assertEquals("content inTool1", actual.input);
+        assertTrue(actual instanceof NormalToolAction);
+        assertEquals("Action", actual.toolActionIdentifier);
+        assertEquals("ingredient", actual.input);
         assertEquals("ingredient", actual.output);
     }
 
     @Test
-    public void visitToolActionDeclaration_BadInput_ThrowCompilerException() {
-        assertTrue(true);
+    public void visitToolActionDeclarationList_goodContainAction_returnHashMap() {
+        // arrange
+        fannieParserParser parser = createParser("[contain : ingredient]");
+        fannieParserParser.ToolActionDeclarationsListContext context = parser.toolActionDeclarationsList();
 
+        // act
+        HashMap<String, ToolAction> actual = interpreterVisitor.visitToolActionDeclarationsList(context);
+
+        // assert
+        assertEquals(1, actual.size());
     }
+
+    @Test
+    public void visitToolActionDeclarationList_normalAction_returnHashMap() {
+        // arrange
+        fannieParserParser parser = createParser("[Action : ingredient => ingredient]");
+        fannieParserParser.ToolActionDeclarationsListContext context = parser.toolActionDeclarationsList();
+
+        // act
+        HashMap<String, ToolAction> actual = interpreterVisitor.visitToolActionDeclarationsList(context);
+
+        // assert
+        assertEquals(1, actual.size());
+    }
+        
+    @Test
+    public void visitToolDeclaration_inheritFromTool_addToolToScope() {
+        // arrange
+        fannieParserParser parser = createParser("tool NewTool[Action : ingredient => ingredient]");
+        fannieParserParser.ToolDeclarationContext context = parser.toolDeclaration();
+
+        // act
+        interpreterVisitor.visitToolDeclaration(context);  
+        
+        // assert
+        Tool actualTool = (Tool)interpreterVisitor.scope.retrieve("NewTool");
+        assertEquals("NewTool", actualTool.toolIdentifier);
+        assertEquals("tool", actualTool.toolTypeIdentifier);
+
+        ToolAction actualAction = actualTool.getToolAction("Action");
+        assertEquals("Action", actualAction.toolActionIdentifier);
+        assertEquals("ingredient", actualAction.input);
+        assertEquals("ingredient", actualAction.output);
+    }
+
+    @Test
+    public void visitToolDeclaration_Duplication_ThrowCompilerException ()
+    {
+        
+    }
+
 
 
 
