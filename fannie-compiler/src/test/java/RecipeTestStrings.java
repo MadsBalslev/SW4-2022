@@ -1,9 +1,5 @@
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-
-import org.apache.commons.io.*;
-import fannieTypes.*;
 
 public class RecipeTestStrings {
     public static InputStream testFannie() throws IOException
