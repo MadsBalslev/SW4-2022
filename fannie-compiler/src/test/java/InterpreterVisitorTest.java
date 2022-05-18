@@ -310,5 +310,20 @@ public class InterpreterVisitorTest {
         });
     }
 
+    @Test
+    public void visitToolDeclaration_Good_AddToolToScope()
+    {
+        // arrange
+        fannieParserParser parser = createParser("TI0 T0");
+        fannieParserParser.ToolDeclarationContext context = parser.toolDeclaration();
+
+        // act
+        interpreterVisitor.visitToolDeclaration(context);
+
+        // assert
+        assertTrue(actual, condition);
+
+    }
+
     
 }
