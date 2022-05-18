@@ -6,7 +6,6 @@ import org.apache.commons.io.*;
 import fannieTypes.*;
 
 public class RecipeTestStrings {
-
     public static InputStream testFannie() throws IOException
     {
         return ReadFile.read("../RecipeExamples/Test.fannie");
