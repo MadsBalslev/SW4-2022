@@ -2,55 +2,38 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CodePointCharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.TerminalNode;
-import org.antlr.v4.runtime.RuleContext;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 
 import Exceptions.CompilerException;
-import Handlers.IngredientTypeHandler;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.*;
-import static org.testng.Assert.*;
 
 import fannieTypes.Ingredient;
-import fannieTypes.steps.DoStepDeclaration;
 import fannieTypes.*;
 import fannieTypes.toolActions.ContainToolActionDeclaration;
 import fannieTypes.toolActions.ContentInToolAction;
 import fannieTypes.toolActions.NormalToolAction;
 import fannieTypes.toolActions.ToolAction;
-import net.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
-import scope.Scope;
-import Handlers.IngredientTypeHandler;
 
 public class InterpreterVisitorTest {
     InterpreterVisitor interpreterVisitor;
 
-    private <T extends RuleContext> T mockForVisitorResult(final Class<T> nodeType, final String visitResult) {
-        final T mock = mock(nodeType);
-        when(mock.accept(interpreterVisitor)).thenReturn(visitResult);
-        return mock;
-    }
+    // private <T extends RuleContext> T mockForVisitorResult(final Class<T> nodeType, final String visitResult) {
+    //     final T mock = mock(nodeType);
+    //     when(mock.accept(interpreterVisitor)).thenReturn(visitResult);
+    //     return mock;
+    // }
 
     private fannieParserParser createParser(String str) {
         CharStream input = CharStreams.fromString(str);
@@ -63,21 +46,6 @@ public class InterpreterVisitorTest {
     @Before
     public void init() throws IOException {
         interpreterVisitor = new InterpreterVisitor();
-    }
-
-    // This is a bad test: the fannieParser is throwing an exception here!
-    @Test(expected = Exception.class)
-    @Ignore
-    public void visit_ingredientListMissingFromRecipe_throwException() throws IOException {
-        // arrange
-        CharStream input = CharStreams.fromStream(RecipeTestStrings.ingredientListMissingFromRecipeTest());
-        fannieParserLexer lexer = new fannieParserLexer(input);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        fannieParserParser parser = new fannieParserParser(tokens);
-        ParseTree tree = parser.fannie();
-
-        // act
-        interpreterVisitor.visit(tree);
     }
 
     @Test
@@ -405,31 +373,959 @@ public class InterpreterVisitorTest {
         assertEquals("ingredient", actualAction.input);
         assertEquals("ingredient", actualAction.output);
     }
-
     @Test
-    public void visitToolDeclaration_Duplication_ThrowCompilerException ()
-    {
+    public void visitToolDeclaration_inheritFromDeclaredTool_addToolToScope() {
+        // arrange
+        fannieParserParser parser = createParser("tool Tool0[Action0 : ingredient => ingredient]");
+        fannieParserParser.ToolDeclarationContext context = parser.toolDeclaration();
+        interpreterVisitor.visitToolDeclaration(context);  
+
+        parser = createParser("Tool0 Tool1[Action1 : ingredient => ingredient]");
+        context = parser.toolDeclaration();
         
+        // act
+        interpreterVisitor.visitToolDeclaration(context);  
+        
+        // assert
+        Tool actualTool = (Tool)interpreterVisitor.scope.retrieve("Tool1");
+        assertEquals("Tool1", actualTool.toolIdentifier);
+        assertEquals("Tool0", actualTool.toolTypeIdentifier);
+
+        ToolAction actualAction = actualTool.getToolAction("Action0");
+        assertEquals("Action0", actualAction.toolActionIdentifier);
+        assertEquals("ingredient", actualAction.input);
+        assertEquals("ingredient", actualAction.output);
+
+        actualAction = actualTool.getToolAction("Action1");
+        assertEquals("Action1", actualAction.toolActionIdentifier);
+        assertEquals("ingredient", actualAction.input);
+        assertEquals("ingredient", actualAction.output);
     }
 
+    @Test
+    public void visitToolDeclaration_duplicateToolDeclaration_throwCompilerException() {
+        // arrange
+        fannieParserParser parser = createParser("tool Tool0[Action0 : ingredient => ingredient]");
+        fannieParserParser.ToolDeclarationContext context = parser.toolDeclaration();
+        interpreterVisitor.visitToolDeclaration(context);  
 
+        parser = createParser("tool Tool0[Action1 : ingredient => ingredient]");
+        fannieParserParser.ToolDeclarationContext ActContext = parser.toolDeclaration();
+        
 
+        // assert 
+        assertThrows(CompilerException.class, () -> {
+            // act
+            interpreterVisitor.visitToolDeclaration(ActContext);  
+        });
+    }
 
+    @Test
+    public void visitToolDeclaration_duplicateActionDeclaration_throwCompilerException() {
+        // arrange
+        fannieParserParser parser = createParser("tool Tool0[Action: ingredient => ingredient]");
+        fannieParserParser.ToolDeclarationContext context = parser.toolDeclaration();
+        interpreterVisitor.visitToolDeclaration(context);  
+
+        parser = createParser("Tool0 Tool1[Action : ingredient => ingredient]");
+        fannieParserParser.ToolDeclarationContext ActContext = parser.toolDeclaration();
+        
+
+        // assert 
+        assertThrows(CompilerException.class, () -> {
+            // act
+            interpreterVisitor.visitToolDeclaration(ActContext);  
+        });
+    }
+
+    @Test
+    public void visitToolDeclaration_nonDeclaredParentTool_throwCompilerException() {
+        // arrange
+        fannieParserParser parser = createParser("OldTool NewTool[Action : ingredient => ingredient]");
+        fannieParserParser.ToolDeclarationContext context = parser.toolDeclaration();
+
+        // assert 
+        assertThrows(CompilerException.class, () -> {
+            // act
+            interpreterVisitor.visitToolDeclaration(context);  
+        });
+    }
+
+    @Test
+    public void visitFannie_goodNormalDoStepIdentifierNoStepOut_returnTrue() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    ingredient Ingredient (to-taste)
+                },
+                tools{
+                    tool Tool[Action: ingredient => ingredient]
+                },
+                steps{
+                    Tool do Action Ingredient,
+                    serve Ingredient
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // act
+        Boolean actual = interpreterVisitor.visitFannie(context);
+
+        // assert
+        assertEquals(true, actual);
+    }
+
+    @Test
+    public void visitFannie_goodNormalDoStepCollectionNoStepOut_returnTrue() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    ingredient Ingredient (to-taste)
+                },
+                tools{
+                    tool Tool[Action: ingredient => ingredient]
+                },
+                steps{
+                    Tool do Action { Ingredient },
+                    serve { Ingredient } 
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // act
+        Boolean actual = interpreterVisitor.visitFannie(context);
+
+        // assert
+        assertEquals(true, actual);
+    }
+
+    @Test
+    public void visitFannie_goodNormalDoStepIdentifierToIdentifier_returnTrue() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    ingredient Ingredient (to-taste)
+                },
+                tools{
+                    tool Tool[Action: ingredient => ingredient]
+                },
+                steps{
+                    Tool do Action Ingredient => Ingredient0,
+                    serve Ingredient0
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // act
+        Boolean actual = interpreterVisitor.visitFannie(context);
+
+        // assert
+        assertEquals(true, actual);
+    }
+
+    @Test
+    public void visitFannie_goodNormalDoStepCollectionToCollection_returnTrue() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    ingredient Ingredient (to-taste)
+                },
+                tools{
+                    tool Tool[Action: ingredient => ingredient]
+                },
+                steps{
+                    Tool do Action { Ingredient } => { Ingredient0 },
+                    serve Ingredient0
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // act
+        Boolean actual = interpreterVisitor.visitFannie(context);
+
+        // assert
+        assertEquals(true, actual);
+    }
+
+    @Test
+    public void visitFannie_goodNormalDoStepCollectionToIdentifier_returnTrue() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    ingredient Ingredient (to-taste)
+                },
+                tools{
+                    tool Tool[Action: ingredient => ingredient]
+                },
+                steps{
+                    Tool do Action { Ingredient } => Ingredient0,
+                    serve Ingredient0
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // act
+        Boolean actual = interpreterVisitor.visitFannie(context);
+
+        // assert
+        assertEquals(true, actual);
+    }
     
-    // @Test
-    // public void visitToolDeclaration_Good_AddToolToScope()
-    // {
-    //     // arrange
-    //     fannieParserParser parser = createParser("TI0 T0");
-    //     fannieParserParser.ToolDeclarationContext context = parser.toolDeclaration();
+    @Test
+    public void visitFannie_goodNormalDoStepIdentifierToCollection_returnTrue() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    ingredient Ingredient (to-taste)
+                },
+                tools{
+                    tool Tool[Action: ingredient => ingredient]
+                },
+                steps{
+                    Tool do Action Ingredient => { Ingredient0 },
+                    serve Ingredient0
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // act
+        Boolean actual = interpreterVisitor.visitFannie(context);
 
-    //     // act
-    //     interpreterVisitor.visitToolDeclaration(context);
+        // assert
+        assertEquals(true, actual);
+    }
 
-    //     // assert
-    //     assertTrue(actual, condition);
+    @Test
+    public void visitFannie_goodContainCollectionStep_returnTrue() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    ingredient Ingredient0 (to-taste),
+                    ingredient Ingredient1 (to-taste)
+                },
+                tools{
+                    tool Tool[contain: ingredient]
+                },
+                steps{
+                    Tool do contain { Ingredient0, Ingredient1 },
+                    serve content in Tool
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // act
+        Boolean actual = interpreterVisitor.visitFannie(context);
 
-    // }
-
+        // assert
+        assertEquals(true, actual);
+    }
     
+    @Test
+    public void visitFannie_goodContainStep_returnTrue() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    ingredient Ingredient (to-taste)
+                },
+                tools{
+                    tool Tool[contain: ingredient]
+                },
+                steps{
+                    Tool do contain Ingredient,
+                    serve content in Tool
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // act
+        Boolean actual = interpreterVisitor.visitFannie(context);
+
+        // assert
+        assertEquals(true, actual);
+    }
+
+    @Test
+    public void visitFannie_goodContainContentInStep_returnTrue() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    ingredient Ingredient (to-taste)
+                },
+                tools{
+                    tool Tool0[contain: ingredient],
+                    tool Tool1[contain: ingredient]
+                },
+                steps{
+                    Tool0 do contain Ingredient,
+                    Tool1 do contain content in Tool0, 
+                    serve content in Tool1
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // act
+        Boolean actual = interpreterVisitor.visitFannie(context);
+
+        // assert
+        assertEquals(true, actual);
+    }
+
+    @Test
+    public void visitFannie_goodRemoveStep_returnTrue() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    ingredient Ingredient0 (to-taste)
+                },
+                tools{
+                    tool Tool[contain: ingredient]
+                },
+                steps{
+                    Tool do contain Ingredient0,
+                    Tool do remove Ingredient1,
+                    serve Ingredient1 
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // act
+        Boolean actual = interpreterVisitor.visitFannie(context);
+
+        // assert
+        assertEquals(true, actual);
+    }
+
+    @Test
+    public void visitFannie_goodDoOnContentInWithoutContentInAction_returnTrue() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    ingredient Ingredient (to-taste)
+                },
+                tools{
+                    tool Tool0[contain: ingredient],
+                    tool Tool1[Action: ingredient => ingredient]
+                },
+                steps{
+                    Tool0 do contain Ingredient,
+                    Tool1 do Action content in Tool0,
+                    serve content in Tool0 
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // act
+        Boolean actual = interpreterVisitor.visitFannie(context);
+
+        // assert
+        assertEquals(true, actual);
+    }
+
+    @Test
+    public void visitFannie_goodDoOnContentInWithContentInAction_returnTrue() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    ingredient Ingredient (to-taste)
+                },
+                tools{
+                    tool Tool0[contain: ingredient],
+                    tool Tool1[Action: content in Tool0 => ingredient]
+                },
+                steps{
+                    Tool0 do contain Ingredient,
+                    Tool1 do Action content in Tool0,
+                    serve content in Tool0 
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // act
+        Boolean actual = interpreterVisitor.visitFannie(context);
+
+        // assert
+        assertEquals(true, actual);
+    }
+
+    @Test
+    public void visitFannie_goodDoOnContentInWithContentInActionAndInheritance_returnTrue() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    ingredient Ingredient (to-taste)
+                },
+                tools{
+                    tool Tool0[contain: ingredient],
+                    Tool0 Tool1[None: ingredient => ingredient],
+                    tool Tool2[Action: content in Tool0 => ingredient]
+                },
+                steps{
+                    Tool0 do contain Ingredient,
+                    Tool1 do contain content in Tool0,
+                    Tool2 do Action content in Tool1,
+                    serve content in Tool1 
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // act
+        Boolean actual = interpreterVisitor.visitFannie(context);
+
+        // assert
+        assertEquals(true, actual);
+    }
+
+    @Test
+    public void visitFannie_normalActionUsingInheritedAction_returnTrue() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    ingredient Ingredient (to-taste)
+                },
+                tools{
+                    tool Tool0[Action: ingredient => ingredient],
+                    Tool0 Tool1[None: ingredient => ingredient]
+                },
+                steps{
+                    Tool0 do Action Ingredient,
+                    Tool1 do Action Ingredient,
+                    serve Ingredient  
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // act
+        Boolean actual = interpreterVisitor.visitFannie(context);
+
+        // assert
+        assertEquals(true, actual);
+    }
+
+    @Test
+    public void visitFannie_goodStartStopStepNoOutStep_returnTrue() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    ingredient Ingredient (to-taste)
+                },
+                tools{
+                    tool Tool[Action: ingredient => ingredient]
+                },
+                steps{
+                    START Proc1 Tool do Action Ingredient,
+                    STOP Proc1, 
+                    serve Ingredient 
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // act
+        Boolean actual = interpreterVisitor.visitFannie(context);
+
+        // assert
+        assertEquals(true, actual);
+    }
+
+    @Test
+    public void visitFannie_goodStartStopStepWithStepOut_returnTrue() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    ingredient Ingredient (to-taste)
+                },
+                tools{
+                    tool Tool[Action: ingredient => ingredient]
+                },
+                steps{
+                    START Proc1 Tool do Action Ingredient,
+                    STOP Proc1 => Ingredient0, 
+                    serve Ingredient0
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // act
+        Boolean actual = interpreterVisitor.visitFannie(context);
+
+        // assert
+        assertEquals(true, actual);
+    }
+
+    @Test
+    public void visitFannie_goodNormStepWithTypeConversion_returnTrue() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    spice Ingredient (to-taste)
+                },
+                tools{
+                    tool Tool0[Action: spice => liquid],
+                    tool Tool1[Action: liquid => ingredient]
+                },
+                steps{
+                    Tool0 do Action Ingredient,
+                    Tool1 do Action Ingredient,
+                    serve Ingredient 
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // act
+        Boolean actual = interpreterVisitor.visitFannie(context);
+
+        // assert
+        assertEquals(true, actual);
+    }
+
+    @Test
+    public void visitFannie_goodStartStopStepWithOutStep_returnTrue() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    ingredient Ingredient0 (to-taste)
+                },
+                tools{
+                    tool Tool[Action: ingredient => ingredient]
+                },
+                steps{
+                    START Proc1 Tool do Action Ingredient0,
+                    STOP Proc1 => Ingredient1, 
+                    serve Ingredient1 
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // act
+        Boolean actual = interpreterVisitor.visitFannie(context);
+
+        // assert
+        assertEquals(true, actual);
+    }
+
+    @Test
+    public void visitFannie_serveMissing_ThrowCompilerError() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    ingredient Ingredient (to-taste)
+                },
+                tools{
+                    tool Tool[Action: ingredient => ingredient]
+                },
+                steps{
+                    Tool do Action Ingredient
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // assert 
+        assertThrows(CompilerException.class, () -> {
+            // act
+            interpreterVisitor.visitFannie(context);  
+        });
+    }
+
+    @Test
+    public void visitFannie_typeMismatch_ThrowCompilerError() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    spice Ingredient (to-taste)
+                },
+                tools{
+                    tool Tool[Action: vegetable => vegetable]
+                },
+                steps{
+                    Tool do Action Ingredient,
+                    serve Ingredient
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // assert 
+        assertThrows(CompilerException.class, () -> {
+            // act
+            interpreterVisitor.visitFannie(context);  
+        });
+    }
+
+    @Test
+    public void visitFannie_typeMismatchContainAction_ThrowCompilerError() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    spice Ingredient (to-taste)
+                },
+                tools{
+                    tool Tool[contain: vegetable]
+                },
+                steps{
+                    Tool do contain Ingredient,
+                    serve content in Tool
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // assert 
+        assertThrows(CompilerException.class, () -> {
+            // act
+            interpreterVisitor.visitFannie(context);  
+        });
+    }
+
+    @Test
+    public void visitFannie_partialTypeMismatchContainAction_ThrowCompilerError() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    spice Ingredient0 (to-taste),
+                    vegetable Ingredient1 (to-taste)
+                },
+                tools{
+                    tool Tool[Action: vegetable => vegetable]
+                },
+                steps{
+                    Tool do Action { Ingredient0, Ingredient1 } => Ingredient2,
+                    serve Ingredient2
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // assert 
+        assertThrows(CompilerException.class, () -> {
+            // act
+            interpreterVisitor.visitFannie(context);  
+        });
+    }
+
+    @Test
+    public void visitFannie_ContentActionTypeMismatch_ThrowCompilerError() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    vegetable Ingredient (to-taste)
+                },
+                tools{
+                    tool Tool[contain: vegetable, Action: content in Tool => spice]
+                },
+                steps{
+                    Tool do contain Ingredient,
+                    Tool do Action content in Tool,
+                    serve content in Tool
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // assert 
+        assertThrows(CompilerException.class, () -> {
+            // act
+            interpreterVisitor.visitFannie(context);  
+        });
+    }
+
+    @Test
+    public void visitFannie_processNotStopped_ThrowCompilerError() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    ingredient Ingredient (to-taste)
+                },
+                tools{
+                    tool Tool[Action: ingredient => ingredient]
+                },
+                steps{
+                    START Doing Tool do Action  Ingredient,
+                    serve Ingredient 
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // assert 
+        assertThrows(CompilerException.class, () -> {
+            // act
+            interpreterVisitor.visitFannie(context);  
+        });
+    }
+
+    @Test
+    public void visitFannie_ProcessWasInterrupted_ThrowCompilerError() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    vegetable Ingredient (to-taste)
+                },
+                tools{
+                    tool Tool[Action: vegetable => vegetable, Interrupt: vegetable => spice]
+                },
+                steps{
+                    START Doing Tool do Action Ingredient,
+                    Tool do Interrupt Ingredient,
+                    STOP Doing,
+                    serve Ingredient 
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // assert 
+        assertThrows(CompilerException.class, () -> {
+            // act
+            interpreterVisitor.visitFannie(context);  
+        });
+    }
+
+    @Test
+    public void visitFannie_duplicateProcess_ThrowCompilerError() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    vegetable Ingredient (to-taste)
+                },
+                tools{
+                    tool Tool[Action: vegetable => vegetable]
+                },
+                steps{
+                    START Doing Tool do Action Ingredient,
+                    START Doing Tool do Action Ingredient,
+                    STOP Doing,
+                    STOP Doing,
+                    serve Ingredient 
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // assert 
+        assertThrows(CompilerException.class, () -> {
+            // act
+            interpreterVisitor.visitFannie(context);  
+        });
+    }
+
+    @Test
+    public void visitFannie_ingredientNotDeclared_ThrowCompilerError() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    ingredient Ingredient (to-taste)
+                },
+                tools{
+                    tool Tool[Action: ingredient => ingredient]
+                },
+                steps{
+                    Tool do Action Ingredient,
+                    Tool do Action DoesNotExist,
+                    serve { Ingredient, DoesNotExist }
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // assert 
+        assertThrows(CompilerException.class, () -> {
+            // act
+            interpreterVisitor.visitFannie(context);  
+        });
+    }
+
+    @Test
+    public void visitFannie_toolNotDeclared_ThrowCompilerError() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    ingredient Ingredient (to-taste)
+                },
+                tools{
+                    tool Tool[Action: ingredient => ingredient]
+                },
+                steps{
+                    Tool do Action Ingredient,
+                    DoesNotExist do Action Ingredient,
+                    serve Ingredient
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // assert 
+        assertThrows(CompilerException.class, () -> {
+            // act
+            interpreterVisitor.visitFannie(context);  
+        });
+    }
+
+    @Test
+    public void visitFannie_actionNotDeclared_ThrowCompilerError() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    ingredient Ingredient (to-taste)
+                },
+                tools{
+                    tool Tool[Action: ingredient => ingredient]
+                },
+                steps{
+                    Tool do DoesNotExist Ingredient,
+                    serve Ingredient
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // assert 
+        assertThrows(CompilerException.class, () -> {
+            // act
+            interpreterVisitor.visitFannie(context);  
+        });
+    }
+
+    @Test
+    public void visitFannie_contentInContainTypeMismatch_ThrowCompilerError() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    spice Ingredient (to-taste)
+                },
+                tools{
+                    tool SpiceContainer[contain: spice],
+                    tool VegetableContainer[contain: vegetable]
+                },
+                steps{
+                    SpiceContainer do contain Ingredient,
+                    VegetableContainer do contain content in SpiceContainer,
+                    serve content in VegetableContainer
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // assert 
+        assertThrows(CompilerException.class, () -> {
+            // act
+            interpreterVisitor.visitFannie(context);  
+        });
+    }
+
+    @Test
+    public void visitFannie_canUseComplexIngredient_returnTrue() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    liquid Sauce,
+                    Sauce BrownSauce (to-taste)
+                },
+                tools{
+                    tool Tool[Action: Sauce => Sauce]
+                },
+                steps{
+                    Tool do Action BrownSauce,
+                    serve BrownSauce
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // act
+        Boolean actual = interpreterVisitor.visitFannie(context);  
+
+        // assert 
+        assertTrue(actual);
+    }
+                                                                           
+                                                                           
+    //                          .i;;;;i.                                  
+    //                        iYcviii;vXY:                                
+    //                      .YXi       .i1c.                              
+    //                     .YC.     .    in7.                             
+    //                    .vc.   ......   ;1c.                            
+    //                    i7,   ..        .;1;                            
+    //                   i7,   .. ...      .Y1i                           
+    //                  ,7v     .6MMM@;     .YX,                          
+    //                 .7;.   ..IMMMMMM1     :t7.                         
+    //                .;Y.     ;$MMMMMM9.     :tc.                        
+    //                vY.   .. .nMMM@MMU.      ;1v.                       
+    //               i7i   ...  .#MM@M@C. .....:71i                       
+    //              it:   ....   $MMM@9;.,i;;;i,;tti                      
+    //             :t7.  .....   0MMMWv.,iii:::,,;St.                     
+    //            .nC.   .....   IMMMQ..,::::::,.,czX.                    
+    //           .ct:   ....... .ZMMMI..,:::::::,,:76Y.                   
+    //           c2:   ......,i..Y$M@t..:::::::,,..inZY                   
+    //          vov   ......:ii..c$MBc..,,,,,,,,,,..iI9i                  
+    //         i9Y   ......iii:..7@MA,..,,,,,,,,,....;AA:                 
+    //        iIS.  ......:ii::..;@MI....,............;Ez.                
+    //       .I9.  ......:i::::...8M1..................C0z.               
+    //      .z9;  ......:i::::,.. .i:...................zWX.              
+    //      vbv  ......,i::::,,.      ................. :AQY              
+    //     c6Y.  .,...,::::,,..:t0@@QY. ................ :8bi             
+    //    :6S. ..,,...,:::,,,..EMMMMMMI. ............... .;bZ,            
+    //   :6o,  .,,,,..:::,,,..i#MMMMMM#v.................  YW2.           
+    //  .n8i ..,,,,,,,::,,,,.. tMMMMM@C:.................. .1Wn           
+    //  7Uc. .:::,,,,,::,,,,..   i1t;,..................... .UEi          
+    //  7C...::::::::::::,,,,..        ....................  vSi.         
+    //  ;1;...,,::::::,.........       ..................    Yz:          
+    //   v97,.........                                     .voC.          
+    //    izAotX7777777777777777777777777777777777777777Y7n92:            
+    //      .;CoIIIIIUAA666666699999ZZZZZZZZZZZZZZZZZZZZ6ov.              
+                                                                       
+
+    // BEWARE 
+    // TESTS BEYOND THIS POINT MIGHT BE QUESTIONABLE VENTURE FORTH ON YOUR OWN RISK
+
+
+
 }
