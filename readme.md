@@ -1,15 +1,3 @@
-# 4th Semester project, BSc Software AAU
-
-### Purpose
-That the student learns how to design and implement a programming language and how this process can be supported by formal definitions of the language's syntax and semantics and techniques and methods for translator and / or interpreter construction.
-
-### Reason
-All software is written in a programming language and is translated or interpreted in order to be executed. Design, description and construction of Programming languages, translators, interpreters and similar tools are therefore central topics in computer science.
-
-Therefore, the project work focuses on ensuring that the students understand important underlying concepts in the world of programming languages, why these concepts have arisen and how they are formally described and represented in an implementation. Understanding these topics is fundamental in understanding new and existing programming languages and their applications.
-
-Furthermore, many techniques and tools, originally developed for languages and translators, are also used in other contexts in program development.
-
 # 4th Semester project, BSc Software AAU - Fannie
 
 <div id="top"></div>
@@ -82,9 +70,14 @@ Therefore an authentication system is also in place.
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-The goal of this webapplication was to create a system for Nordkraft, to manage, upload, display and schedule different posters.
-To ensure the different institutions do not interfere with each other, a user- and institution system has been implemented.
-Therefore an authentication system is also in place.
+That the student learns how to design and implement a programming language and how this process can be supported by formal definitions of the language's syntax and semantics and techniques and methods for translator and / or interpreter construction.
+
+All software is written in a programming language and is translated or interpreted in order to be executed. Design, description and construction of Programming languages, translators, interpreters and similar tools are therefore central topics in computer science.
+
+Therefore, the project work focuses on ensuring that the students understand important underlying concepts in the world of programming languages, why these concepts have arisen and how they are formally described and represented in an implementation. Understanding these topics is fundamental in understanding new and existing programming languages and their applications.
+
+Furthermore, many techniques and tools, originally developed for languages and translators, are also used in other contexts in program development.
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -92,25 +85,24 @@ Therefore an authentication system is also in place.
 
 ### Built With
 
-* [MariaDB 10.1.19](https://mariadb.org/mariadb-10-1-19-release-now-available/)
-* [ASP.NET CORE 5.0](https://dotnet.microsoft.com/download/dotnet/5.0)
-* [Blazor](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor)
+* [ANTLR 4.9.3](https://www.antlr.org/download.html)
+* [Apache Maven 3.8.5](https://maven.apache.org/download.cgi)
+* [JUnit 4.13.1](https://mvnrepository.com/artifact/junit/junit/4.13.1)
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<p>(<a href="#top">back to top</a>)</p>
 
 
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
+This is an example of how you could start setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
-The project is divided into a frontend and server folder. To install the neccesary packages `cd` into each folder and run:
-```sh
-dotnet restore
-```
+After the repository have been cloned to your designated destination, `cd` into `fannie-compiler`.
+To install the neccesary packages run:
+
 
 
 
@@ -120,7 +112,10 @@ dotnet restore
    ```sh
    git clone https://github.com/MadsBalslev/SW4-2022.git
    ```
-2. Install prequisites mentioned above.
+2. Then `cd` into `fannie-compiler` and run:
+   ```sh
+   mvn clean install
+   ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -128,7 +123,19 @@ dotnet restore
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+After the installation is done, you can now begin writing recipes in the fannie language!
 
+First `cd` into the `Recipe-Examples` and create a file with the ending `.fannie`.
+
+Afterwards open up the `pom.xml` file, which is located under the `fannie-compiler` folder.
+In there you should navigate to `<argument>../RecipeExamples/Pasta.fannie</argument>` and change the file to your own recipe.
+
+When you want to compile the recipe, simply type `mvn exec:java` into your terminal, and watch it compile.
+
+And success!
+You have now created a good and correct recipe, which got converted into three formats for you to use.
+
+Bone apple tea!
 
 <!-- LICENSE -->
 ## License
