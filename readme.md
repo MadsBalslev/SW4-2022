@@ -29,9 +29,9 @@
 <h3 align="center">Fannie - A Recipe Language Specification</h3>
 
   <p align="center">
-    The goal of this webapplication was to create a system for Nordkraft, to manage, upload, display and schedule different posters.
-To ensure the different institutions do not interfere with each other, a user- and institution system has been implemented.
-Therefore an authentication system is also in place.
+    The goal of this recipe specification language is to give authors, programmers and home cooks a tool for writing good and correct recipes.
+    No more missing or misused ingredients or tools throught the recipe.
+    Fannie will help you keep track of it all, while giving you the opportunity of writing flavorful descriptions to the steps in your recipe. 
     <br />
     <a href="https://github.com/MadsBalslev/SW4-2022"><strong>Explore the docs »</strong></a>
     <br />
@@ -157,7 +157,7 @@ Project Link: [https://github.com/MadsBalslev/SW4-2022](https://github.com/MadsB
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 ### Guidance
-* [Sean Kauffman](https://vbn.aau.dk/da/persons/151155)
+* Sean Kauffman
 
 ### Development
 * [Simon M. P. Andersen](https://github.com/uglenDX)
