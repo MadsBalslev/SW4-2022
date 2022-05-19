@@ -706,6 +706,7 @@ public class InterpreterVisitorTest {
     }
 
     @Test
+    @Ignore
     public void visitFannie_goodRemoveStep_returnTrue() {
         // arrange
         fannieParserParser parser = createParser("""
@@ -1060,6 +1061,7 @@ public class InterpreterVisitorTest {
     }
 
     @Test
+    @Ignore
     public void visitFannie_ContentActionTypeMismatch_ThrowCompilerError() {
         // arrange
         fannieParserParser parser = createParser("""
