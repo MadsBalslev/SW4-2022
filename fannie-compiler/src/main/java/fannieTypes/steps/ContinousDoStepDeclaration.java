@@ -21,20 +21,23 @@ public class ContinousDoStepDeclaration extends Step {
     }
     public void ExecuteStep(IngredientTypeHandler ingredientTypeHandler) {
         for (Ingredient ingredient : ingredients) {
-                tool.useToolAction(toolAction, ingredient, scope, ingredientTypeHandler);
-                scope.Remove(procIdentifier);
+            ingredient = (Ingredient)scope.retrieve(ingredient.identifier);
+            tool.useToolAction(toolAction, ingredient, scope, ingredientTypeHandler);
+
         }
+        scope.Remove(procIdentifier);
     }
 
     public void ExecuteStep(IngredientTypeHandler ingredientTypeHandler, List<String> stepOut, Scope scope) {
         for (Ingredient ingredient : ingredients) {
+            ingredient = (Ingredient)scope.retrieve(ingredient.identifier);
             tool.useToolActionOut(toolAction, ingredient, scope, ingredientTypeHandler);
         }
         for (String string : stepOut) {
             Ingredient outPutIngredient = new Ingredient(string, ingredientTypeHandler, toolAction.output);
             scope.append(string, outPutIngredient);
-            scope.Remove(procIdentifier);
         }
+        scope.Remove(procIdentifier);
     }
 
     public Boolean isValid(IngredientTypeHandler ingredientTypeHandler) {
