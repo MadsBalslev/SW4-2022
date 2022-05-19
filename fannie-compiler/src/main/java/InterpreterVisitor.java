@@ -11,17 +11,16 @@ import fannieTypes.Tool;
 import fannieTypes.steps.*;
 import fannieTypes.toolActions.*;
 import scope.Scope;
-
 public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
 
     //test
     IngredientTypeHandler ingredientTypeHandler = new IngredientTypeHandler();
     Scope scope = new Scope();
     
-    @Override public Void visitFannie(fannieParserParser.FannieContext context) 
+    @Override public Boolean visitFannie(fannieParserParser.FannieContext context) 
     {
         visitChildren(context);
-        return null;
+        return true;
     }
     
     @Override public Void visitMainRecipe(fannieParserParser.MainRecipeContext context) 
@@ -94,10 +93,13 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
         String toolTypeIdentifier = context.toolTypeIdentifier().getText();
         HashMap<String, ToolAction> superToolActionsList = new HashMap<String, ToolAction>();
         
-        if (scope.symbolTable.containsKey(toolTypeIdentifier))
-        {
+        if (toolTypeIdentifier.equals("tool")) {
+            // do nothing
+        } else if (scope.symbolTable.containsKey(toolTypeIdentifier)) {
             Tool superTool = (Tool)scope.retrieve(toolTypeIdentifier);
             superToolActionsList.putAll(superTool.getToolActionDeclarationsList());
+        } else {
+            throw new CompilerException(toolTypeIdentifier + " is not a tool");
         }
         HashMap<String, ToolAction> toolActionsList = new HashMap<String, ToolAction>();
         toolActionsList.putAll(visitToolActionDeclarationsList(context.toolActionDeclarationsList()));
@@ -289,7 +291,6 @@ public class InterpreterVisitor extends fannieParserBaseVisitor<Object> {
     @Override public Void visitContinousDoStepStopDeclaration(fannieParserParser.ContinousDoStepStopDeclarationContext context) 
     {
         try {
-            
             ContinousDoStepDeclaration doStep = (ContinousDoStepDeclaration)scope.retrieve(context.procIdentifier().getText());
             if (context.stepOut() != null) {
                 doStep.ExecuteStep(ingredientTypeHandler, visitStepOut(context.stepOut()), scope);
