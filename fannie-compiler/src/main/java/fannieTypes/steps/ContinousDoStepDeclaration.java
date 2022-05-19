@@ -21,9 +21,9 @@ public class ContinousDoStepDeclaration extends Step {
     }
     public void ExecuteStep(IngredientTypeHandler ingredientTypeHandler) {
         for (Ingredient ingredient : ingredients) {
-                tool.useToolAction(toolAction, ingredient, scope, ingredientTypeHandler);
-                scope.Remove(procIdentifier);
+            tool.useToolAction(toolAction, ingredient, scope, ingredientTypeHandler);
         }
+        scope.Remove(procIdentifier);
     }
 
     public void ExecuteStep(IngredientTypeHandler ingredientTypeHandler, List<String> stepOut, Scope scope) {
@@ -33,8 +33,8 @@ public class ContinousDoStepDeclaration extends Step {
         for (String string : stepOut) {
             Ingredient outPutIngredient = new Ingredient(string, ingredientTypeHandler, toolAction.output);
             scope.append(string, outPutIngredient);
-            scope.Remove(procIdentifier);
         }
+        scope.Remove(procIdentifier);
     }
 
     public Boolean isValid(IngredientTypeHandler ingredientTypeHandler) {
