@@ -11,15 +11,14 @@ public class App {
         CharStream input = CharStreams.fromStream(fileContent);
         fannieParserLexer lexer = new fannieParserLexer(input);
 
-        // EXPERIMENTAL CODE FROM https://stackoverflow.com/questions/18132078/handling-errors-in-antlr4
+        // ERROR LISTENER FROM https://stackoverflow.com/questions/18132078/handling-errors-in-antlr4
         lexer.removeErrorListeners();
         lexer.addErrorListener(ThrowingErrorListener.INSTANCE);
 
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         fannieParserParser parser = new fannieParserParser(tokens);
-        // parser.setErrorHandler(new BailErrorStrategy());
 
-        // EXPERIMENTAL CODE FROM https://stackoverflow.com/questions/18132078/handling-errors-in-antlr4
+        // ERROR LISTENER FROM https://stackoverflow.com/questions/18132078/handling-errors-in-antlr4
         parser.removeErrorListeners();
         parser.addErrorListener(ThrowingErrorListener.INSTANCE);
 
