@@ -1132,6 +1132,62 @@ public class InterpreterVisitorTest {
     }
 
     @Test
+    public void visitFannie_ProcessWasInterruptedWithStepOut0_ThrowCompilerError() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    vegetable Ingredient0 (to-taste)
+                },
+                tools{
+                    tool Tool[Action: vegetable => vegetable, Interrupt: vegetable => spice]
+                },
+                steps{
+                    START Doing Tool do Action Ingredient0,
+                    Tool do Interrupt Ingredient0,
+                    STOP Doing => Ingredient1,
+                    serve Ingredient1
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // assert 
+        assertThrows(CompilerException.class, () -> {
+            // act
+            interpreterVisitor.visitFannie(context);  
+        });
+    }
+
+    @Test
+    public void visitFannie_ProcessWasInterruptedWithStepOut1_ThrowCompilerError() {
+        // arrange
+        fannieParserParser parser = createParser("""
+            main recipe Recipe{
+                ingredients{
+                    vegetable Ingredient0 (to-taste)
+                },
+                tools{
+                    tool Tool[Action: vegetable => vegetable, Interrupt: vegetable => spice]
+                },
+                steps{
+                    START Doing Tool do Action Ingredient0,
+                    Tool do Interrupt Ingredient0 => Ingredient1,
+                    STOP Doing => Ingredient2,
+                    serve Ingredient2
+                }
+            }
+        """);
+        fannieParserParser.FannieContext context = parser.fannie();
+        
+        // assert 
+        assertThrows(CompilerException.class, () -> {
+            // act
+            interpreterVisitor.visitFannie(context);  
+        });
+    }
+
+    @Test
     public void visitFannie_duplicateProcess_ThrowCompilerError() {
         // arrange
         fannieParserParser parser = createParser("""
