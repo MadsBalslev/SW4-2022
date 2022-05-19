@@ -70,7 +70,10 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
+### Purpose
 That the student learns how to design and implement a programming language and how this process can be supported by formal definitions of the language's syntax and semantics and techniques and methods for translator and / or interpreter construction.
+
+### Reason
 
 All software is written in a programming language and is translated or interpreted in order to be executed. Design, description and construction of Programming languages, translators, interpreters and similar tools are therefore central topics in computer science.
 
@@ -99,11 +102,6 @@ Furthermore, many techniques and tools, originally developed for languages and t
 This is an example of how you could start setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
-### Prerequisites
-After the repository have been cloned to your designated destination, `cd` into `fannie-compiler`.
-To install the neccesary packages run:
-
-
 
 
 ### Installation
@@ -125,10 +123,17 @@ To install the neccesary packages run:
 ## Usage
 After the installation is done, you can now begin writing recipes in the fannie language!
 
-First `cd` into the `Recipe-Examples` and create a file with the ending `.fannie`.
+First create a file with the ending `.fannie`.
 
 Afterwards open up the `pom.xml` file, which is located under the `fannie-compiler` folder.
-In there you should navigate to `<argument>../RecipeExamples/Pasta.fannie</argument>` and change the file to your own recipe.
+In there you should navigate to 
+```xml
+<arguments>
+    <argument>../RecipeExamples/Pasta.fannie</argument>
+</arguments> 
+```
+
+and change the path to your own recipe.
 
 When you want to compile the recipe, simply type `mvn exec:java` into your terminal, and watch it compile.
 
