@@ -25,12 +25,12 @@ public class FileConvert {
         return htmlRenderer.render(document);
     }
 
-    public static void HTMLToPDF(String htmlText)
+    public static void HTMLToPDF(String path, String htmlText)
             throws IOException, DocumentException {
         Document document = new Document();
         InputStream html = new ByteArrayInputStream(htmlText.getBytes());
         PdfWriter writer = PdfWriter.getInstance(document,
-                new FileOutputStream("../output/output.pdf"));
+                new FileOutputStream(path + "output.pdf"));
         document.open();
         XMLWorkerHelper.getInstance().parseXHtml(writer, document, html);
         document.close();
