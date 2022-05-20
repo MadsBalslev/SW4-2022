@@ -71,13 +71,18 @@ Furthermore, many techniques and tools, originally developed for languages and t
 
 <!-- GETTING STARTED -->
 ## Getting Started
+There are two ways to run the program. Either with the JAR executable or by setting up the project locally and running it with Maven
 
+### Downloading the executable
+The easiest way to run the porogram is to download the JAR executable from the [releases](https://github.com/MadsBalslev/SW4-2022/releases/latest).
+This can then be run with the command:
+```sh
+  $ java NICOLAI FIKS DET HER
+````
+
+### Running from source
 This is an example of how you could start setting up your project locally.
 To get a local copy up and running follow these simple example steps.
-
-
-
-### Installation
 
 1. Clone the repo:
    ```sh
