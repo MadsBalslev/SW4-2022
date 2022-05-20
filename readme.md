@@ -77,7 +77,7 @@ There are two ways to run the program. Either with the JAR executable or by sett
 The easiest way to run the porogram is to download the JAR executable from the [releases](https://github.com/MadsBalslev/SW4-2022/releases/latest).
 This can then be run with the command:
 ```sh
-  $ java -jar [Jar FileName] [.fannie FileName]
+  $ java -jar [PATH TO fannie.jar] [PATH TO FANNIE RECIPE]
 ````
 
 ### Running from source
